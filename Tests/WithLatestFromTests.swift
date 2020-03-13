@@ -1,0 +1,91 @@
+//
+//  WithLatestFrom.swift
+//  CombineExtTests
+//
+//  Created by Shai Mishali on 24/10/2019.
+//  Copyright © 2019 Combine Community. All rights reserved.
+//
+
+import XCTest
+import Combine
+import CombineExt
+
+class WithLatestFromTests: XCTestCase {
+    var subscription: AnyCancellable!
+    func testWithResultSelector() {
+        let subject1 = PassthroughSubject<Int, Never>()
+        let subject2 = PassthroughSubject<String, Never>()
+        var results = [String]()
+        var completed = false
+        
+        subscription = subject1
+            .withLatestFrom(subject2) { "\($0)\($1)" }
+            .sink(receiveCompletion: { _ in completed  = true },
+                  receiveValue: { results.append($0) })
+        
+        subject1.send(1)
+        subject1.send(2)
+        subject1.send(3)
+        subject2.send("bar")
+        subject1.send(4)
+        subject1.send(5)
+        subject2.send("foo")
+        subject1.send(6)
+        subject2.send("qux")
+        subject1.send(7)
+        subject1.send(8)
+        subject1.send(9)
+        
+        XCTAssertEqual(results, ["4bar",
+                                 "5bar",
+                                 "6foo",
+                                 "7qux",
+                                 "8qux",
+                                 "9qux"])
+        
+        XCTAssertFalse(completed)
+        subject2.send(completion: .finished)
+        XCTAssertFalse(completed)
+        subject1.send(completion: .finished)
+        XCTAssertTrue(completed)
+    }
+    
+    func testNoResultSelector() {
+        let subject1 = PassthroughSubject<Int, Never>()
+        let subject2 = PassthroughSubject<String, Never>()
+        var results = [String]()
+        var completed = false
+        
+        subscription = subject1
+            .withLatestFrom(subject2)
+            .sink(receiveCompletion: { _ in completed  = true },
+                  receiveValue: { results.append($0) })
+        
+        subject1.send(1)
+        subject1.send(2)
+        subject1.send(3)
+        subject2.send("bar")
+        subject1.send(4)
+        subject1.send(5)
+        subject2.send("foo")
+        subject1.send(6)
+        subject2.send("qux")
+        subject1.send(7)
+        subject1.send(8)
+        subject1.send(9)
+        
+        XCTAssertEqual(results, ["bar",
+                                 "bar",
+                                 "foo",
+                                 "qux",
+                                 "qux",
+                                 "qux"])
+        
+        XCTAssertFalse(completed)
+        subject2.send(completion: .finished)
+        XCTAssertFalse(completed)
+        subject1.send(completion: .finished)
+        XCTAssertTrue(completed)
+        subscription.cancel()
+    }
+}
