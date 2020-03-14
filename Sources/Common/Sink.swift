@@ -16,8 +16,8 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
 
     private(set) var buffer: DemandBuffer<Downstream>
     private var upstreamSubscription: Subscription?
-    private let transformOutput: TransformOutput
-    private let transformFailure: TransformFailure
+    private let transformOutput: TransformOutput?
+    private let transformFailure: TransformFailure?
     
     /// Initialize a new sink subscribing to the upstream publisher and
     /// fulfilling the demand of the downstream subscriber using a backpresurre
@@ -27,10 +27,12 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
     /// - parameter downstream: The downstream subscriber
     /// - parameter transformOutput: Transform the upstream publisher's output type to the downstream's input type
     /// - parameter transformFailure: Transform the upstream failure type to the downstream's failure type
+    ///
+    /// - note: You **must** provide the two transformation functions above if you using the default `Sink` implementation. Otherwise, you must subclass `Sink` with your own publisher's sink and manage the buffer accordingly.
     init(upstream: Upstream,
          downstream: Downstream,
-         transformOutput: @escaping TransformOutput,
-         transformFailure: @escaping TransformFailure) {
+         transformOutput: TransformOutput? = nil,
+         transformFailure: TransformFailure? = nil) {
         self.buffer = DemandBuffer(subscriber: downstream)
         self.transformOutput = transformOutput
         self.transformFailure = transformFailure
@@ -47,7 +49,18 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
     }
 
     func receive(_ input: Upstream.Output) -> Subscribers.Demand {
-        guard let input = transformOutput(input) else { return .none }
+        guard let transform = transformOutput else {
+            fatalError("""
+                ❌ Missing output transformation
+                =========================
+                
+                You must either:
+                    - Provide a transformation function from the upstream's output to the downstream's input; or
+                    - Subclass `Sink` with your own publisher's Sink and manage the buffer yourself
+            """)
+        }
+
+        guard let input = transform(input) else { return .none }
         return buffer.buffer(value: input)
     }
 
@@ -56,7 +69,18 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
         case .finished:
             buffer.complete(completion: .finished)
         case .failure(let error):
-            guard let error = transformFailure(error) else { return }
+            guard let transform = transformFailure else {
+                fatalError("""
+                    ❌ Missing failure transformation
+                    =========================
+                    
+                    You must either:
+                        - Provide a transformation function from the upstream's failure to the downstream's failuer; or
+                        - Subclass `Sink` with your own publisher's Sink and manage the buffer yourself
+                """)
+            }
+
+            guard let error = transform(error) else { return }
             buffer.complete(completion: .failure(error))
         }
         

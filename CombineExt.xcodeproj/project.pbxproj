@@ -31,6 +31,8 @@
 		78C193DC241D0A9F0001B7FD /* Sink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193DB241D0A9F0001B7FD /* Sink.swift */; };
 		78C193DE241D46F40001B7FD /* Materialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193DD241D46F40001B7FD /* Materialize.swift */; };
 		78C193E0241D4D8D0001B7FD /* MaterializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */; };
+		78C193E2241D596F0001B7FD /* Dematerialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193E1241D596F0001B7FD /* Dematerialize.swift */; };
+		78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193E3241D63620001B7FD /* DematerializeTests.swift */; };
 		OBJ_22 /* AssignToMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* AssignToMany.swift */; };
 		OBJ_23 /* WithLatestFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* WithLatestFrom.swift */; };
 		OBJ_30 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
@@ -58,6 +60,8 @@
 		78C193DB241D0A9F0001B7FD /* Sink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sink.swift; sourceTree = "<group>"; };
 		78C193DD241D46F40001B7FD /* Materialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Materialize.swift; sourceTree = "<group>"; };
 		78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterializeTests.swift; sourceTree = "<group>"; };
+		78C193E1241D596F0001B7FD /* Dematerialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dematerialize.swift; sourceTree = "<group>"; };
+		78C193E3241D63620001B7FD /* DematerializeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DematerializeTests.swift; sourceTree = "<group>"; };
 		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CombineExt::CombineExtTests::Product" /* CombineExtTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = CombineExtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* WithLatestFrom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithLatestFrom.swift; sourceTree = "<group>"; };
@@ -110,6 +114,7 @@
 				78C193D0241C1B450001B7FD /* FlatMapLatestTests.swift */,
 				78C193D8241CEEA80001B7FD /* CreateTests.swift */,
 				78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */,
+				78C193E3241D63620001B7FD /* DematerializeTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -152,6 +157,7 @@
 				78C193CE241C16C40001B7FD /* FlatMapLatest.swift */,
 				78C193D3241C2DE00001B7FD /* Create.swift */,
 				78C193DD241D46F40001B7FD /* Materialize.swift */,
+				78C193E1241D596F0001B7FD /* Dematerialize.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -242,6 +248,7 @@
 				78C193CF241C16C40001B7FD /* FlatMapLatest.swift in Sources */,
 				78C193DC241D0A9F0001B7FD /* Sink.swift in Sources */,
 				78AA9299241B8C45009BD68B /* DemandBuffer.swift in Sources */,
+				78C193E2241D596F0001B7FD /* Dematerialize.swift in Sources */,
 				78C193DE241D46F40001B7FD /* Materialize.swift in Sources */,
 				78C193D4241C2DE00001B7FD /* Create.swift in Sources */,
 				OBJ_22 /* AssignToMany.swift in Sources */,
@@ -266,6 +273,7 @@
 				78AA9297241B8532009BD68B /* AssignToManyTests.swift in Sources */,
 				OBJ_41 /* WithLatestFromTests.swift in Sources */,
 				78C193E0241D4D8D0001B7FD /* MaterializeTests.swift in Sources */,
+				78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */,
 				78C193D9241CEEA80001B7FD /* CreateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

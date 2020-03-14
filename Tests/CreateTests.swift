@@ -113,7 +113,7 @@ private extension CreateTests {
         }
     }
     
-    func makeSubscriber(demand: Subscribers.Demand, expectation: XCTestExpectation) -> AnySubscriber<String, MyError> {
+    func makeSubscriber(demand: Subscribers.Demand, expectation: XCTestExpectation?) -> AnySubscriber<String, MyError> {
         return AnySubscriber(
             receiveSubscription: { subscription in
                 subscription.request(demand)
@@ -124,7 +124,7 @@ private extension CreateTests {
             },
             receiveCompletion: { finished in
                 self.completion = finished
-                expectation.fulfill()
+                expectation?.fulfill()
             })
     }
 }
