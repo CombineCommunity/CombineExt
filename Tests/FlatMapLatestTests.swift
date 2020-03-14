@@ -3,6 +3,7 @@
 //  CombineExtTests
 //
 //  Created by Shai Mishali on 13/03/2020.
+//  Copyright © 2019 Combine Community. All rights reserved.
 //
 
 import XCTest
@@ -11,15 +12,6 @@ import CombineExt
 
 class FlatMapLatestTests: XCTestCase {
     var subscription: AnyCancellable!
-
-    private func publish() -> AnyPublisher<String, Never> {
-        Timer
-            .publish(every: 0.5, on: .main, in: .common)
-            .autoconnect()
-            .map { _ in UUID().uuidString }
-            .prefix(2)
-            .eraseToAnyPublisher()
-    }
     
     func testInnerOnly() {
         let trigger = PassthroughSubject<Void, Never>()
@@ -28,12 +20,21 @@ class FlatMapLatestTests: XCTestCase {
         var cancellations = 0
         var completed = false
         
+        func publish() -> AnyPublisher<String, Never> {
+            Timer
+                .publish(every: 0.5, on: .main, in: .common)
+                .autoconnect()
+                .map { _ in UUID().uuidString }
+                .prefix(2)
+                .eraseToAnyPublisher()
+        }
+        
         let waiter = XCTWaiter()
         let expect = expectation(description: "")
         
         subscription = trigger
             .flatMapLatest { _ -> AnyPublisher<String, Never> in
-                return self.publish()
+                return publish()
                     .handleEvents(receiveSubscription: { _ in subscriptions += 1 },
                                   receiveCancel: { cancellations += 1 })
                     .eraseToAnyPublisher()
@@ -59,5 +60,6 @@ class FlatMapLatestTests: XCTestCase {
         // will only work after Xcode 11.4.
         // See: https://forums.swift.org/t/confused-about-behaviour-of-switchtolatest-in-combine/29914/24
         // XCTAssertTrue(completed)
+        _ = completed
     }
 }
