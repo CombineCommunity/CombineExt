@@ -2,13 +2,12 @@
 //  WithLatestFrom.swift
 //
 //  Created by Shai Mishali on 29/08/2019.
-//  Copyright © 2019 CombineExt. All rights reserved.
+//  Copyright © 2019 Combine Community. All rights reserved.
 //
 
 import Combine
 
 // MARK: - Operator methods
-@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publisher {
   ///  Merges two publishers into a single publisher by combining each value
   ///  from self with the latest value from the second publisher, if any.
@@ -40,7 +39,6 @@ public extension Publisher {
 
 // MARK: - Publisher
 extension Publishers {
-  @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
   public struct WithLatestFrom<Upstream: Publisher,
                                Other: Publisher,
                                Output>: Publisher where Upstream.Failure == Other.Failure {
@@ -61,74 +59,100 @@ extension Publishers {
     }
 
     public func receive<S: Subscriber>(subscriber: S) where Failure == S.Failure, Output == S.Input {
-      let sub = Subscription(upstream: upstream,
-                             second: second,
-                             resultSelector: resultSelector,
-                             subscriber: subscriber)
-      subscriber.receive(subscription: sub)
+        subscriber.receive(subscription: Subscription(upstream: upstream,
+                                                      downstream: subscriber,
+                                                      second: second,
+                                                      resultSelector: resultSelector))
     }
   }
 }
 
 // MARK: - Subscription
-@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Publishers.WithLatestFrom {
-  private class Subscription<S: Subscriber>: Combine.Subscription where S.Input == Output, S.Failure == Failure {
-    private let subscriber: S
+  private class Subscription<Downstream: Subscriber>: Combine.Subscription, CustomStringConvertible where Downstream.Input == Output, Downstream.Failure == Failure {
     private let resultSelector: ResultSelector
-    private var latestValue: Other.Output?
+    private var sink: Sink<Upstream, Downstream>?
 
     private let upstream: Upstream
+    private let downstream: Downstream
     private let second: Other
-
-    private var firstSubscription: Cancellable?
-    private var secondSubscription: Cancellable?
+    
+    // Secondary (other) publisher
+    private var latestValue: Other.Output?
+    private var otherSubscription: Cancellable?
+    private var preInitialDemand = Subscribers.Demand.none
 
     init(upstream: Upstream,
+         downstream: Downstream,
          second: Other,
-         resultSelector: @escaping ResultSelector,
-         subscriber: S) {
-      self.upstream = upstream
-      self.second = second
-      self.subscriber = subscriber
-      self.resultSelector = resultSelector
-      trackLatestFromSecond()
+         resultSelector: @escaping ResultSelector) {
+        self.upstream = upstream
+        self.second = second
+        self.downstream = downstream
+        self.resultSelector = resultSelector
+
+        trackLatestFromSecond { [weak self] in
+            guard let self = self else { return }
+            self.request(self.preInitialDemand)
+            self.preInitialDemand = .none
+        }
     }
 
     func request(_ demand: Subscribers.Demand) {
-      // withLatestFrom always takes one latest value from the second
-      // observable, so demand doesn't really have a meaning here.
-      firstSubscription = upstream
-        .sink(
-          receiveCompletion: { [subscriber] in subscriber.receive(completion: $0) },
-          receiveValue: { [weak self] value in
-            guard let self = self else { return }
+        guard latestValue != nil else {
+            preInitialDemand += demand
+            return
+        }
 
-            guard let latest = self.latestValue else { return }
-            _ = self.subscriber.receive(self.resultSelector(value, latest))
-        })
+        self.sink?.demand(demand)
     }
 
     // Create an internal subscription to the `Other` publisher,
     // constantly tracking its latest value
-    private func trackLatestFromSecond() {
+    private func trackLatestFromSecond(onInitialValue: @escaping () -> Void) {
+      var gotInitialValue = false
+        
       let subscriber = AnySubscriber<Other.Output, Other.Failure>(
         receiveSubscription: { [weak self] subscription in
-          self?.secondSubscription = subscription
-          subscription.request(.unlimited)
+            self?.otherSubscription = subscription
+            subscription.request(.unlimited)
         },
         receiveValue: { [weak self] value in
-          self?.latestValue = value
-          return .unlimited
+            guard let self = self else { return .none }
+            self.latestValue = value
+
+            if !gotInitialValue {
+                // When getting initial value, start pulling values
+                // from upstream in the main sink
+                self.sink = Sink(upstream: self.upstream,
+                                 downstream: self.downstream,
+                                 transformOutput: { [weak self] value in
+                                    guard let self = self,
+                                          let other = self.latestValue else { return nil }
+                                    
+                                    return self.resultSelector(value, other)
+                                 },
+                                 transformFailure: { $0 })
+                
+                // Signal initial value to start fulfilling downstream demand
+                gotInitialValue = true
+                onInitialValue()
+            }
+
+            return .unlimited
         },
         receiveCompletion: nil)
 
       self.second.subscribe(subscriber)
     }
+    
+    var description: String {
+        return "WithLatestFrom.Subscription<\(Output.self), \(Failure.self)>"
+    }
 
     func cancel() {
-      firstSubscription?.cancel()
-      secondSubscription?.cancel()
+        sink = nil
+        otherSubscription?.cancel()
     }
   }
 }

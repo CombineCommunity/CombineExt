@@ -2,7 +2,7 @@
 //  AssignToMany.swift
 //
 //  Created by Shai Mishali on 13/02/2020.
-//  Copyright © 2020 CombineExt. All rights reserved.
+//  Copyright © 2019 Combine Community. All rights reserved.
 //
 
 import Combine

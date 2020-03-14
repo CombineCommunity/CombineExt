@@ -3,6 +3,7 @@
 //  CombineExt
 //
 //  Created by Shai Mishali on 21/02/2020.
+//  Copyright © 2019 Combine Community. All rights reserved.
 //
 
 import Combine
@@ -15,7 +16,7 @@ import class Foundation.NSRecursiveLock
 /// according to the demand requested by the downstream
 ///
 /// In a sense, the subscription only relays the requests for demand, as well
-/// the events emitted by the upstream to this buffer, which manages
+/// the events emitted by the upstream — to this buffer, which manages
 /// the entire behavior and backpressure contract
 class DemandBuffer<S: Subscriber> {
     private let lock = NSRecursiveLock()
@@ -126,6 +127,9 @@ private extension DemandBuffer {
 
 // MARK: - Internally-scoped helpers
 extension Subscription {
+    /// Reqeust demand if it's not empty
+    ///
+    /// - parameter demand: Requested demand
     func requestIfNeeded(_ demand: Subscribers.Demand) {
         guard demand > .none else { return }
         request(demand)
@@ -133,6 +137,7 @@ extension Subscription {
 }
 
 extension Optional where Wrapped == Subscription {
+    /// Cancel the Optional subscription and nullify it
     mutating func kill() {
         self?.cancel()
         self = nil

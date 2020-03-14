@@ -23,6 +23,12 @@
 /* Begin PBXBuildFile section */
 		78AA9297241B8532009BD68B /* AssignToManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AA9296241B8532009BD68B /* AssignToManyTests.swift */; };
 		78AA9299241B8C45009BD68B /* DemandBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AA9298241B8C45009BD68B /* DemandBuffer.swift */; };
+		78C193CF241C16C40001B7FD /* FlatMapLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193CE241C16C40001B7FD /* FlatMapLatest.swift */; };
+		78C193D2241C1B750001B7FD /* FlatMapLatestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193D0241C1B450001B7FD /* FlatMapLatestTests.swift */; };
+		78C193D4241C2DE00001B7FD /* Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193D3241C2DE00001B7FD /* Create.swift */; };
+		78C193D7241C2E580001B7FD /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193D6241C2E580001B7FD /* Event.swift */; };
+		78C193D9241CEEA80001B7FD /* CreateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193D8241CEEA80001B7FD /* CreateTests.swift */; };
+		78C193DC241D0A9F0001B7FD /* Sink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193DB241D0A9F0001B7FD /* Sink.swift */; };
 		OBJ_22 /* AssignToMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* AssignToMany.swift */; };
 		OBJ_23 /* WithLatestFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* WithLatestFrom.swift */; };
 		OBJ_30 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
@@ -42,6 +48,12 @@
 /* Begin PBXFileReference section */
 		78AA9296241B8532009BD68B /* AssignToManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignToManyTests.swift; sourceTree = "<group>"; };
 		78AA9298241B8C45009BD68B /* DemandBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemandBuffer.swift; sourceTree = "<group>"; };
+		78C193CE241C16C40001B7FD /* FlatMapLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatMapLatest.swift; sourceTree = "<group>"; };
+		78C193D0241C1B450001B7FD /* FlatMapLatestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatMapLatestTests.swift; sourceTree = "<group>"; };
+		78C193D3241C2DE00001B7FD /* Create.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Create.swift; sourceTree = "<group>"; };
+		78C193D6241C2E580001B7FD /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		78C193D8241CEEA80001B7FD /* CreateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTests.swift; sourceTree = "<group>"; };
+		78C193DB241D0A9F0001B7FD /* Sink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sink.swift; sourceTree = "<group>"; };
 		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CombineExt::CombineExtTests::Product" /* CombineExtTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = CombineExtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* WithLatestFrom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithLatestFrom.swift; sourceTree = "<group>"; };
@@ -69,11 +81,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		78C193D5241C2E4F0001B7FD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				78C193D6241C2E580001B7FD /* Event.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		78C193DA241D07160001B7FD /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				78AA9298241B8C45009BD68B /* DemandBuffer.swift */,
+				78C193DB241D0A9F0001B7FD /* Sink.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		OBJ_11 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_12 /* WithLatestFromTests.swift */,
 				78AA9296241B8532009BD68B /* AssignToManyTests.swift */,
+				78C193D0241C1B450001B7FD /* FlatMapLatestTests.swift */,
+				78C193D8241CEEA80001B7FD /* CreateTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -87,7 +118,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -96,13 +127,13 @@
 				OBJ_13 /* Products */,
 				OBJ_16 /* README.md */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				78AA9298241B8C45009BD68B /* DemandBuffer.swift */,
+				78C193DA241D07160001B7FD /* Common */,
+				78C193D5241C2E4F0001B7FD /* Models */,
 				OBJ_8 /* Operators */,
 			);
 			path = Sources;
@@ -113,6 +144,8 @@
 			children = (
 				OBJ_9 /* AssignToMany.swift */,
 				OBJ_10 /* WithLatestFrom.swift */,
+				78C193CE241C16C40001B7FD /* FlatMapLatest.swift */,
+				78C193D3241C2DE00001B7FD /* Create.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -182,7 +215,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_13 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -200,8 +233,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				78C193CF241C16C40001B7FD /* FlatMapLatest.swift in Sources */,
+				78C193DC241D0A9F0001B7FD /* Sink.swift in Sources */,
 				78AA9299241B8C45009BD68B /* DemandBuffer.swift in Sources */,
+				78C193D4241C2DE00001B7FD /* Create.swift in Sources */,
 				OBJ_22 /* AssignToMany.swift in Sources */,
+				78C193D7241C2E580001B7FD /* Event.swift in Sources */,
 				OBJ_23 /* WithLatestFrom.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,8 +255,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				78C193D2241C1B750001B7FD /* FlatMapLatestTests.swift in Sources */,
 				78AA9297241B8532009BD68B /* AssignToManyTests.swift in Sources */,
 				OBJ_41 /* WithLatestFromTests.swift in Sources */,
+				78C193D9241CEEA80001B7FD /* CreateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
