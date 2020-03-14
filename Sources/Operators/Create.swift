@@ -24,7 +24,7 @@ public extension AnyPublisher {
     ///        subscriber(.value("World!"))
     ///
     ///        // Complete with error
-    ///        subscriber(.error(MyError.failure))
+    ///        subscriber(.error(MyError.someError))
     ///
     ///        // Or, complete successfully
     ///        subscriber(.finished)
@@ -49,7 +49,7 @@ public extension Publishers {
     ///        subscriber(.value("World!"))
     ///
     ///        // Complete with error
-    ///        subscriber(.error(MyError.failure))
+    ///        subscriber(.error(MyError.someError))
     ///
     ///        // Or, complete successfully
     ///        subscriber(.finished)
@@ -88,7 +88,7 @@ private extension Publishers.Create {
                 switch event {
                 case .value(let output):
                     _ = buffer.buffer(value: output)
-                case .error(let error):
+                case .failure(let error):
                     buffer.complete(completion: .failure(error))
                 case .finished:
                     buffer.complete(completion: .finished)

@@ -10,11 +10,11 @@ import Combine
 /// A generic sink using an underlying demand buffer to balance
 /// the demand of a downstream subscriber for the events of an
 /// upstream publisher
-class Sink<Upstream: Publisher, Downstream: Subscriber> {
+class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
     typealias TransformFailure = (Upstream.Failure) -> Downstream.Failure?
     typealias TransformOutput = (Upstream.Output) -> Downstream.Input?
 
-    private var buffer: DemandBuffer<Downstream>
+    private(set) var buffer: DemandBuffer<Downstream>
     private var upstreamSubscription: Subscription?
     private let transformOutput: TransformOutput
     private let transformFailure: TransformFailure
@@ -42,11 +42,6 @@ class Sink<Upstream: Publisher, Downstream: Subscriber> {
         upstreamSubscription?.requestIfNeeded(newDemand)
     }
     
-    deinit { upstreamSubscription.kill() }
-}
-
-// MARK: - Subscriber Conformance
-extension Sink: Subscriber {
     func receive(subscription: Subscription) {
         upstreamSubscription = subscription
     }
@@ -65,6 +60,12 @@ extension Sink: Subscriber {
             buffer.complete(completion: .failure(error))
         }
         
+        cancelUpstream()
+    }
+    
+    func cancelUpstream() {
         upstreamSubscription.kill()
     }
+    
+    deinit { cancelUpstream() }
 }

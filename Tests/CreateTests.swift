@@ -18,13 +18,11 @@ class CreateTests: XCTestCase {
     
     private var completion: Subscribers.Completion<CreateTests.MyError>?
     private var values = [String]()
-    private var waiter: XCTWaiter!
     private let allValues = ["Hello", "World", "What's", "Up?"]
     
     override func setUp() {
         values = []
         completion = nil
-        waiter = XCTWaiter()
     }
     
     func testUnlimitedDemandFinished() {
@@ -34,7 +32,7 @@ class CreateTests: XCTestCase {
         let publisher = makePublisher(fail: false)
 
         publisher.subscribe(subscriber)
-        waiter.wait(for: [expect], timeout: 1)
+        wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .finished)
         XCTAssertEqual(values, allValues)
@@ -47,7 +45,7 @@ class CreateTests: XCTestCase {
         let publisher = makePublisher(fail: false)
         
         publisher.subscribe(subscriber)
-        waiter.wait(for: [expect], timeout: 1)
+        wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .finished)
         XCTAssertEqual(values, Array(allValues.prefix(2)))
@@ -60,7 +58,7 @@ class CreateTests: XCTestCase {
         let publisher = makePublisher(fail: false)
         
         publisher.subscribe(subscriber)
-        waiter.wait(for: [expect], timeout: 1)
+        wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .finished)
         XCTAssertTrue(values.isEmpty)
@@ -73,7 +71,7 @@ class CreateTests: XCTestCase {
         let publisher = makePublisher(fail: true)
 
         publisher.subscribe(subscriber)
-        waiter.wait(for: [expect], timeout: 1)
+        wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .failure(MyError.failure))
         XCTAssertEqual(values, allValues)
@@ -86,7 +84,7 @@ class CreateTests: XCTestCase {
         let publisher = makePublisher(fail: true)
         
         publisher.subscribe(subscriber)
-        waiter.wait(for: [expect], timeout: 1)
+        wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .failure(MyError.failure))
         XCTAssertEqual(values, Array(allValues.prefix(2)))
@@ -99,7 +97,7 @@ class CreateTests: XCTestCase {
         let publisher = makePublisher(fail: true)
         
         publisher.subscribe(subscriber)
-        waiter.wait(for: [expect], timeout: 1)
+        wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .failure(MyError.failure))
         XCTAssertTrue(values.isEmpty)
@@ -111,7 +109,7 @@ private extension CreateTests {
     func makePublisher(fail: Bool = false) -> AnyPublisher<String, MyError> {
         AnyPublisher<String, MyError>.create { subscriber in
             self.allValues.forEach { subscriber(.value($0)) }
-            fail ? subscriber(.error(MyError.failure)) : subscriber(.finished)
+            fail ? subscriber(.failure(MyError.failure)) : subscriber(.finished)
         }
     }
     

@@ -68,8 +68,8 @@ extension Publishers {
 }
 
 // MARK: - Subscription
-extension Publishers.WithLatestFrom {
-  private class Subscription<Downstream: Subscriber>: Combine.Subscription, CustomStringConvertible where Downstream.Input == Output, Downstream.Failure == Failure {
+private extension Publishers.WithLatestFrom {
+  class Subscription<Downstream: Subscriber>: Combine.Subscription, CustomStringConvertible where Downstream.Input == Output, Downstream.Failure == Failure {
     private let resultSelector: ResultSelector
     private var sink: Sink<Upstream, Downstream>?
 
