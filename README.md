@@ -10,9 +10,9 @@
 <img src="https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS 10.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-333333.svg" />
 </p>
 
-CombineExt povides a collection of operators and utilities for Combine, that are not provided by Apple themselves, but are common in other Reactive Frameworks and standards.
+CombineExt povides a collection of operators, publishers and utilities for Combine, that are not provided by Apple themselves, but are common in other Reactive Frameworks and standards.
 
-The original inspiration for many of these operators came from many missing pieces coming from the ReactiveX and RxSwift world.
+The original inspiration for many of these additions came from many missing pieces from the world of ReactiveX and RxSwift.
 
 All operators, utilities and helpers respect the Combine Contract, including backpressure handling:
 
@@ -137,7 +137,7 @@ materialize: completed with .finished
 
 ### values
 
-Given a materialized publisher, publish only the emitted upstream values, omitting failures. Given a `Publisher<Event<String, MyError>, ever>`, this operator will return a `Publisher<Srting, Never>`.
+Given a materialized publisher, publish only the emitted upstream values, omitting failures. Given a `Publisher<Event<String, MyError>, Never>`, this operator will return a `Publisher<Srting, Never>`.
 
 **Note**: This operator only works on publishers that were materialized with the `materialize()` operator.
 
@@ -170,7 +170,7 @@ values: "What's up?"
 
 ### failures
 
-Given a materialized publisher, publish only the emitted upstream failure, omitting values. Given a `Publisher<Event<String, MyError>, ever>`, this operator will return a `Publisher<MyError, Never>`.
+Given a materialized publisher, publish only the emitted upstream failure, omitting values. Given a `Publisher<Event<String, MyError>, Never>`, this operator will return a `Publisher<MyError, Never>`.
 
 **Note**: This operator only works on publishers that were materialized with the `materialize()` operator
 
@@ -211,7 +211,7 @@ This section outlines some of the custom Combine publishers CombineExt provides
 
 ### AnyPublisher.create
 
-A publisher which accepts a factory closure to which you ca dynamically push value or completion events.
+A publisher which accepts a factory closure to which you can dynamically push value or completion events.
 
 This lets you easily create custom publishers to wrap any non-publisher asynchronous work, while still respecting the downstream consumer's backpressure demand.
 
