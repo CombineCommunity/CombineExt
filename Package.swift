@@ -13,7 +13,7 @@ let package = Package(
     dependencies: [],
     targets: [
         .target(name: "CombineExt", dependencies: [], path: "Sources"),
-        .testTarget(name: "CombineExtTests", dependencies: [], path: "Tests"),
+        .testTarget(name: "CombineExtTests", dependencies: ["CombineExt"], path: "Tests"),
     ],
     swiftLanguageVersions: [.v5]
 )

@@ -1,0 +1,49 @@
+name: Prism
+
+on: [push]
+
+jobs:
+  macOS:
+    name: "macOS"
+    runs-on: macOS-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests
+      run: set -o pipefail && xcodebuild -project CombineExt.xcodeproj -scheme CombineExt-Package -enableCodeCoverage YES -sdk macosx -destination "arch=x86_64" test | xcpretty -c -r html --output logs/macOS.html
+    - uses: actions/upload-artifact@v1
+      with:
+        name: build-logs=${{ github.run_id }}
+        path: logs
+  iOS:
+    name: "iOS"
+    runs-on: macOS-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests
+      run: set -o pipefail && xcodebuild -project CombineExt.xcodeproj -scheme CombineExt-Package -enableCodeCoverage YES -sdk iphonesimulator -destination "name=iPhone 11" test | xcpretty -c -r html --output logs/iOS.html
+    - uses: actions/upload-artifact@v1
+      with:
+        name: build-logs=${{ github.run_id }}
+        path: logs
+  tvOS:
+    name: "tvOS"
+    runs-on: macOS-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests
+      run: set -o pipefail && xcodebuild -project CombineExt.xcodeproj -scheme CombineExt-Package -enableCodeCoverage YES -sdk appletvsimulator -destination "name=Apple TV" test | xcpretty -c -r html --output logs/tvOS.html
+    - uses: actions/upload-artifact@v1
+      with:
+        name: build-logs=${{ github.run_id }}
+        path: logs
+  SPM:
+    name: "SPM"
+    runs-on: macOS-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests
+      run: set -o pipefail && swift test
