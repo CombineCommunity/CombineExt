@@ -9,6 +9,31 @@
 import Combine
 
 public extension AnyPublisher {
+    /// Create a publisher which accepts a factory closure to which you
+    /// can dynamically push value or completion events
+    ///
+    /// - parameter factory: A factory with a closure to which you can
+    ///                      dynamically push value or completion events
+    ///
+    /// An example usage could look as follows:
+    ///
+    ///    ```
+    ///    AnyPublisher<String, MyError>.create { subscriber in
+    ///        // Values
+    ///        subscriber(.value("Hello"))
+    ///        subscriber(.value("World!"))
+    ///
+    ///        // Complete with error
+    ///        subscriber(.failure(MyError.someError))
+    ///
+    ///        // Or, complete successfully
+    ///        subscriber(.finished)
+    ///    }
+    ///
+    init(_ factory: @escaping Publishers.Create<Output, Failure>.Factory) {
+        self = Publishers.Create(factory: factory).eraseToAnyPublisher()
+    }
+
     /// A publisher which accepts a factory closure to which you can
     /// dynamically push value or completion events
     ///
@@ -24,14 +49,14 @@ public extension AnyPublisher {
     ///        subscriber(.value("World!"))
     ///
     ///        // Complete with error
-    ///        subscriber(.error(MyError.someError))
+    ///        subscriber(.failure(MyError.someError))
     ///
     ///        // Or, complete successfully
     ///        subscriber(.finished)
     ///    }
     ///
     static func create(_ factory: @escaping Publishers.Create<Output, Failure>.Factory) -> AnyPublisher<Output, Failure> {
-        Publishers.Create(factory: factory).eraseToAnyPublisher()
+        AnyPublisher(factory)
     }
 }
 
@@ -49,7 +74,7 @@ public extension Publishers {
     ///        subscriber(.value("World!"))
     ///
     ///        // Complete with error
-    ///        subscriber(.error(MyError.someError))
+    ///        subscriber(.failure(MyError.someError))
     ///
     ///        // Or, complete successfully
     ///        subscriber(.finished)

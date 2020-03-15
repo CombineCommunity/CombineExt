@@ -9,7 +9,7 @@
 import Combine
 
 public extension Publisher {
-    /// Convert any publisher to a publisher of its events
+    /// Converts any publisher to a publisher of its events
     ///
     /// - note: The returned publisher is guaranteed to never fail,
     ///         but it will complete given any upstream completion event
@@ -22,7 +22,7 @@ public extension Publisher {
 
 // MARK: - Materialized Operators
 public extension Publisher where Output: EventConvertible, Failure == Never {
-    /// Given a materialize publisher, publish only the emitted
+    /// Given a materialized publisher, publish only the emitted
     /// upstream values, omitting failures
     ///
     /// - returns: A publisher emitting the `Output` of the wrapped event

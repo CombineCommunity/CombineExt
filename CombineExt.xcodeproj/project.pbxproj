@@ -21,6 +21,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		78002BB5241E910C0018AA28 /* Relay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BB4241E910C0018AA28 /* Relay.swift */; };
+		78002BB7241E915E0018AA28 /* CurrentValueRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BB6241E915E0018AA28 /* CurrentValueRelay.swift */; };
+		78002BB9241E91D70018AA28 /* PassthroughRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BB8241E91D70018AA28 /* PassthroughRelay.swift */; };
+		78002BBB241E97350018AA28 /* CurrentValueRelayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BBA241E97350018AA28 /* CurrentValueRelayTests.swift */; };
+		78988A1E241EAFDD00F3A4AF /* PassthroughRelayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78988A1D241EAFDD00F3A4AF /* PassthroughRelayTests.swift */; };
+		78988A20241EB0FE00F3A4AF /* CombineExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CombineExt::CombineExt::Product" /* CombineExt.framework */; };
 		78AA9297241B8532009BD68B /* AssignToManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AA9296241B8532009BD68B /* AssignToManyTests.swift */; };
 		78AA9299241B8C45009BD68B /* DemandBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AA9298241B8C45009BD68B /* DemandBuffer.swift */; };
 		78C193CF241C16C40001B7FD /* FlatMapLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193CE241C16C40001B7FD /* FlatMapLatest.swift */; };
@@ -50,6 +56,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		78002BB4241E910C0018AA28 /* Relay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Relay.swift; sourceTree = "<group>"; };
+		78002BB6241E915E0018AA28 /* CurrentValueRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValueRelay.swift; sourceTree = "<group>"; };
+		78002BB8241E91D70018AA28 /* PassthroughRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassthroughRelay.swift; sourceTree = "<group>"; };
+		78002BBA241E97350018AA28 /* CurrentValueRelayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValueRelayTests.swift; sourceTree = "<group>"; };
+		78988A1D241EAFDD00F3A4AF /* PassthroughRelayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassthroughRelayTests.swift; sourceTree = "<group>"; };
 		78AA9296241B8532009BD68B /* AssignToManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignToManyTests.swift; sourceTree = "<group>"; };
 		78AA9298241B8C45009BD68B /* DemandBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemandBuffer.swift; sourceTree = "<group>"; };
 		78C193CE241C16C40001B7FD /* FlatMapLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatMapLatest.swift; sourceTree = "<group>"; };
@@ -83,12 +94,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				78988A20241EB0FE00F3A4AF /* CombineExt.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		78002BB3241E90FE0018AA28 /* Relays */ = {
+			isa = PBXGroup;
+			children = (
+				78002BB4241E910C0018AA28 /* Relay.swift */,
+				78002BB6241E915E0018AA28 /* CurrentValueRelay.swift */,
+				78002BB8241E91D70018AA28 /* PassthroughRelay.swift */,
+			);
+			path = Relays;
+			sourceTree = "<group>";
+		};
+		78988A1F241EB0FE00F3A4AF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		78C193D5241C2E4F0001B7FD /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +144,8 @@
 				78C193D8241CEEA80001B7FD /* CreateTests.swift */,
 				78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */,
 				78C193E3241D63620001B7FD /* DematerializeTests.swift */,
+				78002BBA241E97350018AA28 /* CurrentValueRelayTests.swift */,
+				78988A1D241EAFDD00F3A4AF /* PassthroughRelayTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -136,6 +167,7 @@
 				OBJ_11 /* Tests */,
 				OBJ_13 /* Products */,
 				OBJ_16 /* README.md */,
+				78988A1F241EB0FE00F3A4AF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -144,6 +176,7 @@
 			children = (
 				78C193DA241D07160001B7FD /* Common */,
 				78C193D5241C2E4F0001B7FD /* Models */,
+				78002BB3241E90FE0018AA28 /* Relays */,
 				OBJ_8 /* Operators */,
 			);
 			path = Sources;
@@ -268,13 +301,16 @@
 			files = (
 				78C193CF241C16C40001B7FD /* FlatMapLatest.swift in Sources */,
 				78C193DC241D0A9F0001B7FD /* Sink.swift in Sources */,
+				78002BB9241E91D70018AA28 /* PassthroughRelay.swift in Sources */,
 				78AA9299241B8C45009BD68B /* DemandBuffer.swift in Sources */,
 				78C193E2241D596F0001B7FD /* Dematerialize.swift in Sources */,
+				78002BB7241E915E0018AA28 /* CurrentValueRelay.swift in Sources */,
 				78C193DE241D46F40001B7FD /* Materialize.swift in Sources */,
 				78C193D4241C2DE00001B7FD /* Create.swift in Sources */,
 				OBJ_22 /* AssignToMany.swift in Sources */,
 				78C193D7241C2E580001B7FD /* Event.swift in Sources */,
 				OBJ_23 /* WithLatestFrom.swift in Sources */,
+				78002BB5241E910C0018AA28 /* Relay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,7 +330,9 @@
 				78AA9297241B8532009BD68B /* AssignToManyTests.swift in Sources */,
 				OBJ_41 /* WithLatestFromTests.swift in Sources */,
 				78C193E0241D4D8D0001B7FD /* MaterializeTests.swift in Sources */,
+				78002BBB241E97350018AA28 /* CurrentValueRelayTests.swift in Sources */,
 				78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */,
+				78988A1E241EAFDD00F3A4AF /* PassthroughRelayTests.swift in Sources */,
 				78C193D9241CEEA80001B7FD /* CreateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

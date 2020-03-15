@@ -1,0 +1,91 @@
+//
+//  CurrentValueRelay.swift
+//  CombineExt
+//
+//  Created by Shai Mishali on 15/03/2020.
+//  Copyright © 2020 Combine Community. All rights reserved.
+//
+
+import Combine
+
+/// A relay that wraps a single value and publishes a new element whenever the value changes.
+///
+/// Unlike its subject-counterpart, it may only accept values, and only sends a finishing event on deallocation.
+/// It cannot send a failure event.
+/// 
+/// - note: Unlike PassthroughRelay, CurrentValueRelay maintains a buffer of the most recently published value.
+public class CurrentValueRelay<Output>: Relay {
+    public var value: Output { storage.value }
+    private let storage: CurrentValueSubject<Output, Never>
+    private var subscriptions = [Subscription<CurrentValueSubject<Output, Never>,
+                                              AnySubscriber<Output, Never>>]()
+
+    /// Create a new relay
+    ///
+    /// - parameter value: Initial value for the relay
+    public init(_ value: Output) {
+        storage = .init(value)
+    }
+
+    /// Relay a value to downstream subscribers
+    ///
+    /// - parameter value: A new value
+    public func accept(_ value: Output) {
+        storage.send(value)
+    }
+
+    public func receive<S: Subscriber>(subscriber: S) where Output == S.Input, Failure == S.Failure {
+        let subscription = Subscription(upstream: storage, downstream: AnySubscriber(subscriber))
+        self.subscriptions.append(subscription)
+        subscriber.receive(subscription: subscription)
+    }
+
+    public func subscribe<P: Publisher>(_ publisher: P) -> AnyCancellable where Output == P.Output, P.Failure == Never {
+        publisher.subscribe(storage)
+    }
+
+    deinit {
+        // Send a finished event upon dealloation
+        subscriptions.forEach { $0.forceFinish() }
+    }
+}
+
+private extension CurrentValueRelay {
+    class Subscription<Upstream: Publisher, Downstream: Subscriber>: Combine.Subscription where Upstream.Output == Downstream.Input, Upstream.Failure == Downstream.Failure {
+        private var sink: Sink<Upstream, Downstream>?
+        var shouldForwardCompletion: Bool {
+            get { sink?.shouldForwardCompletion ?? false }
+            set { sink?.shouldForwardCompletion = newValue }
+        }
+
+        init(upstream: Upstream,
+             downstream: Downstream) {
+            self.sink = Sink(upstream: upstream,
+                             downstream: downstream,
+                             transformOutput: { $0 })
+        }
+
+        func forceFinish() {
+            self.sink?.shouldForwardCompletion = true
+            self.sink?.receive(completion: .finished)
+        }
+
+        func request(_ demand: Subscribers.Demand) {
+            sink?.demand(demand)
+        }
+
+        func cancel() {
+            sink = nil
+        }
+    }
+}
+
+private extension CurrentValueRelay {
+    class Sink<Upstream: Publisher, Downstream: Subscriber>: CombineExt.Sink<Upstream, Downstream> {
+        var shouldForwardCompletion = false
+        override func receive(completion: Subscribers.Completion<Upstream.Failure>) {
+            guard shouldForwardCompletion else { return }
+            super.receive(completion: completion)
+        }
+    }
+}

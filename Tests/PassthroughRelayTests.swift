@@ -1,0 +1,92 @@
+//
+//  PassthroughRelayTests.swift
+//  CombineExtTests
+//
+//  Created by Shai Mishali on 15/03/2020.
+//  Copyright © 2020 Combine Community. All rights reserved.
+//
+
+import XCTest
+import Combine
+import CombineExt
+
+class PassthroughRelayTests: XCTestCase {
+    private var relay: PassthroughRelay<String>?
+    private var values = [String]()
+    private var subscriptions = Set<AnyCancellable>()
+
+    override func setUp() {
+        relay = PassthroughRelay<String>()
+        subscriptions = .init()
+        values = []
+    }
+
+    func testFinishesOnDeinit() {
+        var completed = false
+        relay?
+            .sink(receiveCompletion: { _ in completed = true },
+                  receiveValue: { _ in })
+            .store(in: &subscriptions)
+
+        XCTAssertFalse(completed)
+        relay = nil
+        XCTAssertTrue(completed)
+    }
+
+    func testNoReplay() {
+        relay?.accept("these")
+        relay?.accept("values")
+        relay?.accept("shouldnt")
+        relay?.accept("be")
+        relay?.accept("forwaded")
+
+        relay?
+            .sink(receiveValue: { self.values.append($0) })
+            .store(in: &subscriptions)
+
+        XCTAssertEqual(values, [])
+
+        relay?.accept("yo")
+        XCTAssertEqual(values, ["yo"])
+
+        relay?.accept("sup")
+        XCTAssertEqual(values, ["yo", "sup"])
+
+        var secondInitial: String?
+        _ = relay?.sink(receiveValue: { secondInitial = $0 })
+        XCTAssertNil(secondInitial)
+    }
+
+    func testVoidAccept() {
+        let voidRelay = PassthroughRelay<Void>()
+        var count = 0
+
+        voidRelay
+            .sink(receiveValue: { count += 1 })
+            .store(in: &subscriptions)
+
+        voidRelay.accept()
+        voidRelay.accept()
+        voidRelay.accept()
+        voidRelay.accept()
+        voidRelay.accept()
+
+        XCTAssertEqual(count, 5)
+    }
+
+    func testSubscribePublisher() {
+        var completed = false
+        relay?
+            .sink(receiveCompletion: { _ in completed = true },
+                  receiveValue: { self.values.append($0) })
+            .store(in: &subscriptions)
+
+        ["1", "2", "3"]
+            .publisher
+            .subscribe(relay!)
+            .store(in: &subscriptions)
+
+        XCTAssertFalse(completed)
+        XCTAssertEqual(values, ["1", "2", "3"])
+    }
+}

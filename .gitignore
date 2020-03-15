@@ -2,3 +2,5 @@ Packages
 .build/
 xcuserdata
 DerivedData/
+Carthage
+CombineExt.framework.zip

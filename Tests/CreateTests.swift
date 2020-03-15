@@ -26,7 +26,7 @@ class CreateTests: XCTestCase {
     }
     
     func testUnlimitedDemandFinished() {
-        let expect = expectation(description: "6 values and finished event")
+        let expect = expectation(description: "4 values and finished event")
         let subscriber = makeSubscriber(demand: .unlimited,
                                         expectation: expect)
         let publisher = makePublisher(fail: false)
@@ -42,7 +42,11 @@ class CreateTests: XCTestCase {
         let expect = expectation(description: "2 values and finished event")
         let subscriber = makeSubscriber(demand: .max(2),
                                         expectation: expect)
-        let publisher = makePublisher(fail: false)
+
+        let publisher = AnyPublisher<String, MyError> { subscriber in
+            self.allValues.forEach { subscriber(.value($0)) }
+            subscriber(.finished)
+        }
         
         publisher.subscribe(subscriber)
         wait(for: [expect], timeout: 1)
@@ -65,7 +69,7 @@ class CreateTests: XCTestCase {
     }
     
     func testUnlimitedDemandError() {
-        let expect = expectation(description: "6 values and error event")
+        let expect = expectation(description: "4 values and error event")
         let subscriber = makeSubscriber(demand: .unlimited,
                                         expectation: expect)
         let publisher = makePublisher(fail: true)

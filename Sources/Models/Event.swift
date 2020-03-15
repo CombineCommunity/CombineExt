@@ -6,13 +6,14 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
-/// Repressents a Combine Event
+/// Represents a Combine Event
 public enum Event<Output, Failure: Swift.Error> {
     case value(Output)
     case failure(Failure)
     case finished
 }
 
+// MARK: - Equatable Conformance
 extension Event: Equatable where Output: Equatable, Failure: Equatable {
     static public func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
@@ -28,6 +29,7 @@ extension Event: Equatable where Output: Equatable, Failure: Equatable {
     }
 }
 
+// MARK: - Friendly Output
 extension Event: CustomStringConvertible {
     public var description: String {
         switch self {
@@ -40,6 +42,8 @@ extension Event: CustomStringConvertible {
         }
     }
 }
+
+// MARK: - Event Convertible
 
 /// A protocol representing `Event` convertible types
 public protocol EventConvertible {
