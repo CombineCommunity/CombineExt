@@ -10,35 +10,35 @@
 <img src="https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS 10.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-333333.svg" />
 </p>
 
-CombineExt povides a collection of operators, publishers and utilities for Combine, that are not provided by Apple themselves, but are common in other Reactive Frameworks and standards.
+CombineExt provides a collection of operators, publishers, and utilities for Combine, that are not provided by Apple, but are common in other reactive Frameworks and standards.
 
-The original inspiration for many of these additions came from many missing pieces from the world of ReactiveX and RxSwift.
+The inspiration for many of these additions came from missing pieces from the world of ReactiveX and RxSwift.
 
-All operators, utilities and helpers respect the Combine Contract, including backpressure handling:
+All operators, utilities, and helpers respect the Combine’s pulisher contract, including handling backpressure.
 
 ### Operators
-* [withLatestFrom](#withLatestFrom)
-* [flatMapLatest](#flatMapLatest)
-* [assign](#assign)
-* [materialize](#materialize)
-* [values](#values)
-* [failures](#failures)
-* [dematerialize](#dematerialize)
+* [`withLatestFrom`](#withLatestFrom)
+* [`flatMapLatest`](#flatMapLatest)
+* [`assign`](#assign)
+* [`materialize`](#materialize)
+* [`values`](#values)
+* [`failures`](#failures)
+* [`dematerialize`](#dematerialize)
 
 ### Publishers
-* [AnyPublisher.create](#anypublisher.create)
-* [CurrentValueRelay](#CurrentValueRelay)
-* [PassthroughRelay](#PassthroughRelay)
+* [`AnyPublisher.create`](#anypublisher.create)
+* [`CurrentValueRelay`](#CurrentValueRelay)
+* [`PassthroughRelay`](#PassthroughRelay)
 
-> **Note**: This is still a primal version of this, with much more to be desired. I gladly accept PRs, ideas, opinions, or improvements. Thank you ! :)
+> **Note**: This is still an early version, with much more to be added. I gladly accept PRs, ideas, opinions, or improvements. Thank you! :)
 
 ## Operators
 
-This section outlines some of the custom Combine operators CombineExt provides
+This section outlines some of CombineExt’s custom operators.
 
-### withLatestFrom
+### `withLatestFrom`
 
-Merges two publishers into a single publisher by combining each value from self with the latest value from the second publisher, if any.
+Merges two publishers into a single publisher by combining each value from `self` with the _latest_ value from the second publisher, if any.
 
 ```swift
 let taps = PassthroughSubject<Void, Never>()
@@ -64,16 +64,16 @@ withLatestFrom: World!
 
 ------
 
-### flatMapLatest
+### `flatMapLatest`
 
-Transforms an output value into a new publisher, and flattens the stream of events from these multiple upstream publishers to appear as if they were coming from a single stream of events
+Transforms an output value into a new publisher and flattens the stream of events from these multiple upstream publishers to appear as if they were coming from a single stream.
 
 Mapping to a new publisher will cancel the subscription to the previous one, keeping only a single subscription active along with its event emissions
 
-**Note**: `flatMapLatest` is a combination of `map` and `switchToLatest`
+**Note**: `flatMapLatest` is a combination of `map` and `switchToLatest`.
 
 ```swift
-let trigger = PassthroughSubject<>
+let trigger = PassthroughSubject<Void>()
 trigger
     .flatMapLatest { performNetworkRequest() }
 
@@ -84,7 +84,7 @@ trigger.send() // cancels previous rquest
 
 ------
 
-### assign
+### `assign`
 
 CombineExt provides custom overloads of `assign(to:on:)` that let you bind a publisher to multiple keypath targets simultaneously.
 
@@ -102,9 +102,9 @@ var text: UITextField
 
 ------
 
-### materialize
+### `materialize`
 
-Convert any publisher to a publisher of its events. Given a `Publisher<Output, MyError>`, this operator will return a `Publisher<Event<Output, MyError>, Never>`, which means your failure will actually be a regular value, which makes handling much simplerin many use-cases.
+Convert any publisher to a publisher of its events. Given a `Publisher<Output, MyError>`, this operator will return a `Publisher<Event<Output, MyError>, Never>`, which means your failure will actually be a regular value, which makes error handling much simpler in many use cases.
 
 ```swift
 let values = PassthroughSubject<String, MyError>()
@@ -135,7 +135,7 @@ materialize: completed with .finished
 
 ------
 
-### values
+### `values`
 
 Given a materialized publisher, publish only the emitted upstream values, omitting failures. Given a `Publisher<Event<String, MyError>, Never>`, this operator will return a `Publisher<Srting, Never>`.
 
@@ -168,11 +168,11 @@ values: "What's up?"
 
 ------
 
-### failures
+### `failures`
 
 Given a materialized publisher, publish only the emitted upstream failure, omitting values. Given a `Publisher<Event<String, MyError>, Never>`, this operator will return a `Publisher<MyError, Never>`.
 
-**Note**: This operator only works on publishers that were materialized with the `materialize()` operator
+**Note**: This operator only works on publishers that were materialized with the `materialize()` operator.
 
 ```swift
 let values = PassthroughSubject<String, MyError>()
@@ -199,7 +199,7 @@ failure: MyErrror.ohNo
 
 ------
 
-### dematerialize
+### `dematerialize`
 
 Converts a previously-materialized publisher into its original form. Given a `Publisher<Event<String, MyError>, Never>`, this operator will return a `Publisher<String, MyError>`
 
@@ -209,11 +209,11 @@ Converts a previously-materialized publisher into its original form. Given a `Pu
 
 This section outlines some of the custom Combine publishers CombineExt provides
 
-### AnyPublisher.create
+### `AnyPublisher.create`
 
 A publisher which accepts a factory closure to which you can dynamically push value or completion events.
 
-This lets you easily create custom publishers to wrap any non-publisher asynchronous work, while still respecting the downstream consumer's backpressure demand.
+This lets you easily create custom publishers to wrap any non-publisher asynchronous work, while still respecting the downstream consumer’s backpressure demand.
 
 ```swift
 AnyPublisher<String, MyError>.create { subscriber in
@@ -239,12 +239,12 @@ AnyPublisher<String, MyError> { subscriber in
 
 ------
 
-### CurrentValueRelay
+### `CurrentValueRelay`
 
 A `CurrentValueRelay` is identical to a `CurrentValueSubject` with two main differences:
 
-* It only accepts values, but not completion events, which means it cannot fail
-* It only publishes a `.finished` event upon deallocation
+* It only accepts values, but not completion events, which means it cannot fail.
+* It only publishes a `.finished` event upon deallocation.
 
 ```swift
 let relay = CurrentValueRelay<String>("well...")
@@ -271,12 +271,12 @@ guarantees
 
 ------
 
-### PassthroughRelay
+### `PassthroughRelay`
 
 A `PassthroughRelay` is identical to a `PassthroughSubject` with two main differences:
 
-* It only accepts values, but not completion events, which means it cannot fail
-* It only publishes a `.finished` event upon deallocation
+* It only accepts values, but not completion events, which means it cannot fail.
+* It only publishes a `.finished` event upon deallocation.
 
 ```swift
 let relay = PassthroughRelay<String>()
