@@ -13,11 +13,11 @@
 <a href="https://github.com/Carthage/Carthage" target="_blank"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="CombineExt supports Carthage"></a>
 </p>
 
-CombineExt povides a collection of operators and utilities for Combine, that are not provided by Apple themselves, but are common in other Reactive Frameworks and standards.
+CombineExt provides a collection of operators, publishers and utilities for Combine, that are not provided by Apple themselves, but are common in other Reactive Frameworks and standards.
 
-The original inspiration for many of these operators came from many missing pieces coming from the ReactiveX and RxSwift world.
+The original inspiration for many of these additions came from my journey investigating Combine after years of RxSwift and ReactiveX usage.
 
-All operators, utilities and helpers respect the Combine Contract, including backpressure handling:
+All operators, utilities and helpers respect Combine's publisher contract, including backpressure.
 
 ### Operators
 * [withLatestFrom](#withLatestFrom)
@@ -33,15 +33,43 @@ All operators, utilities and helpers respect the Combine Contract, including bac
 * [CurrentValueRelay](#CurrentValueRelay)
 * [PassthroughRelay](#PassthroughRelay)
 
-> **Note**: This is still a primal version of this, with much more to be desired. I gladly accept PRs, ideas, opinions, or improvements. Thank you ! :)
+> **Note**: This is still a relatively early version of CombineExt, with much more to be desired. I gladly accept PRs, ideas, opinions, or improvements. Thank you! :)
+
+## Installation
+
+### CocoaPods
+
+Add the following line to your **Podfile**:
+
+```rb
+pod 'CombineExt'
+```
+
+### Swift Package Manager
+
+Add the following dependency to your **Package.swift** file:
+
+```swift
+.package(url: "https://github.com/CombineCommunity/CombineExt.git", from: "1.0.0")
+```
+
+### Carthage
+
+Carthage support is offered as a prebuilt binary.
+
+Add the following to your **Cartfile**:
+
+```
+github "CombineCommunity/CombineExt"
+```
 
 ## Operators
 
-This section outlines some of the custom Combine operators CombineExt provides
+This section outlines some of the custom operators CombineExt provides.
 
 ### withLatestFrom
 
-Merges two publishers into a single publisher by combining each value from self with the latest value from the second publisher, if any.
+Merges two publishers into a single publisher by combining each value from `self` with the _latest_ value from the second publisher, if any.
 
 ```swift
 let taps = PassthroughSubject<Void, Never>()
@@ -69,14 +97,14 @@ withLatestFrom: World!
 
 ### flatMapLatest
 
-Transforms an output value into a new publisher, and flattens the stream of events from these multiple upstream publishers to appear as if they were coming from a single stream of events
+Transforms an output value into a new publisher, and flattens the stream of events from these multiple upstream publishers to appear as if they were coming from a single stream of events.
 
-Mapping to a new publisher will cancel the subscription to the previous one, keeping only a single subscription active along with its event emissions
+Mapping to a new publisher will cancel the subscription to the previous one, keeping only a single subscription active along with its event emissions.
 
-**Note**: `flatMapLatest` is a combination of `map` and `switchToLatest`
+**Note**: `flatMapLatest` is a combination of `map` and `switchToLatest`.
 
 ```swift
-let trigger = PassthroughSubject<>
+let trigger = PassthroughSubject<Void, Never>()
 trigger
     .flatMapLatest { performNetworkRequest() }
 
@@ -107,7 +135,7 @@ var text: UITextField
 
 ### materialize
 
-Convert any publisher to a publisher of its events. Given a `Publisher<Output, MyError>`, this operator will return a `Publisher<Event<Output, MyError>, Never>`, which means your failure will actually be a regular value, which makes handling much simplerin many use-cases.
+Convert any publisher to a publisher of its events. Given a `Publisher<Output, MyError>`, this operator will return a `Publisher<Event<Output, MyError>, Never>`, which means your failure will actually be a regular value, which makes error handling much simpler in many use cases.
 
 ```swift
 let values = PassthroughSubject<String, MyError>()
@@ -175,7 +203,7 @@ values: "What's up?"
 
 Given a materialized publisher, publish only the emitted upstream failure, omitting values. Given a `Publisher<Event<String, MyError>, ever>`, this operator will return a `Publisher<MyError, Never>`.
 
-**Note**: This operator only works on publishers that were materialized with the `materialize()` operator
+**Note**: This operator only works on publishers that were materialized with the `materialize()` operator.
 
 ```swift
 let values = PassthroughSubject<String, MyError>()
@@ -246,8 +274,8 @@ AnyPublisher<String, MyError> { subscriber in
 
 A `CurrentValueRelay` is identical to a `CurrentValueSubject` with two main differences:
 
-* It only accepts values, but not completion events, which means it cannot fail
-* It only publishes a `.finished` event upon deallocation
+* It only accepts values, but not completion events, which means it cannot fail.
+* It only publishes a `.finished` event upon deallocation.
 
 ```swift
 let relay = CurrentValueRelay<String>("well...")
@@ -278,8 +306,8 @@ guarantees
 
 A `PassthroughRelay` is identical to a `PassthroughSubject` with two main differences:
 
-* It only accepts values, but not completion events, which means it cannot fail
-* It only publishes a `.finished` event upon deallocation
+* It only accepts values, but not completion events, which means it cannot fail.
+* It only publishes a `.finished` event upon deallocation.
 
 ```swift
 let relay = PassthroughRelay<String>()
@@ -302,34 +330,6 @@ only
 provide
 great
 guarantees
-```
-
-## Installation
-
-### CocoaPods
-
-Add the following line to your **Podfile**:
-
-```rb
-pod 'CombineExt'
-```
-
-### Swift Package Manager
-
-Add the following dependency to your **Package.swift** file:
-
-```swift
-.package(url: "https://github.com/CombineCommunity/CombineExt.git", from: "1.0.0")
-```
-
-### Carthage
-
-Carthage support is offered as a prebuilt binary.
-
-Add the following to your **Cartfile**:
-
-```
-github "CombineCommunity/CombineExt"
 ```
 
 ## License
