@@ -3,6 +3,7 @@
 //  CombineExt
 //
 //  Created by Shai Mishali on 14/03/2020.
+//  Copyright © 2020 Combine Community. All rights reserved.
 //
 
 import Combine
@@ -27,20 +28,20 @@ public extension Publisher where Output: EventConvertible, Failure == Never {
     /// - returns: A publisher emitting the `Output` of the wrapped event
     func values() -> AnyPublisher<Output.Output, Never> {
         compactMap {
-            guard case .value(let v) = $0.event else { return nil }
-            return v
+            guard case .value(let value) = $0.event else { return nil }
+            return value
         }
         .eraseToAnyPublisher()
     }
-    
+
     /// Given a materialize publisher, publish only the emitted
     /// upstream failure, if exists, omitting values
     ///
     /// - returns: A publisher emitting the `Failure` of the wrapped event
     func failures() -> AnyPublisher<Output.Failure, Never> {
         compactMap {
-            guard case .failure(let e) = $0.event else { return nil }
-            return e
+            guard case .failure(let error) = $0.event else { return nil }
+            return error
         }
         .eraseToAnyPublisher()
     }
@@ -56,13 +57,13 @@ public extension Publishers {
     class Materialize<Upstream: Publisher>: Publisher {
         public typealias Output = Event<Upstream.Output, Upstream.Failure>
         public typealias Failure = Never
-        
+
         private let upstream: Upstream
 
         public init(upstream: Upstream) {
             self.upstream = upstream
         }
-        
+
         public func receive<S: Subscriber>(subscriber: S) where Failure == S.Failure, Output == S.Input {
             subscriber.receive(subscription: Subscription(upstream: upstream, downstream: subscriber))
         }
@@ -73,18 +74,18 @@ public extension Publishers {
 private extension Publishers.Materialize {
     class Subscription<Downstream: Subscriber>: Combine.Subscription where Downstream.Input == Event<Upstream.Output, Upstream.Failure>, Downstream.Failure == Never {
         private var sink: Sink<Downstream>?
-        
+
         init(upstream: Upstream,
              downstream: Downstream) {
             self.sink = Sink(upstream: upstream,
                              downstream: downstream,
                              transformOutput: { .value($0) })
         }
-        
+
         func request(_ demand: Subscribers.Demand) {
             sink?.demand(demand)
         }
-        
+
         func cancel() {
             sink = nil
         }
@@ -105,9 +106,15 @@ private extension Publishers.Materialize {
             case .failure(let error):
                 _ = buffer.buffer(value: .failure(error))
             }
-            
+
             buffer.complete(completion: .finished)
             cancelUpstream()
         }
+    }
+}
+
+extension Publishers.Materialize.Subscription: CustomStringConvertible {
+    var description: String {
+        return "Materialize.Subscription<\(Downstream.Input.Output.self), \(Downstream.Input.Failure.self)>"
     }
 }

@@ -1,8 +1,9 @@
 //
 //  AssignToMany.swift
+//  CombineExt
 //
 //  Created by Shai Mishali on 13/02/2020.
-//  Copyright © 2019 Combine Community. All rights reserved.
+//  Copyright © 2020 Combine Community. All rights reserved.
 //
 
 import Combine
@@ -24,7 +25,7 @@ public extension Publisher where Self.Failure == Never {
             object2[keyPath: keyPath2] = value
         })
     }
-    
+
     /// Assigns each element from a Publisher to properties of the provided object
     ///
     /// - Parameters:

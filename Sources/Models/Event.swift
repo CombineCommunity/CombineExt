@@ -3,7 +3,7 @@
 //  CombineExt
 //
 //  Created by Shai Mishali on 13/03/2020.
-//  Copyright © 2019 Combine Community. All rights reserved.
+//  Copyright © 2020 Combine Community. All rights reserved.
 //
 
 /// Repressents a Combine Event
@@ -18,10 +18,10 @@ extension Event: Equatable where Output: Equatable, Failure: Equatable {
         switch (lhs, rhs) {
         case (.finished, .finished):
             return true
-        case (.failure(let e1), .failure(let e2)):
-            return e1 == e2
-        case (.value(let v1), .value(let v2)):
-            return v1 == v2
+        case let (.failure(err1), .failure(err2)):
+            return err1 == err2
+        case let (.value(val1), .value(val2)):
+            return val1 == val2
         default:
             return false
         }
@@ -31,10 +31,10 @@ extension Event: Equatable where Output: Equatable, Failure: Equatable {
 extension Event: CustomStringConvertible {
     public var description: String {
         switch self {
-        case .value(let v):
-            return "value(\(v))"
-        case .failure(let e):
-            return "failure(\(e))"
+        case .value(let val):
+            return "value(\(val))"
+        case .failure(let err):
+            return "failure(\(err))"
         case .finished:
             return "finished"
         }
@@ -45,7 +45,7 @@ extension Event: CustomStringConvertible {
 public protocol EventConvertible {
     associatedtype Output
     associatedtype Failure: Swift.Error
-    
+
     var event: Event<Output, Failure> { get }
 }
 

@@ -3,6 +3,7 @@
 //  CombineExt
 //
 //  Created by Shai Mishali on 14/03/2020.
+//  Copyright © 2020 Combine Community. All rights reserved.
 //
 
 import Combine
@@ -23,7 +24,7 @@ public extension Publishers {
     class Dematerialize<Upstream: Publisher>: Publisher where Upstream.Output: EventConvertible {
         public typealias Output = Upstream.Output.Output
         public typealias Failure = Upstream.Output.Failure
-        
+
         private let upstream: Upstream
 
         public init(upstream: Upstream) {
@@ -47,11 +48,11 @@ private extension Publishers.Dematerialize {
             self.sink = Sink(upstream: upstream,
                              downstream: downstream)
         }
-        
+
         func request(_ demand: Subscribers.Demand) {
             sink?.demand(demand)
         }
-        
+
         func cancel() {
             sink = nil
         }
@@ -76,5 +77,11 @@ private extension Publishers.Dematerialize {
                 return .none
             }
         }
+    }
+}
+
+extension Publishers.Dematerialize.Subscription: CustomStringConvertible {
+    var description: String {
+        return "Dematerialize.Subscription<\(Downstream.Input.self), \(Downstream.Failure.self)>"
     }
 }

@@ -3,6 +3,7 @@
 //  CombineExt
 //
 //  Created by Shai Mishali on 14/03/2020.
+//  Copyright © 2020 Combine Community. All rights reserved.
 //
 
 import Combine
@@ -18,7 +19,7 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
     private var upstreamSubscription: Subscription?
     private let transformOutput: TransformOutput?
     private let transformFailure: TransformFailure?
-    
+
     /// Initialize a new sink subscribing to the upstream publisher and
     /// fulfilling the demand of the downstream subscriber using a backpresurre
     /// demand-maintaining buffer.
@@ -28,7 +29,9 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
     /// - parameter transformOutput: Transform the upstream publisher's output type to the downstream's input type
     /// - parameter transformFailure: Transform the upstream failure type to the downstream's failure type
     ///
-    /// - note: You **must** provide the two transformation functions above if you using the default `Sink` implementation. Otherwise, you must subclass `Sink` with your own publisher's sink and manage the buffer accordingly.
+    /// - note: You **must** provide the two transformation functions above if you're using
+    ///         the default `Sink` implementation. Otherwise, you must subclass `Sink` with your own
+    ///         publisher's sink and manage the buffer accordingly.
     init(upstream: Upstream,
          downstream: Downstream,
          transformOutput: TransformOutput? = nil,
@@ -38,12 +41,12 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
         self.transformFailure = transformFailure
         upstream.subscribe(self)
     }
-    
+
     func demand(_ demand: Subscribers.Demand) {
         let newDemand = buffer.demand(demand)
         upstreamSubscription?.requestIfNeeded(newDemand)
     }
-    
+
     func receive(subscription: Subscription) {
         upstreamSubscription = subscription
     }
@@ -53,7 +56,7 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
             fatalError("""
                 ❌ Missing output transformation
                 =========================
-                
+
                 You must either:
                     - Provide a transformation function from the upstream's output to the downstream's input; or
                     - Subclass `Sink` with your own publisher's Sink and manage the buffer yourself
@@ -73,7 +76,7 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
                 fatalError("""
                     ❌ Missing failure transformation
                     =========================
-                    
+
                     You must either:
                         - Provide a transformation function from the upstream's failure to the downstream's failuer; or
                         - Subclass `Sink` with your own publisher's Sink and manage the buffer yourself
@@ -83,13 +86,13 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
             guard let error = transform(error) else { return }
             buffer.complete(completion: .failure(error))
         }
-        
+
         cancelUpstream()
     }
-    
+
     func cancelUpstream() {
         upstreamSubscription.kill()
     }
-    
+
     deinit { cancelUpstream() }
 }

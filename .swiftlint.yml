@@ -1,0 +1,33 @@
+included:
+  - Sources
+opt_in_rules:
+  - overridden_super_call
+  - prohibited_super_call
+  - extension_access_modifier
+  - first_where
+  - closure_spacing
+  - unneeded_parentheses_in_closure_argument
+  - vertical_parameter_alignment_on_call
+  - redundant_nil_coalescing
+  - pattern_matching_keywords
+  - explicit_init
+  - fatal_error_message
+  - contains_over_first_not_nil
+  - vertical_whitespace_closing_braces
+  - vertical_whitespace_opening_braces
+  - file_header
+disabled_rules:
+  - nesting
+  - line_length
+  - cyclomatic_complexity
+  - function_parameter_count
+
+file_header:
+  required_pattern: |
+                    \/\/
+                    \/\/  SWIFTLINT_CURRENT_FILENAME
+                    \/\/  CombineExt
+                    \/\/
+                    \/\/  Created by .*? on \d{1,2}\/\d{1,2}\/\d{2,4}\.
+                    \/\/  Copyright © \d{4} Combine Community\. All rights reserved\.
+                    \/\/

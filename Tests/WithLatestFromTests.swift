@@ -3,7 +3,7 @@
 //  CombineExtTests
 //
 //  Created by Shai Mishali on 24/10/2019.
-//  Copyright © 2019 Combine Community. All rights reserved.
+//  Copyright © 2020 Combine Community. All rights reserved.
 //
 
 import XCTest

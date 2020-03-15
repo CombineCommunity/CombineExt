@@ -1,8 +1,9 @@
 //
 //  WithLatestFrom.swift
+//  CombineExt
 //
 //  Created by Shai Mishali on 29/08/2019.
-//  Copyright © 2019 Combine Community. All rights reserved.
+//  Copyright © 2020 Combine Community. All rights reserved.
 //
 
 import Combine
@@ -38,10 +39,10 @@ public extension Publisher {
 }
 
 // MARK: - Publisher
-extension Publishers {
-  public struct WithLatestFrom<Upstream: Publisher,
-                               Other: Publisher,
-                               Output>: Publisher where Upstream.Failure == Other.Failure {
+public extension Publishers {
+  struct WithLatestFrom<Upstream: Publisher,
+                        Other: Publisher,
+                        Output>: Publisher where Upstream.Failure == Other.Failure {
     public typealias Failure = Upstream.Failure
     public typealias ResultSelector = (Upstream.Output, Other.Output) -> Output
 
@@ -76,7 +77,7 @@ private extension Publishers.WithLatestFrom {
     private let upstream: Upstream
     private let downstream: Downstream
     private let second: Other
-    
+
     // Secondary (other) publisher
     private var latestValue: Other.Output?
     private var otherSubscription: Cancellable?
@@ -111,7 +112,7 @@ private extension Publishers.WithLatestFrom {
     // constantly tracking its latest value
     private func trackLatestFromSecond(onInitialValue: @escaping () -> Void) {
       var gotInitialValue = false
-        
+
       let subscriber = AnySubscriber<Other.Output, Other.Failure>(
         receiveSubscription: { [weak self] subscription in
             self?.otherSubscription = subscription
@@ -129,11 +130,11 @@ private extension Publishers.WithLatestFrom {
                                  transformOutput: { [weak self] value in
                                     guard let self = self,
                                           let other = self.latestValue else { return nil }
-                                    
+
                                     return self.resultSelector(value, other)
                                  },
                                  transformFailure: { $0 })
-                
+
                 // Signal initial value to start fulfilling downstream demand
                 gotInitialValue = true
                 onInitialValue()
@@ -145,7 +146,7 @@ private extension Publishers.WithLatestFrom {
 
       self.second.subscribe(subscriber)
     }
-    
+
     var description: String {
         return "WithLatestFrom.Subscription<\(Output.self), \(Failure.self)>"
     }

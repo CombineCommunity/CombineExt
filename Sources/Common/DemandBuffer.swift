@@ -3,7 +3,7 @@
 //  CombineExt
 //
 //  Created by Shai Mishali on 21/02/2020.
-//  Copyright © 2019 Combine Community. All rights reserved.
+//  Copyright © 2020 Combine Community. All rights reserved.
 //
 
 import Combine
@@ -31,7 +31,7 @@ class DemandBuffer<S: Subscriber> {
     init(subscriber: S) {
         self.subscriber = subscriber
     }
-    
+
     /// Buffer an upstream value to later be forwarded to
     /// the downstream subscriber, once it demands it
     ///
@@ -41,7 +41,7 @@ class DemandBuffer<S: Subscriber> {
     func buffer(value: S.Input) -> Subscribers.Demand {
         precondition(self.completion == nil,
                      "How could a completed publisher sent values?! Beats me 🤷‍♂️")
-        
+
         switch demandState.requested {
         case .unlimited:
             return subscriber.receive(value)
@@ -50,7 +50,7 @@ class DemandBuffer<S: Subscriber> {
             return flush()
         }
     }
-    
+
     /// Complete the demand buffer with an upstream completion event
     ///
     /// This method will deplete the buffer immediately,
@@ -73,7 +73,7 @@ class DemandBuffer<S: Subscriber> {
     func demand(_ demand: Subscribers.Demand) -> Subscribers.Demand {
         flush(adding: demand)
     }
-    
+
     /// Flush buffered events to the downstream based on the current
     /// state of the downstream's demand
     ///
@@ -86,11 +86,11 @@ class DemandBuffer<S: Subscriber> {
     private func flush(adding newDemand: Subscribers.Demand? = nil) -> Subscribers.Demand {
         lock.lock()
         defer { lock.unlock() }
-        
+
         if let newDemand = newDemand {
             demandState.requested += newDemand
         }
-        
+
         // If buffer isn't ready for flushing, return immediately
         guard demandState.requested > 0 || newDemand == Subscribers.Demand.none else { return .none }
 
@@ -98,7 +98,7 @@ class DemandBuffer<S: Subscriber> {
             demandState.requested += subscriber.receive(buffer.remove(at: 0))
             demandState.processed += 1
         }
-        
+
         if let completion = completion {
             // Completion event was already sent
             buffer = []
@@ -107,7 +107,7 @@ class DemandBuffer<S: Subscriber> {
             subscriber.receive(completion: completion)
             return .none
         }
-        
+
         let sentDemand = demandState.requested - demandState.sent
         demandState.sent += sentDemand
         return sentDemand

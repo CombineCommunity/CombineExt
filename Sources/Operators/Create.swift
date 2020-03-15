@@ -3,7 +3,7 @@
 //  CombineExt
 //
 //  Created by Shai Mishali on 13/03/2020.
-//  Copyright © 2019 Combine Community. All rights reserved.
+//  Copyright © 2020 Combine Community. All rights reserved.
 //
 
 import Combine
@@ -58,7 +58,7 @@ public extension Publishers {
     class Create<Output, Failure: Swift.Error>: Publisher {
         public typealias Factory = (@escaping (Event<Output, Failure>) -> Void) -> Void
         private let factory: Factory
-        
+
         /// Initialize the publisher with a provided factory
         ///
         /// - parameter factory: A factory with a closure to which you can
@@ -66,7 +66,7 @@ public extension Publishers {
         public init(factory: @escaping Factory) {
             self.factory = factory
         }
-        
+
         public func receive<S: Subscriber>(subscriber: S) where Failure == S.Failure, Output == S.Input {
             subscriber.receive(subscription: Subscription(factory: factory, downstream: subscriber))
         }
@@ -81,7 +81,7 @@ private extension Publishers.Create {
         init(factory: @escaping Factory,
              downstream: Downstream) {
             self.buffer = DemandBuffer(subscriber: downstream)
-         
+
             factory { [weak buffer] event in
                 guard let buffer = buffer else { return }
 
@@ -95,11 +95,11 @@ private extension Publishers.Create {
                 }
             }
         }
-        
+
         func request(_ demand: Subscribers.Demand) {
             _ = self.buffer.demand(demand)
         }
-        
+
         func cancel() { }
     }
 }
