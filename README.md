@@ -168,7 +168,7 @@ materialize: completed with .finished
 
 ### values
 
-Given a materialized publisher, publish only the emitted upstream values, omitting failures. Given a `Publisher<Event<String, MyError>, ever>`, this operator will return a `Publisher<Srting, Never>`.
+Given a materialized publisher, publish only the emitted upstream values, omitting failures. Given a `Publisher<Event<String, MyError>, Never>`, this operator will return a `Publisher<Srting, Never>`.
 
 **Note**: This operator only works on publishers that were materialized with the `materialize()` operator.
 
@@ -201,7 +201,7 @@ values: "What's up?"
 
 ### failures
 
-Given a materialized publisher, publish only the emitted upstream failure, omitting values. Given a `Publisher<Event<String, MyError>, ever>`, this operator will return a `Publisher<MyError, Never>`.
+Given a materialized publisher, publish only the emitted upstream failure, omitting values. Given a `Publisher<Event<String, MyError>, Never>`, this operator will return a `Publisher<MyError, Never>`.
 
 **Note**: This operator only works on publishers that were materialized with the `materialize()` operator.
 
@@ -242,7 +242,7 @@ This section outlines some of the custom Combine publishers CombineExt provides
 
 ### AnyPublisher.create
 
-A publisher which accepts a factory closure to which you ca dynamically push value or completion events.
+A publisher which accepts a factory closure to which you can dynamically push value or completion events.
 
 This lets you easily create custom publishers to wrap any non-publisher asynchronous work, while still respecting the downstream consumer's backpressure demand.
 
