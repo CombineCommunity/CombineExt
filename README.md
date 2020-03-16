@@ -236,6 +236,37 @@ Converts a previously-materialized publisher into its original form. Given a `Pu
 
 **Note**: This operator only works on publishers that were materialized with the `materialize()` operator.
 
+------
+
+### partition
+
+Partition a publisher's values into two separate publishers of values that match, and don't match, the provided predicate.
+
+```swift
+let source = PassthroughSubject<Int, Never>()
+
+let (even, odd) = source.partition { $0 % 2 == 0 }
+
+even.sink(receiveValue: { print("even: \($0)") })
+odd.sink(receiveValue: { print("odd: \($0)") })
+
+source.send(1)
+source.send(2)
+source.send(3)
+source.send(4)
+source.send(5)
+```
+
+#### Output:
+
+```none
+odd: 1
+even: 2
+odd: 3
+even: 4
+odd: 5
+```
+
 ## Publishers
 
 This section outlines some of the custom Combine publishers CombineExt provides

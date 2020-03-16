@@ -15,10 +15,7 @@ jobs:
       with:
         name: build-logs-${{ github.run_id }}
         path: logs
-    - uses: codecov/codecov-action@v1.0.5
-      with:
-        token: 1519d58c-6fb9-483f-af6c-7f6f0b384345
-        name: CombineExt
+
   iOS:
     name: "iOS"
     runs-on: macOS-latest
@@ -27,6 +24,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run tests
       run: set -o pipefail && xcodebuild -project CombineExt.xcodeproj -scheme CombineExt-Package -enableCodeCoverage YES -sdk iphonesimulator -destination "name=iPhone 11" test | xcpretty -c -r html --output logs/iOS.html
+    - uses: codecov/codecov-action@v1.0.5
+      with:
+        token: 1519d58c-6fb9-483f-af6c-7f6f0b384345
+        name: CombineExt
     - uses: actions/upload-artifact@v1
       with:
         name: build-logs-${{ github.run_id }}
