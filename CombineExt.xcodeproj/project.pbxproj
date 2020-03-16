@@ -27,6 +27,8 @@
 		78002BBB241E97350018AA28 /* CurrentValueRelayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BBA241E97350018AA28 /* CurrentValueRelayTests.swift */; };
 		78988A1E241EAFDD00F3A4AF /* PassthroughRelayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78988A1D241EAFDD00F3A4AF /* PassthroughRelayTests.swift */; };
 		78988A20241EB0FE00F3A4AF /* CombineExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CombineExt::CombineExt::Product" /* CombineExt.framework */; };
+		78988A23241FFE2400F3A4AF /* Partition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78988A22241FFE2400F3A4AF /* Partition.swift */; };
+		78988A25241FFE2E00F3A4AF /* PartitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78988A24241FFE2E00F3A4AF /* PartitionTests.swift */; };
 		78AA9297241B8532009BD68B /* AssignToManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AA9296241B8532009BD68B /* AssignToManyTests.swift */; };
 		78AA9299241B8C45009BD68B /* DemandBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AA9298241B8C45009BD68B /* DemandBuffer.swift */; };
 		78C193CF241C16C40001B7FD /* FlatMapLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193CE241C16C40001B7FD /* FlatMapLatest.swift */; };
@@ -61,6 +63,8 @@
 		78002BB8241E91D70018AA28 /* PassthroughRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassthroughRelay.swift; sourceTree = "<group>"; };
 		78002BBA241E97350018AA28 /* CurrentValueRelayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValueRelayTests.swift; sourceTree = "<group>"; };
 		78988A1D241EAFDD00F3A4AF /* PassthroughRelayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassthroughRelayTests.swift; sourceTree = "<group>"; };
+		78988A22241FFE2400F3A4AF /* Partition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Partition.swift; sourceTree = "<group>"; };
+		78988A24241FFE2E00F3A4AF /* PartitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartitionTests.swift; sourceTree = "<group>"; };
 		78AA9296241B8532009BD68B /* AssignToManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignToManyTests.swift; sourceTree = "<group>"; };
 		78AA9298241B8C45009BD68B /* DemandBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemandBuffer.swift; sourceTree = "<group>"; };
 		78C193CE241C16C40001B7FD /* FlatMapLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatMapLatest.swift; sourceTree = "<group>"; };
@@ -145,6 +149,7 @@
 				78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */,
 				78C193E3241D63620001B7FD /* DematerializeTests.swift */,
 				78002BBA241E97350018AA28 /* CurrentValueRelayTests.swift */,
+				78988A24241FFE2E00F3A4AF /* PartitionTests.swift */,
 				78988A1D241EAFDD00F3A4AF /* PassthroughRelayTests.swift */,
 			);
 			path = Tests;
@@ -190,6 +195,7 @@
 				78C193CE241C16C40001B7FD /* FlatMapLatest.swift */,
 				78C193D3241C2DE00001B7FD /* Create.swift */,
 				78C193DD241D46F40001B7FD /* Materialize.swift */,
+				78988A22241FFE2400F3A4AF /* Partition.swift */,
 				78C193E1241D596F0001B7FD /* Dematerialize.swift */,
 			);
 			path = Operators;
@@ -306,6 +312,7 @@
 				78C193E2241D596F0001B7FD /* Dematerialize.swift in Sources */,
 				78002BB7241E915E0018AA28 /* CurrentValueRelay.swift in Sources */,
 				78C193DE241D46F40001B7FD /* Materialize.swift in Sources */,
+				78988A23241FFE2400F3A4AF /* Partition.swift in Sources */,
 				78C193D4241C2DE00001B7FD /* Create.swift in Sources */,
 				OBJ_22 /* AssignToMany.swift in Sources */,
 				78C193D7241C2E580001B7FD /* Event.swift in Sources */,
@@ -328,6 +335,7 @@
 			files = (
 				78C193D2241C1B750001B7FD /* FlatMapLatestTests.swift in Sources */,
 				78AA9297241B8532009BD68B /* AssignToManyTests.swift in Sources */,
+				78988A25241FFE2E00F3A4AF /* PartitionTests.swift in Sources */,
 				OBJ_41 /* WithLatestFromTests.swift in Sources */,
 				78C193E0241D4D8D0001B7FD /* MaterializeTests.swift in Sources */,
 				78002BBB241E97350018AA28 /* CurrentValueRelayTests.swift in Sources */,
