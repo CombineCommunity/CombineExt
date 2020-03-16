@@ -27,6 +27,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [values](#values)
 * [failures](#failures)
 * [dematerialize](#dematerialize)
+* [zip(with:) and zip(with:transform:)](#ZipMany)
 
 ### Publishers
 * [AnyPublisher.create](#anypublisher.create)
@@ -265,6 +266,36 @@ even: 2
 odd: 3
 even: 4
 odd: 5
+```
+
+------
+
+### ZipMany
+
+`ZipMany.swift` contains two pairs of overloads on Combine’s `Publisher.zip` methods (which, at the time of writing only go up to arity three).
+
+This allows folks to zip arbitrarily many publishers and receive either an array of inner publisher outputs—or transformed values—back.
+
+```swift
+let first = PassthroughSubject<Int, Never>()
+let second = PassthroughSubject<Int, Never>()
+let third = PassthroughSubject<Int, Never>()
+let fourth = PassthroughSubject<Int, Never>()
+
+subscription = first
+  .zip(with: second, third, fourth, transform: { $0.reduce(0, +) })
+  .sink(receiveValue: { print("zipped: \($0)") })
+
+first.send(1)
+second.send(2)
+third.send(3)
+fourth.send(4)
+```
+
+#### Output:
+
+```none
+zipped: 10
 ```
 
 ## Publishers
