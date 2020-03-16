@@ -110,4 +110,22 @@ final class ZipManyTests: XCTestCase {
 
         XCTAssertEqual(results, [6])
     }
+
+    func testTransformedZippingForArrayOverload() {
+        let first = PassthroughSubject<Int, Never>()
+        let second = PassthroughSubject<Int, Never>()
+        let third = PassthroughSubject<Int, Never>()
+
+        var results = [Int]()
+
+        subscription = first
+            .zip(with: [second, third], transform: { $0.reduce(1, *) })
+            .sink(receiveValue: { results.append($0) })
+
+        first.send(1)
+        second.send(2)
+        third.send(3)
+
+        XCTAssertEqual(results, [6])
+    }
 }
