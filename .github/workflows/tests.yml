@@ -1,6 +1,6 @@
 name: CombineExt
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   macOS:
