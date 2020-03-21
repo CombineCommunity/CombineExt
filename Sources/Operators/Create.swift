@@ -7,6 +7,7 @@
 //
 
 import Combine
+import Foundation
 
 public extension AnyPublisher {
     /// Create a publisher which accepts a factory closure to which you

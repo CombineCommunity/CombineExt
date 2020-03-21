@@ -33,6 +33,27 @@ public extension Publisher {
     /// A variadic overload on `Publisher.zip(with:)`.
     func zip<Other: Publisher>(with others: Other...)
         -> AnyPublisher<[Output], Failure> where Other.Output == Output, Other.Failure == Failure {
-            zip(with: others)
+        zip(with: others)
+    }
+}
+
+// MARK: - Array Helpers
+public extension Array where Element: Publisher {
+    /// Zip an array of publishers with the same output and failure types.
+    ///
+    /// Since there can be any number of elements, arrays of `Output` values are emitted after zipping.
+    ///
+    /// - returns: A type-erased publisher with value events from each of the inner publishers zipped together in an array.
+    func zip() -> AnyPublisher<[Element.Output], Element.Failure> {
+        switch count {
+        case 0:
+            return Empty(completeImmediately: true).eraseToAnyPublisher()
+        case 1:
+            return self[0].map { [$0] }.eraseToAnyPublisher()
+        default:
+            let first = self[0]
+            let others = Array(self[1...])
+            return first.zip(with: others)
+        }
     }
 }

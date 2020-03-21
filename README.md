@@ -293,6 +293,15 @@ third.send(3)
 fourth.send(4)
 ```
 
+You may also use `.zip()` directly on an array of publishers with the same output and failure types, e.g.
+
+```swift
+[first, second, third, fourth]
+  .zip()
+  .map { $0.reduce(0, +) }
+  .sink(receiveValue: { print("zipped: \($0)") })
+```
+
 #### Output:
 
 ```none
