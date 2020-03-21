@@ -28,10 +28,12 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [values](#values)
 * [failures](#failures)
 * [dematerialize](#dematerialize)
+* [partition](#partition)
 * [zip(with:) and Collection.zip](#ZipMany)
 * [combineLatest(with:) and Collection.combineLatest](#CombineLatestMany)
 * [mapMany(_:)](#MapMany)
 * [setOutputType(to:)](#setOutputType)
+* [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -312,7 +314,7 @@ odd: 5
 
 This repo includes two overloads on Combine’s `Publisher.zip` methods (which, at the time of writing only go up to arity three).
 
-This lets you arbitrarily zip many publishers and receive either an array of inner publisher outputs back.
+This lets you arbitrarily zip many publishers and receive an array of inner publisher outputs back.
 
 ```swift
 let first = PassthroughSubject<Int, Never>()
@@ -377,7 +379,6 @@ combineLatest: [true, true, true, true]
 combineLatest: [false, true, true, true]
 ```
 
-
 ### MapMany
 
 Projects each element of a publisher collection into a new publisher collection form.
@@ -401,6 +402,25 @@ intArrayPublisher.send([10, 2, 2, 4, 3, 8])
 ### setOutputType
 
 `Publisher.setOutputType(to:)` is an analog to [`.setFailureType(to:)`](https://developer.apple.com/documentation/combine/publisher/3204753-setfailuretype) for when `Output` is constrained to `Never`. This is especially helpful when chaining operators after an [`.ignoreOutput()`](https://developer.apple.com/documentation/combine/publisher/3204714-ignoreoutput) call.
+
+### removeAllDuplicates
+
+`Publisher.removeAllDuplicates` and `.removeAllDuplicates(by:)` are stricter forms of Apple’s [`Publisher.removeDuplicates`](https://developer.apple.com/documentation/combine/publisher/3204745-removeduplicates) and [`.removeDuplicates(by:)`](https://developer.apple.com/documentation/combine/publisher/3204746-removeduplicates)—the operators de-duplicate across _all_ previous value events, instead of pairwise.
+
+If your `Output` doesn‘t conform to `Hashable` or `Equatable`, you may instead use the predicate-based version of this operator to decide whether two elements are equal.
+
+```swift
+subscription = [1, 1, 2, 1, 3, 3, 4].publisher
+  .removeAllDuplicates()
+  .sink(receiveValue: { print("removeAllDuplicates: \($0)") })
+```
+
+```none
+removeAllDuplicates: 1
+removeAllDuplicates: 2
+removeAllDuplicates: 3
+removeAllDuplicates: 4
+```
 
 ## Publishers
 
