@@ -37,21 +37,3 @@ public extension Publisher {
         -> AnyPublisher<[Output], Failure> where Other.Output == Output, Other.Failure == Failure {
             zip(with: others)
     }
-
-    // MARK: - Transform zipping variants.
-
-    /// A overload on `Publisher.zip(with:)` that tacks on the option to transform the zipped `[Output]` values
-    /// into another generic, `Transformed`.
-    func zip<Other: Publisher, Transformed>(with others: [Other], transform: @escaping ([Output]) -> Transformed)
-        -> Publishers.Map<AnyPublisher<[Output], Failure>, Transformed>
-        where Other.Output == Output, Other.Failure == Failure {
-            zip(with: others).map(transform)
-    }
-
-    /// A variadic overload on `Publisher.zip(with:transform)`.
-    func zip<Other: Publisher, Transformed>(with others: Other..., transform: @escaping ([Output]) -> Transformed)
-        -> Publishers.Map<AnyPublisher<[Output], Failure>, Transformed>
-        where Other.Output == Output, Other.Failure == Failure {
-            zip(with: others).map(transform)
-    }
-}
