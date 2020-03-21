@@ -11,9 +11,11 @@ import Combine
 public extension Publisher {
     // MARK: - Non-transform zipping variants.
 
-    /// Zips `self` with an array’s-worth of publishers with the same output and failure types.
-    /// Since there can be any number of `others`, `[Output]` values are emitted after zipping.
-    /// - Parameter others: The other publishers to zip with.
+    /// Zips `self` with an array of publishers with the same output and failure types.
+    ///
+    /// Since there can be any number of `others`, arrays of `Output` values are emitted after zipping.
+    ///
+    /// - parameter others: The other publishers to zip with.
     ///
     /// - returns: A type-erased publisher with value events from each of the inner publishers zipped together in an array.
     func zip<Other: Publisher>(with others: [Other])
