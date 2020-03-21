@@ -18,15 +18,16 @@ public extension Publisher {
     /// - returns: A type-erased publisher with value events from each of the inner publishers zipped together in an array.
     func zip<Other: Publisher>(with others: [Other])
         -> AnyPublisher<[Output], Failure> where Other.Output == Output, Other.Failure == Failure {
-        others.reduce(
-            map { [$0] }
-            .eraseToAnyPublisher()) { zipped, next in
-            zipped
-                .zip(next)
-                .map { $0.0 + [$0.1] }
-                .eraseToAnyPublisher()
-        }
-        .eraseToAnyPublisher()
+        let seed = map { [$0] }.eraseToAnyPublisher()
+
+        return others
+            .reduce(seed) { zipped, next in
+                zipped
+                    .zip(next)
+                    .map { $0.0 + [$0.1] }
+                    .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
     }
 
     /// A variadic overload on `Publisher.zip(with:)`.
