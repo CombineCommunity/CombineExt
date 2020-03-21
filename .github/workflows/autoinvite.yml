@@ -1,0 +1,21 @@
+name: Inclusive Organization
+on:
+  push:
+    branches: master
+jobs:
+  invite:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Invite contributor to the organization
+        uses: lekterable/inclusive-organization-action@v1.1.0
+        with:
+          organization: CombineCommunity
+          team: Contributors
+          comment: |
+            Thank you for your contribution — You Rock 🤘!
+
+            I've invited you to join the [CombineCommunity](https://github.com/CombineCommunity) organization – no pressure to accept!
+            
+            If you'd like more information on what this means, check out our [contributor](https://github.com/CombineCommunity/contributors) guidelines and feel free to reach out with any questions.
+        env:
+          ACCESS_TOKEN: ${{ secrets.INVITE_TOKEN }}
