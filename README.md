@@ -272,7 +272,7 @@ odd: 5
 
 ### ZipMany
 
-`ZipMany.swift` contains two overloads on Combine’s `Publisher.zip` methods (which, at the time of writing only go up to arity three).
+This repo includes two overloads on Combine’s `Publisher.zip` methods (which, at the time of writing only go up to arity three).
 
 This lets you arbitrarily zip many publishers and receive either an array of inner publisher outputs back.
 
