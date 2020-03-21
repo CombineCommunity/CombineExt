@@ -93,39 +93,57 @@ final class ZipManyTests: XCTestCase {
         XCTAssertFalse(completed)
     }
 
-    func testTransformedZipping() {
+    func testZippingEndingWithAFinishedCompletion() {
         let first = PassthroughSubject<Int, Never>()
         let second = PassthroughSubject<Int, Never>()
         let third = PassthroughSubject<Int, Never>()
 
-        var results = [Int]()
+        var results = [[Int]]()
+        var completed: Subscribers.Completion<Never>?
 
         subscription = first
-            .zip(with: second, third, transform: { $0.reduce(0, +) })
-            .sink(receiveValue: { results.append($0) })
+            .zip(with: second, third)
+            .sink(receiveCompletion: { completed = $0 },
+                  receiveValue: { results.append($0) })
 
         first.send(1)
+
         second.send(2)
+        second.send(2)
+
         third.send(3)
 
-        XCTAssertEqual(results, [6])
+        XCTAssertEqual(results, [[1, 2, 3]])
+        XCTAssertNil(completed)
+        first.send(completion: .finished) // Triggers a completion, since, there
+        // aren’t any buffered events from `first` (or `third`) to possible pair with.
+        XCTAssertEqual(completed, .finished)
     }
 
-    func testTransformedZippingForArrayOverload() {
+    func testZippingWithAnInnerCompletionButNotAnOuter() {
         let first = PassthroughSubject<Int, Never>()
         let second = PassthroughSubject<Int, Never>()
         let third = PassthroughSubject<Int, Never>()
 
-        var results = [Int]()
+        var results = [[Int]]()
+        var completed: Subscribers.Completion<Never>?
 
         subscription = first
-            .zip(with: [second, third], transform: { $0.reduce(1, *) })
-            .sink(receiveValue: { results.append($0) })
+            .zip(with: second, third)
+            .sink(receiveCompletion: { completed = $0 },
+                  receiveValue: { results.append($0) })
 
         first.send(1)
+        first.send(1)
+
         second.send(2)
+        second.send(2)
+
         third.send(3)
 
-        XCTAssertEqual(results, [6])
+        XCTAssertEqual(results, [[1, 2, 3]])
+        XCTAssertNil(completed)
+        first.send(completion: .finished) // Doesn’t trigger a completion, since `first` has an extra un-paired value event.
+        XCTAssertNil(completed)
     }
 }

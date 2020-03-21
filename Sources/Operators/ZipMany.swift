@@ -9,8 +9,6 @@
 import Combine
 
 public extension Publisher {
-    // MARK: - Non-transform zipping variants.
-
     /// Zips `self` with an array of publishers with the same output and failure types.
     ///
     /// Since there can be any number of `others`, arrays of `Output` values are emitted after zipping.
@@ -37,3 +35,4 @@ public extension Publisher {
         -> AnyPublisher<[Output], Failure> where Other.Output == Output, Other.Failure == Failure {
             zip(with: others)
     }
+}
