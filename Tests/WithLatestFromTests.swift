@@ -50,7 +50,7 @@ class WithLatestFromTests: XCTestCase {
         XCTAssertTrue(completed)
     }
     
-    // We have to hold a reference to the subsccription or the
+    // We have to hold a reference to the subscription or the
     // publisher will get deallocated and canceled
     var demandSubscription: Subscription!
     func testWithResultSelectorLimitedDemand() {

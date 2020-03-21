@@ -41,6 +41,8 @@
 		78C193E0241D4D8D0001B7FD /* MaterializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */; };
 		78C193E2241D596F0001B7FD /* Dematerialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193E1241D596F0001B7FD /* Dematerialize.swift */; };
 		78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193E3241D63620001B7FD /* DematerializeTests.swift */; };
+		BF50924B241FFE8E00600DF4 /* ZipManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */; };
+		BF8121BC241FF42C006A93B8 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8121BB241FF42C006A93B8 /* ZipMany.swift */; };
 		OBJ_22 /* AssignToMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* AssignToMany.swift */; };
 		OBJ_23 /* WithLatestFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* WithLatestFrom.swift */; };
 		OBJ_30 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
@@ -77,7 +79,9 @@
 		78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterializeTests.swift; sourceTree = "<group>"; };
 		78C193E1241D596F0001B7FD /* Dematerialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dematerialize.swift; sourceTree = "<group>"; };
 		78C193E3241D63620001B7FD /* DematerializeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DematerializeTests.swift; sourceTree = "<group>"; };
-		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipManyTests.swift; sourceTree = "<group>"; };
+		BF8121BB241FF42C006A93B8 /* ZipMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipMany.swift; sourceTree = "<group>"; };
+		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CombineExt::CombineExtTests::Product" /* CombineExtTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = CombineExtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* WithLatestFrom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithLatestFrom.swift; sourceTree = "<group>"; };
 		OBJ_12 /* WithLatestFromTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithLatestFromTests.swift; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 				78002BBA241E97350018AA28 /* CurrentValueRelayTests.swift */,
 				78988A24241FFE2E00F3A4AF /* PartitionTests.swift */,
 				78988A1D241EAFDD00F3A4AF /* PassthroughRelayTests.swift */,
+				BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -197,6 +202,7 @@
 				78C193DD241D46F40001B7FD /* Materialize.swift */,
 				78988A22241FFE2400F3A4AF /* Partition.swift */,
 				78C193E1241D596F0001B7FD /* Dematerialize.swift */,
+				BF8121BB241FF42C006A93B8 /* ZipMany.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -313,6 +319,7 @@
 				78002BB7241E915E0018AA28 /* CurrentValueRelay.swift in Sources */,
 				78C193DE241D46F40001B7FD /* Materialize.swift in Sources */,
 				78988A23241FFE2400F3A4AF /* Partition.swift in Sources */,
+				BF8121BC241FF42C006A93B8 /* ZipMany.swift in Sources */,
 				78C193D4241C2DE00001B7FD /* Create.swift in Sources */,
 				OBJ_22 /* AssignToMany.swift in Sources */,
 				78C193D7241C2E580001B7FD /* Event.swift in Sources */,
@@ -340,6 +347,7 @@
 				78C193E0241D4D8D0001B7FD /* MaterializeTests.swift in Sources */,
 				78002BBB241E97350018AA28 /* CurrentValueRelayTests.swift in Sources */,
 				78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */,
+				BF50924B241FFE8E00600DF4 /* ZipManyTests.swift in Sources */,
 				78988A1E241EAFDD00F3A4AF /* PassthroughRelayTests.swift in Sources */,
 				78C193D9241CEEA80001B7FD /* CreateTests.swift in Sources */,
 			);
