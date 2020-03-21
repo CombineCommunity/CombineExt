@@ -274,7 +274,7 @@ odd: 5
 
 `ZipMany.swift` contains two overloads on Combine’s `Publisher.zip` methods (which, at the time of writing only go up to arity three).
 
-This allows folks to zip arbitrarily many publishers and receive either an array of inner publisher outputs back.
+This lets you arbitrarily zip many publishers and receive either an array of inner publisher outputs back.
 
 ```swift
 let first = PassthroughSubject<Int, Never>()
