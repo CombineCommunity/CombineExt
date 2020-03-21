@@ -116,7 +116,7 @@ final class ZipManyTests: XCTestCase {
         XCTAssertEqual(results, [[1, 2, 3]])
         XCTAssertNil(completed)
         first.send(completion: .finished) // Triggers a completion, since, there
-        // aren’t any buffered events from `first` (or `third`) to possible pair with.
+        // aren’t any buffered events from `first` (or `third`) to possibly pair with.
         XCTAssertEqual(completed, .finished)
     }
 
