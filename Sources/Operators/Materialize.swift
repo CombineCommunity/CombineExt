@@ -77,9 +77,8 @@ private extension Publishers.Materialize {
 
         init(upstream: Upstream,
              downstream: Downstream) {
-            self.sink = Sink(upstream: upstream,
-                             downstream: downstream,
-                             transformOutput: { .value($0) })
+            self.sink = Sink(downstream: downstream, transformOutput: { .value($0) })
+            upstream.subscribe(sink!)
         }
 
         func request(_ demand: Subscribers.Demand) {

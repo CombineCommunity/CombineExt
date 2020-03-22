@@ -59,9 +59,8 @@ private extension PassthroughRelay {
 
         init(upstream: Upstream,
              downstream: Downstream) {
-            self.sink = Sink(upstream: upstream,
-                             downstream: downstream,
-                             transformOutput: { $0 })
+            self.sink = Sink(downstream: downstream, transformOutput: { $0 })
+            upstream.subscribe(sink!)
         }
 
         func forceFinish() {

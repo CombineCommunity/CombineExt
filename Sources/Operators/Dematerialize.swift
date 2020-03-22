@@ -45,8 +45,8 @@ private extension Publishers.Dematerialize {
 
         init(upstream: Upstream,
              downstream: Downstream) {
-            self.sink = Sink(upstream: upstream,
-                             downstream: downstream)
+            self.sink = Sink(downstream: downstream)
+            upstream.subscribe(sink!)
         }
 
         func request(_ demand: Subscribers.Demand) {

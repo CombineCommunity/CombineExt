@@ -125,16 +125,17 @@ private extension Publishers.WithLatestFrom {
             if !gotInitialValue {
                 // When getting initial value, start pulling values
                 // from upstream in the main sink
-                self.sink = Sink(upstream: self.upstream,
-                                 downstream: self.downstream,
-                                 transformOutput: { [weak self] value in
-                                    guard let self = self,
-                                          let other = self.latestValue else { return nil }
-
-                                    return self.resultSelector(value, other)
-                                 },
-                                 transformFailure: { $0 })
-
+                self.sink = Sink(
+                    downstream: self.downstream,
+                    transformOutput: { [weak self] value in
+                        guard let self = self,
+                            let other = self.latestValue else { return nil }
+                        
+                        return self.resultSelector(value, other)
+                    },
+                    transformFailure: { $0 }
+                )
+                self.upstream.subscribe(self.sink!)
                 // Signal initial value to start fulfilling downstream demand
                 gotInitialValue = true
                 onInitialValue()
