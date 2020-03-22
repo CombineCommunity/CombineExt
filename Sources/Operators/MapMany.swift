@@ -34,6 +34,3 @@ public extension Publisher where Output: Collection {
         return map { $0.map(transform) }
     }
 }
-
-
-
