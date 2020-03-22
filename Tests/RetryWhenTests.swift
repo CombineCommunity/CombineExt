@@ -18,13 +18,9 @@ class RetryWhenTests: XCTestCase {
         var result: Int?
         
         cancellable = subject1
-            .retryWhen { _ in
-                Empty<Void, Error>(completeImmediately: true)
-            }
+            .retryWhen { $0.mapError { _ in TestFailure() } }
             .sink(
-                receiveCompletion: { completion in
-                    XCTFail()
-                },
+                receiveCompletion: { _ in },
                 receiveValue: { value in
                     result = value
                 }
@@ -68,7 +64,7 @@ class RetryWhenTests: XCTestCase {
         let subject1 = Combine.Fail<Int, Error>(error: TestFailure()).eraseToAnyPublisher()
         var called = false
         cancellable = subject1
-            .retryWhen { _ in Fail<Int, Error>(error: TestFailure()) }
+            .retryWhen { $0.mapError { _ in TestFailure() }.flatMap { _ in Fail<Int, Error>(error: TestFailure()) } }
             .sink(
                 receiveCompletion: { completion in
                     switch completion {
@@ -85,6 +81,29 @@ class RetryWhenTests: XCTestCase {
         
         XCTAssertEqual(called, true)
     }
+    
+    func testCompleteFromRetry() {
+        let subject1 = Combine.Fail<Int, Error>(error: TestFailure()).eraseToAnyPublisher()
+        var called = false
+        cancellable = subject1
+            .retryWhen { $0.mapError { _ in TestFailure() }.first() }
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        called = true
+                    case .failure:
+                        XCTFail()
+                    }
+                },
+                receiveValue: { value in
+                    XCTFail()
+                }
+            )
+        
+        XCTAssertEqual(called, true)
+    }
+
 }
 
 struct TestFailure: Error { }
