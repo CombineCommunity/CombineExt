@@ -59,7 +59,7 @@ extension Publishers.RetryWhen {
                         case .finished:
                             break
                         case .failure:
-                            self.sink?.receive(completion: completion)
+                            self.downstream.receive(completion: completion)
                         }
                     },
                     receiveValue: { [unowned self] _ in

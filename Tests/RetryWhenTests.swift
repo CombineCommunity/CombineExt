@@ -35,7 +35,7 @@ class RetryWhenTests: XCTestCase {
         XCTAssertEqual(result, 1)
     }
     
-    func testError() {
+    func testErrorFromSource() {
         var passes: Int = 0
         let subject1 = Deferred(createPublisher: { () -> AnyPublisher<Int, Error> in
             if passes == 0 {
@@ -63,7 +63,28 @@ class RetryWhenTests: XCTestCase {
         
         XCTAssertEqual(result, 1)
     }
-    
+
+    func testErrorFromRetry() {
+        let subject1 = Combine.Fail<Int, Error>(error: TestFailure()).eraseToAnyPublisher()
+        var called = false
+        cancellable = subject1
+            .retryWhen { _ in Fail<Int, Error>(error: TestFailure()) }
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        XCTFail()
+                    case .failure:
+                        called = true
+                    }
+                },
+                receiveValue: { value in
+                    XCTFail()
+                }
+            )
+        
+        XCTAssertEqual(called, true)
+    }
 }
 
 struct TestFailure: Error { }
