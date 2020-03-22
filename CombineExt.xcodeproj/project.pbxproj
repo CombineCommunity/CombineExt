@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		72FB75602426F93400BE8D78 /* RetryWhen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FB755F2426F93400BE8D78 /* RetryWhen.swift */; };
+		72FB75622426F95200BE8D78 /* RetryWhenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FB75612426F95200BE8D78 /* RetryWhenTests.swift */; };
 		78002BB5241E910C0018AA28 /* Relay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BB4241E910C0018AA28 /* Relay.swift */; };
 		78002BB7241E915E0018AA28 /* CurrentValueRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BB6241E915E0018AA28 /* CurrentValueRelay.swift */; };
 		78002BB9241E91D70018AA28 /* PassthroughRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BB8241E91D70018AA28 /* PassthroughRelay.swift */; };
@@ -60,6 +62,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		72FB755F2426F93400BE8D78 /* RetryWhen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryWhen.swift; sourceTree = "<group>"; };
+		72FB75612426F95200BE8D78 /* RetryWhenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryWhenTests.swift; sourceTree = "<group>"; };
 		78002BB4241E910C0018AA28 /* Relay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Relay.swift; sourceTree = "<group>"; };
 		78002BB6241E915E0018AA28 /* CurrentValueRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValueRelay.swift; sourceTree = "<group>"; };
 		78002BB8241E91D70018AA28 /* PassthroughRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassthroughRelay.swift; sourceTree = "<group>"; };
@@ -154,6 +158,7 @@
 				78C193E3241D63620001B7FD /* DematerializeTests.swift */,
 				78002BBA241E97350018AA28 /* CurrentValueRelayTests.swift */,
 				78988A24241FFE2E00F3A4AF /* PartitionTests.swift */,
+				72FB75612426F95200BE8D78 /* RetryWhenTests.swift */,
 				78988A1D241EAFDD00F3A4AF /* PassthroughRelayTests.swift */,
 				BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */,
 			);
@@ -201,6 +206,7 @@
 				78C193D3241C2DE00001B7FD /* Create.swift */,
 				78C193DD241D46F40001B7FD /* Materialize.swift */,
 				78988A22241FFE2400F3A4AF /* Partition.swift */,
+				72FB755F2426F93400BE8D78 /* RetryWhen.swift */,
 				78C193E1241D596F0001B7FD /* Dematerialize.swift */,
 				BF8121BB241FF42C006A93B8 /* ZipMany.swift */,
 			);
@@ -311,6 +317,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				72FB75602426F93400BE8D78 /* RetryWhen.swift in Sources */,
 				78C193CF241C16C40001B7FD /* FlatMapLatest.swift in Sources */,
 				78C193DC241D0A9F0001B7FD /* Sink.swift in Sources */,
 				78002BB9241E91D70018AA28 /* PassthroughRelay.swift in Sources */,
@@ -350,6 +357,7 @@
 				BF50924B241FFE8E00600DF4 /* ZipManyTests.swift in Sources */,
 				78988A1E241EAFDD00F3A4AF /* PassthroughRelayTests.swift in Sources */,
 				78C193D9241CEEA80001B7FD /* CreateTests.swift in Sources */,
+				72FB75622426F95200BE8D78 /* RetryWhenTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
