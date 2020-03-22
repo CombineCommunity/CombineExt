@@ -45,6 +45,7 @@
 		BF8121BC241FF42C006A93B8 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8121BB241FF42C006A93B8 /* ZipMany.swift */; };
 		BFB4EA132428256B0096E9E9 /* CombineLatestMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */; };
 		BFB4EA1524283ECF0096E9E9 /* CombineLatestManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4EA1424283ECF0096E9E9 /* CombineLatestManyTests.swift */; };
+		DC16910F24281A1800B234C4 /* MapMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC16910E24281A1800B234C4 /* MapMany.swift */; };
 		OBJ_22 /* AssignToMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* AssignToMany.swift */; };
 		OBJ_23 /* WithLatestFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* WithLatestFrom.swift */; };
 		OBJ_30 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
@@ -87,6 +88,7 @@
 		BFB4EA1424283ECF0096E9E9 /* CombineLatestManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineLatestManyTests.swift; sourceTree = "<group>"; };
 		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CombineExt::CombineExtTests::Product" /* CombineExtTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = CombineExtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC16910E24281A1800B234C4 /* MapMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMany.swift; sourceTree = "<group>"; };
 		OBJ_10 /* WithLatestFrom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithLatestFrom.swift; sourceTree = "<group>"; };
 		OBJ_12 /* WithLatestFromTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithLatestFromTests.swift; sourceTree = "<group>"; };
 		OBJ_16 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 				78C193E1241D596F0001B7FD /* Dematerialize.swift */,
 				BF8121BB241FF42C006A93B8 /* ZipMany.swift */,
 				BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */,
+				DC16910E24281A1800B234C4 /* MapMany.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				DC16910F24281A1800B234C4 /* MapMany.swift in Sources */,
 				78C193CF241C16C40001B7FD /* FlatMapLatest.swift in Sources */,
 				78C193DC241D0A9F0001B7FD /* Sink.swift in Sources */,
 				78002BB9241E91D70018AA28 /* PassthroughRelay.swift in Sources */,
