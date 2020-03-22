@@ -20,7 +20,8 @@ public extension Publisher {
 }
 
 public extension Publishers {
-    class RetryWhen<Upstream, Trigger, Output, Failure>: Publisher where Upstream: Publisher, Upstream.Output == Output, Upstream.Failure == Failure, Trigger: Publisher, Trigger.Failure == Failure {
+    class RetryWhen<Upstream, Trigger, Output, Failure>: Publisher where Upstream: Publisher, Upstream.Output == Output, Upstream.Failure == Failure, Trigger: Publisher {
+        
         typealias Handler = (AnyPublisher<Upstream.Failure, Never>) -> Trigger
         
         private let upstream: Upstream
@@ -60,7 +61,14 @@ extension Publishers.RetryWhen {
             self.cancellable = handler(errorSubject.eraseToAnyPublisher())
                 .sink(
                     receiveCompletion: { [sink] completion in
-                       sink?.buffer.complete(completion: completion)
+                        switch completion {
+                        case .finished:
+                            sink?.buffer.complete(completion: Subscribers.Completion<Downstream.Failure>.finished)
+                        case .failure(let error):
+                            if let error = error as? Downstream.Failure {
+                                sink?.buffer.complete(completion: Subscribers.Completion<Downstream.Failure>.failure(error))
+                            }
+                        }
                     },
                     receiveValue: { [upstream, sink] _ in
                         guard let sink = sink else { return }

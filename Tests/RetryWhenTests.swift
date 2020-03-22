@@ -18,7 +18,7 @@ class RetryWhenTests: XCTestCase {
         var result: Int?
         
         cancellable = subject1
-            .retryWhen { $0.mapError { _ in TestFailure(tag: 1) } }
+            .retryWhen { $0 }
             .sink(
                 receiveCompletion: { _ in },
                 receiveValue: { value in
@@ -46,7 +46,7 @@ class RetryWhenTests: XCTestCase {
         var result: Int?
         
         cancellable = subject1
-            .retryWhen { $0.mapError { _ in TestFailure(tag: 3) } }
+            .retryWhen { $0 }
             .sink(
                 receiveCompletion: { completion in
                     if case .failure = completion {
@@ -65,7 +65,7 @@ class RetryWhenTests: XCTestCase {
         let subject1 = Combine.Fail<Int, Error>(error: TestFailure(tag: 1))
         var called = false
         cancellable = subject1
-            .retryWhen { $0.mapError { _ in TestFailure(tag: 2) }.flatMap { _ in Fail<Int, Error>(error: TestFailure(tag: 3)) } }
+            .retryWhen { $0.setFailureType(to: Error.self).flatMap { _ in Fail<Int, Error>(error: TestFailure(tag: 3)) } }
             .sink(
                 receiveCompletion: { completion in
                     switch completion {
@@ -88,7 +88,7 @@ class RetryWhenTests: XCTestCase {
         let subject1 = Combine.Fail<Int, Error>(error: TestFailure(tag: 1)).eraseToAnyPublisher()
         var called = false
         cancellable = subject1
-            .retryWhen { $0.mapError { _ in TestFailure(tag: 2) }.first() }
+            .retryWhen { $0.first() }
             .sink(
                 receiveCompletion: { completion in
                     switch completion {

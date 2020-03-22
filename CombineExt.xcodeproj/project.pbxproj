@@ -150,16 +150,16 @@
 		OBJ_11 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_12 /* WithLatestFromTests.swift */,
 				78AA9296241B8532009BD68B /* AssignToManyTests.swift */,
-				78C193D0241C1B450001B7FD /* FlatMapLatestTests.swift */,
 				78C193D8241CEEA80001B7FD /* CreateTests.swift */,
-				78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */,
-				78C193E3241D63620001B7FD /* DematerializeTests.swift */,
 				78002BBA241E97350018AA28 /* CurrentValueRelayTests.swift */,
+				78C193E3241D63620001B7FD /* DematerializeTests.swift */,
+				78C193D0241C1B450001B7FD /* FlatMapLatestTests.swift */,
+				78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */,
 				78988A24241FFE2E00F3A4AF /* PartitionTests.swift */,
-				72FB75612426F95200BE8D78 /* RetryWhenTests.swift */,
 				78988A1D241EAFDD00F3A4AF /* PassthroughRelayTests.swift */,
+				72FB75612426F95200BE8D78 /* RetryWhenTests.swift */,
+				OBJ_12 /* WithLatestFromTests.swift */,
 				BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */,
 			);
 			path = Tests;
@@ -201,13 +201,13 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_9 /* AssignToMany.swift */,
-				OBJ_10 /* WithLatestFrom.swift */,
-				78C193CE241C16C40001B7FD /* FlatMapLatest.swift */,
 				78C193D3241C2DE00001B7FD /* Create.swift */,
+				78C193E1241D596F0001B7FD /* Dematerialize.swift */,
+				78C193CE241C16C40001B7FD /* FlatMapLatest.swift */,
 				78C193DD241D46F40001B7FD /* Materialize.swift */,
 				78988A22241FFE2400F3A4AF /* Partition.swift */,
 				72FB755F2426F93400BE8D78 /* RetryWhen.swift */,
-				78C193E1241D596F0001B7FD /* Dematerialize.swift */,
+				OBJ_10 /* WithLatestFrom.swift */,
 				BF8121BB241FF42C006A93B8 /* ZipMany.swift */,
 			);
 			path = Operators;
