@@ -54,12 +54,12 @@ extension Publishers.RetryWhen {
             self.sink = Sink(upstream: upstream, downstream: downstream, errorSubject: errorSubject)
             self.cancellable = handler(errorSubject.eraseToAnyPublisher())
                 .sink(
-                    receiveCompletion: { [unowned self] completion in
-                        self.downstream.receive(completion: completion)
+                    receiveCompletion: { [sink] completion in
+                        sink?.buffer.complete(completion: completion)
                     },
-                    receiveValue: { [unowned self] _ in
-                        guard let sink = self.sink else { return }
-                        self.upstream.subscribe(sink)
+                    receiveValue: { [upstream, sink] _ in
+                        guard let sink = sink else { return }
+                        upstream.subscribe(sink)
                     }
             )
             upstream.subscribe(sink!)
