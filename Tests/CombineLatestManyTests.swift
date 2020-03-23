@@ -104,6 +104,40 @@ final class CombineLatestManyTests: XCTestCase {
         XCTAssertEqual(completion, .failure(.anError))
     }
 
+    func testCollectionCombineLatestWithASinglePublisher() {
+        let first = PassthroughSubject<Int, Never>()
+
+        var completed = false
+        var results = [[Int]]()
+
+        subscription = [first]
+            .combineLatest()
+            .sink(receiveCompletion: { _ in completed = true },
+                  receiveValue: { results.append($0) })
+
+        first.send(1)
+
+        XCTAssertEqual(results, [[1]])
+        XCTAssertFalse(completed)
+
+        first.send(completion: .finished)
+
+        XCTAssertTrue(completed)
+    }
+
+    func testCollectionCombineLatestWithNoPublishers() {
+        var completed = false
+        var results = [[Int]]()
+
+        subscription = [AnyPublisher<Int, Never>]()
+            .combineLatest()
+            .sink(receiveCompletion: { _ in completed = true },
+                  receiveValue: { results.append($0) })
+
+        XCTAssertTrue(results.isEmpty)
+        XCTAssertTrue(completed)
+    }
+
     func testMethodCombineLatestWithFinishedEvent() {
         let first = PassthroughSubject<Int, Never>()
         let second = PassthroughSubject<Int, Never>()
