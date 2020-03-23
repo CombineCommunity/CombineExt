@@ -51,8 +51,7 @@ public extension Collection where Element: Publisher {
         case 0:
             return Empty().eraseToAnyPublisher()
         case 1:
-            return self[startIndex]
-                .zip(with: [Element]())
+            return self[startIndex].zip(with: [Element]())
         default:
             let first = self[startIndex]
             let others = self[index(after: startIndex)...]
