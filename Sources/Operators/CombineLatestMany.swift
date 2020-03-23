@@ -26,6 +26,16 @@ public extension Publisher {
                 .eraseToAnyPublisher()
         }
     }
+
+    /// A method-form of `Collection.combineLatest` in the `Publisher` namespace.
+    /// - parameter others: A variadic number of other publishers with matching output and failure types to combine with.
+    /// - returns: A type-erased publisher with value events from each of the inner publishers `combineLatest`’d
+    /// together in an array.
+    func combineLatest<Other: Publisher>(with others: Other...)
+        -> AnyPublisher<[Output], Failure>
+        where Other.Output == Output, Other.Failure == Failure {
+        combineLatest(with: others)
+    }
 }
 
 public extension Collection where Element: Publisher {

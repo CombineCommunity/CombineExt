@@ -317,28 +317,28 @@ and an `Collection.combineLatest` constrained extension.
 This lets you arbitrarily combine many publishers and receive an array of inner publisher outputs back.
 
 ```swift
-let first = PassthroughSubject<Int, Never>()
-let second = PassthroughSubject<Int, Never>()
-let third = PassthroughSubject<Int, Never>()
-let fourth = PassthroughSubject<Int, Never>()
+let first = PassthroughSubject<Bool, Never>()
+let second = PassthroughSubject<Bool, Never>()
+let third = PassthroughSubject<Bool, Never>()
+let fourth = PassthroughSubject<Bool, Never>()
 
 subscription = [first, second, third, fourth]
   .combineLatest()
   .sink(receiveValue: { print("combineLatest: \($0)") })
 
-first.send(1)
-second.send(2)
-third.send(3)
-fourth.send(4)
+first.send(true)
+second.send(true)
+third.send(true)
+fourth.send(true)
 
-first.send(1)
+first.send(false)
 ```
 
 #### Output:
 
 ```none
-combineLatest: [1, 2, 3, 4]
-combineLatest: [1, 2, 3, 4]
+combineLatest: [true, true, true, true]
+combineLatest: [false, true, true, true]
 ```
 
 ## Publishers

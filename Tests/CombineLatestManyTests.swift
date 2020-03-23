@@ -169,4 +169,29 @@ final class CombineLatestManyTests: XCTestCase {
 
         XCTAssertTrue(completed)
     }
+
+    func testVariadicMethodCombineLatest() {
+        let first = PassthroughSubject<Int, Never>()
+        let second = PassthroughSubject<Int, Never>()
+        let third = PassthroughSubject<Int, Never>()
+        let fourth = PassthroughSubject<Int, Never>()
+        let fifth = PassthroughSubject<Int, Never>()
+
+        var results = [[Int]]()
+
+        subscription = first.combineLatest(with: second, third, fourth, fifth)
+            .sink(receiveValue: { results.append($0) })
+
+        first.send(1)
+        second.send(2)
+        third.send(3)
+        fourth.send(4)
+        fifth.send(5)
+
+        XCTAssertEqual(results, [[1, 2, 3, 4, 5]])
+
+        second.send(2)
+
+        XCTAssertEqual(results, [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5]])
+    }
 }
