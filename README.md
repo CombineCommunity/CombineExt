@@ -28,6 +28,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [failures](#failures)
 * [dematerialize](#dematerialize)
 * [zip(with:)](#ZipMany)
+* [retryWhen](# RetryWhen)
 
 ### Publishers
 * [AnyPublisher.create](#anypublisher.create)
@@ -111,7 +112,7 @@ trigger
 
 trigger.send()
 trigger.send() // cancels previous request
-trigger.send() // cancels previous rquest
+trigger.send() // cancels previous request
 ```
 
 ------
@@ -306,6 +307,22 @@ You may also use `.zip()` directly on an array of publishers with the same outpu
 
 ```none
 zipped: 10
+```
+
+------
+
+### RetryWhen
+The retryWhen operator allows you to setup a condition on retry, so instead of just automatically retrying X number of times, you have the chance of adjusting the environment in some way and then triggering the retry. You _could_ use this operator to re-create the standard retry or insert a delay in between retries. In the past, I have used it to get a new authorization token when an authorization failure is emitted from a network request.
+
+Some simple examples:
+```swift
+myPublisher
+    .retryWhen { $0.prefix(3) } // it will retry 3 times then complete instead of error.
+```
+
+```swift
+myPublisher
+    .retryWhen { $0.delay(for: 3, scheduler: RunLoop.main) } // it will delay for 3 seconds before retrying the publisher.
 ```
 
 ## Publishers
