@@ -42,19 +42,19 @@ final class CombineLatestManyTests: XCTestCase {
         XCTAssertEqual(results, [[1, 2, 3, 4]])
         XCTAssertFalse(completed)
 
-        first.send(1)
+        first.send(5)
 
-        XCTAssertEqual(results, [[1, 2, 3, 4], [1, 2, 3, 4]])
+        XCTAssertEqual(results, [[1, 2, 3, 4], [5, 2, 3, 4]])
         XCTAssertFalse(completed)
 
-        fourth.send(4)
+        fourth.send(6)
 
-        XCTAssertEqual(results, [[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]])
+        XCTAssertEqual(results, [[1, 2, 3, 4], [5, 2, 3, 4], [5, 2, 3, 6]])
         XCTAssertFalse(completed)
 
         first.send(completion: .finished)
 
-        XCTAssertEqual(results, [[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]])
+        XCTAssertEqual(results, [[1, 2, 3, 4], [5, 2, 3, 4], [5, 2, 3, 6]])
         XCTAssertFalse(completed)
 
         [second, third, fourth].forEach {
@@ -75,7 +75,6 @@ final class CombineLatestManyTests: XCTestCase {
             .combineLatest()
             .sink(receiveCompletion: { _ in completed = true },
                   receiveValue: { results.append($0) })
-
 
         XCTAssertTrue(results.isEmpty)
         XCTAssertFalse(completed)
@@ -155,10 +154,10 @@ final class CombineLatestManyTests: XCTestCase {
         XCTAssertEqual(results, [[1, 2]])
         XCTAssertFalse(completed)
 
-        second.send(2)
-        second.send(2)
+        second.send(3)
+        second.send(3)
 
-        XCTAssertEqual(results, [[1, 2], [1, 2], [1, 2]])
+        XCTAssertEqual(results, [[1, 2], [1, 3], [1, 3]])
         XCTAssertFalse(completed)
 
         first.send(completion: .finished)
@@ -190,8 +189,8 @@ final class CombineLatestManyTests: XCTestCase {
 
         XCTAssertEqual(results, [[1, 2, 3, 4, 5]])
 
-        second.send(2)
+        second.send(6)
 
-        XCTAssertEqual(results, [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5]])
+        XCTAssertEqual(results, [[1, 2, 3, 4, 5], [1, 6, 3, 4, 5]])
     }
 }

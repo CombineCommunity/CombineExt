@@ -311,8 +311,7 @@ zipped: 10
 
 ### CombineLatestMany
 
-This repo includes two overloads on Combine’s `Publisher.combineLatest` methods (which, at the time of writing only go up to arity three)
-and an `Collection.combineLatest` constrained extension.
+This repo includes two overloads on Combine’s `Publisher.combineLatest` methods (which, at the time of writing only go up to arity three) and an `Collection.combineLatest` constrained extension.
 
 This lets you arbitrarily combine many publishers and receive an array of inner publisher outputs back.
 

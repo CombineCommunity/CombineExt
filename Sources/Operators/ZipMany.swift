@@ -49,8 +49,7 @@ public extension Collection where Element: Publisher {
     func zip() -> AnyPublisher<[Element.Output], Element.Failure> {
         switch count {
         case 0:
-            return Empty(completeImmediately: true)
-                .eraseToAnyPublisher()
+            return Empty().eraseToAnyPublisher()
         case 1:
             return self[startIndex]
                 .zip(with: [Element]())

@@ -9,15 +9,15 @@
 import Combine
 
 public extension Publisher {
-    /// A method-form of `Collection.combineLatest` in the `Publisher` namespace.
+    /// Projects `self` and a `Collection` of `Publisher`s onto a type-erased publisher that chains `combineLatest` calls on
+    /// the inner publishers. This is a variadic overload on Combine’s variants that top out at arity three.
     /// - parameter others: A `Collection`-worth of other publishers with matching output and failure types to combine with.
-    /// - returns: A type-erased publisher with value events from each of the inner publishers `combineLatest`’d
+    /// - returns: A type-erased publisher with value events from `self` and each of the inner publishers `combineLatest`’d
     /// together in an array.
     func combineLatest<Others: Collection>(with others: Others)
         -> AnyPublisher<[Output], Failure>
         where Others.Element: Publisher, Others.Element.Output == Output, Others.Element.Failure == Failure {
-        let seed = map { [$0] }
-                .eraseToAnyPublisher()
+        let seed = map { [$0] }.eraseToAnyPublisher()
 
         return others.reduce(seed) { combined, next in
             combined
@@ -27,9 +27,10 @@ public extension Publisher {
         }
     }
 
-    /// A method-form of `Collection.combineLatest` in the `Publisher` namespace.
-    /// - parameter others: A variadic number of other publishers with matching output and failure types to combine with.
-    /// - returns: A type-erased publisher with value events from each of the inner publishers `combineLatest`’d
+    /// Projects `self` and a `Collection` of `Publisher`s onto a type-erased publisher that chains `combineLatest` calls on
+    /// the inner publishers. This is a variadic overload on Combine’s variants that top out at arity three.
+    /// - parameter others: A `Collection`-worth of other publishers with matching output and failure types to combine with.
+    /// - returns: A type-erased publisher with value events from `self` and each of the inner publishers `combineLatest`’d
     /// together in an array.
     func combineLatest<Other: Publisher>(with others: Other...)
         -> AnyPublisher<[Output], Failure>
@@ -47,8 +48,7 @@ public extension Collection where Element: Publisher {
     func combineLatest() -> AnyPublisher<[Element.Output], Element.Failure> {
         switch count {
         case 0:
-            return Empty()
-                .eraseToAnyPublisher()
+            return Empty().eraseToAnyPublisher()
         case 1:
             return self[startIndex]
                 .combineLatest(with: [Element]())
