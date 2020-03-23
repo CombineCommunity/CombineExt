@@ -16,8 +16,9 @@ public extension Publisher {
     /// - parameter others: The other publishers to zip with.
     ///
     /// - returns: A type-erased publisher with value events from each of the inner publishers zipped together in an array.
-    func zip<Other: Publisher>(with others: [Other])
-        -> AnyPublisher<[Output], Failure> where Other.Output == Output, Other.Failure == Failure {
+    func zip<Others: Collection>(with others: Others)
+        -> AnyPublisher<[Output], Failure>
+        where Others.Element: Publisher, Others.Element.Output == Output, Others.Element.Failure == Failure {
         let seed = map { [$0] }.eraseToAnyPublisher()
 
         return others
@@ -37,8 +38,9 @@ public extension Publisher {
     }
 }
 
-// MARK: - Array Helpers
-public extension Array where Element: Publisher {
+// MARK: - Collection Helpers
+
+public extension Collection where Element: Publisher {
     /// Zip an array of publishers with the same output and failure types.
     ///
     /// Since there can be any number of elements, arrays of `Output` values are emitted after zipping.
@@ -47,12 +49,15 @@ public extension Array where Element: Publisher {
     func zip() -> AnyPublisher<[Element.Output], Element.Failure> {
         switch count {
         case 0:
-            return Empty(completeImmediately: true).eraseToAnyPublisher()
+            return Empty(completeImmediately: true)
+                .eraseToAnyPublisher()
         case 1:
-            return self[0].map { [$0] }.eraseToAnyPublisher()
+            return self[startIndex]
+                .zip(with: [Element]())
         default:
-            let first = self[0]
-            let others = Array(self[1...])
+            let first = self[startIndex]
+            let others = self[index(after: startIndex)...]
+
             return first.zip(with: others)
         }
     }

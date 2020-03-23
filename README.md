@@ -27,7 +27,8 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [values](#values)
 * [failures](#failures)
 * [dematerialize](#dematerialize)
-* [zip(with:)](#ZipMany)
+* [zip(with:) and Collection.zip](#ZipMany)
+* [combineLatest(with:) and Collection.combineLatest](#CombineLatestMany)
 
 ### Publishers
 * [AnyPublisher.create](#anypublisher.create)
@@ -293,7 +294,7 @@ third.send(3)
 fourth.send(4)
 ```
 
-You may also use `.zip()` directly on an array of publishers with the same output and failure types, e.g.
+You may also use `.zip()` directly on a collection of publishers with the same output and failure types, e.g.
 
 ```swift
 [first, second, third, fourth]
@@ -306,6 +307,38 @@ You may also use `.zip()` directly on an array of publishers with the same outpu
 
 ```none
 zipped: 10
+```
+
+### CombineLatestMany
+
+This repo includes two overloads on Combine’s `Publisher.combineLatest` methods (which, at the time of writing only go up to arity three)
+and an `Collection.combineLatest` constrained extension.
+
+This lets you arbitrarily combine many publishers and receive an array of inner publisher outputs back.
+
+```swift
+let first = PassthroughSubject<Int, Never>()
+let second = PassthroughSubject<Int, Never>()
+let third = PassthroughSubject<Int, Never>()
+let fourth = PassthroughSubject<Int, Never>()
+
+subscription = [first, second, third, fourth]
+  .combineLatest()
+  .sink(receiveValue: { print("combineLatest: \($0)") })
+
+first.send(1)
+second.send(2)
+third.send(3)
+fourth.send(4)
+
+first.send(1)
+```
+
+#### Output:
+
+```none
+combineLatest: [1, 2, 3, 4]
+combineLatest: [1, 2, 3, 4]
 ```
 
 ## Publishers
