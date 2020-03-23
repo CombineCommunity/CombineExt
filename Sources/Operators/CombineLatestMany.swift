@@ -11,7 +11,9 @@ import Combine
 public extension Publisher {
     /// Projects `self` and a `Collection` of `Publisher`s onto a type-erased publisher that chains `combineLatest` calls on
     /// the inner publishers. This is a variadic overload on Combine’s variants that top out at arity three.
+	///
     /// - parameter others: A `Collection`-worth of other publishers with matching output and failure types to combine with.
+    ///
     /// - returns: A type-erased publisher with value events from `self` and each of the inner publishers `combineLatest`’d
     /// together in an array.
     func combineLatest<Others: Collection>(with others: Others)
