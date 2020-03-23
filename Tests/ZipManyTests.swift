@@ -147,7 +147,7 @@ final class ZipManyTests: XCTestCase {
         XCTAssertNil(completed)
     }
 
-    func testZippingArray() {
+    func testZippingCollection() {
         let first = PassthroughSubject<Int, Never>()
         let second = PassthroughSubject<Int, Never>()
         let third = PassthroughSubject<Int, Never>()
@@ -172,5 +172,39 @@ final class ZipManyTests: XCTestCase {
         first.send(completion: .finished) // Triggers a completion, since, there
         // aren’t any buffered events from `first` (or `third`) to possibly pair with.
         XCTAssertEqual(completed, .finished)
+    }
+
+    func testZippingWithASinglePublisher() {
+        let first = PassthroughSubject<Int, Never>()
+
+        var completed = false
+        var results = [[Int]]()
+
+        subscription = [first]
+            .zip()
+            .sink(receiveCompletion: { _ in completed = true },
+                  receiveValue: { results.append($0) })
+
+        first.send(1)
+
+        XCTAssertEqual(results, [[1]])
+        XCTAssertFalse(completed)
+
+        first.send(completion: .finished)
+
+        XCTAssertTrue(completed)
+    }
+
+    func testZippingWithNoPublishers() {
+        var completed = false
+        var results = [[Int]]()
+
+        subscription = [AnyPublisher<Int, Never>]()
+            .zip()
+            .sink(receiveCompletion: { _ in completed = true },
+                  receiveValue: { results.append($0) })
+
+        XCTAssertTrue(results.isEmpty)
+        XCTAssertTrue(completed)
     }
 }
