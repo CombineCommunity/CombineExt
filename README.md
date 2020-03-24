@@ -113,7 +113,7 @@ trigger
 
 trigger.send()
 trigger.send() // cancels previous request
-trigger.send() // cancels previous rquest
+trigger.send() // cancels previous request
 ```
 
 ------
@@ -171,7 +171,7 @@ materialize: completed with .finished
 
 ### values
 
-Given a materialized publisher, publish only the emitted upstream values, omitting failures. Given a `Publisher<Event<String, MyError>, Never>`, this operator will return a `Publisher<Srting, Never>`.
+Given a materialized publisher, publish only the emitted upstream values, omitting failures. Given a `Publisher<Event<String, MyError>, Never>`, this operator will return a `Publisher<String, Never>`.
 
 **Note**: This operator only works on publishers that were materialized with the `materialize()` operator.
 
@@ -228,7 +228,7 @@ values.send(completion: .failure(.ohNo))
 #### Output:
 
 ```none
-failure: MyErrror.ohNo
+failure: MyError.ohNo
 ```
 
 ------
