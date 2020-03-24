@@ -31,6 +31,6 @@ public extension Publisher where Output: Collection {
     ///
     ///
     func mapMany<Result>(_ transform: @escaping (Output.Element) -> Result) -> Publishers.Map<Self, [Result]> {
-        return map { $0.map(transform) }
+        map { $0.map(transform) }
     }
 }
