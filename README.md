@@ -30,6 +30,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [zip(with:) and Collection.zip](#ZipMany)
 * [retryWhen](# RetryWhen)
 * [combineLatest(with:) and Collection.combineLatest](#CombineLatestMany)
+* [mapMany(_:)](#MapMany)
 
 ### Publishers
 * [AnyPublisher.create](#anypublisher.create)
@@ -357,6 +358,27 @@ first.send(false)
 ```none
 combineLatest: [true, true, true, true]
 combineLatest: [false, true, true, true]
+```
+
+
+### MapMany
+
+Projects each element of a publisher collection into a new publisher collection form.
+
+```swift
+let intArrayPublisher = PassthroughSubject<[Int], Never>()
+    
+intArrayPublisher
+  .mapMany(String.init)
+  .sink(receiveValue: { print($0) })
+    
+intArrayPublisher.send([10, 2, 2, 4, 3, 8])
+```
+
+#### Output:
+
+```none
+["10", "2", "2", "4", "3", "8"]
 ```
 
 ## Publishers
