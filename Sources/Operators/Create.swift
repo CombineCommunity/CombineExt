@@ -81,7 +81,7 @@ public extension Publishers {
     ///        subscriber(.finished)
     ///    }
     ///    ```
-    class Create<Output, Failure: Swift.Error>: Publisher {
+    struct Create<Output, Failure: Swift.Error>: Publisher {
         public typealias Factory = (@escaping (Event<Output, Failure>) -> Void) -> Void
         private let factory: Factory
 

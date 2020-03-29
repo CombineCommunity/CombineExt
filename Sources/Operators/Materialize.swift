@@ -54,7 +54,7 @@ public extension Publishers {
     ///
     /// - note: This publisher is guaranteed to never fail, but it
     ///         will complete given any upstream completion event
-    class Materialize<Upstream: Publisher>: Publisher {
+    struct Materialize<Upstream: Publisher>: Publisher {
         public typealias Output = Event<Upstream.Output, Upstream.Failure>
         public typealias Failure = Never
 

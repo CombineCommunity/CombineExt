@@ -21,7 +21,7 @@ public extension Publisher where Output: EventConvertible, Failure == Never {
 public extension Publishers {
     /// A publisher which takes a materialized upstream publisher and converts
     /// the wrapped events back into their original form
-    class Dematerialize<Upstream: Publisher>: Publisher where Upstream.Output: EventConvertible {
+    struct Dematerialize<Upstream: Publisher>: Publisher where Upstream.Output: EventConvertible {
         public typealias Output = Upstream.Output.Output
         public typealias Failure = Upstream.Output.Failure
 
