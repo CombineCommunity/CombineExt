@@ -25,6 +25,8 @@
 		78002BB7241E915E0018AA28 /* CurrentValueRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BB6241E915E0018AA28 /* CurrentValueRelay.swift */; };
 		78002BB9241E91D70018AA28 /* PassthroughRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BB8241E91D70018AA28 /* PassthroughRelay.swift */; };
 		78002BBB241E97350018AA28 /* CurrentValueRelayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BBA241E97350018AA28 /* CurrentValueRelayTests.swift */; };
+		788CD8F5242F9DFB0015B3C7 /* AmbTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788CD8F4242F9DFB0015B3C7 /* AmbTests.swift */; };
+		788CD8FB2431228C0015B3C7 /* Amb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788CD8FA2431228C0015B3C7 /* Amb.swift */; };
 		78988A1E241EAFDD00F3A4AF /* PassthroughRelayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78988A1D241EAFDD00F3A4AF /* PassthroughRelayTests.swift */; };
 		78988A20241EB0FE00F3A4AF /* CombineExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CombineExt::CombineExt::Product" /* CombineExt.framework */; };
 		78988A23241FFE2400F3A4AF /* Partition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78988A22241FFE2400F3A4AF /* Partition.swift */; };
@@ -70,6 +72,8 @@
 		78002BB6241E915E0018AA28 /* CurrentValueRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValueRelay.swift; sourceTree = "<group>"; };
 		78002BB8241E91D70018AA28 /* PassthroughRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassthroughRelay.swift; sourceTree = "<group>"; };
 		78002BBA241E97350018AA28 /* CurrentValueRelayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValueRelayTests.swift; sourceTree = "<group>"; };
+		788CD8F4242F9DFB0015B3C7 /* AmbTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbTests.swift; sourceTree = "<group>"; };
+		788CD8FA2431228C0015B3C7 /* Amb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amb.swift; sourceTree = "<group>"; };
 		78988A1D241EAFDD00F3A4AF /* PassthroughRelayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassthroughRelayTests.swift; sourceTree = "<group>"; };
 		78988A22241FFE2400F3A4AF /* Partition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Partition.swift; sourceTree = "<group>"; };
 		78988A24241FFE2E00F3A4AF /* PartitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartitionTests.swift; sourceTree = "<group>"; };
@@ -171,6 +175,7 @@
 				BFB4EA1424283ECF0096E9E9 /* CombineLatestManyTests.swift */,
 				DC1691112428228200B234C4 /* MapManyTests.swift */,
 				AAEAF0E82436D785007C35E0 /* SetOutputTypeTests.swift */,
+				788CD8F4242F9DFB0015B3C7 /* AmbTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -221,6 +226,7 @@
 				BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */,
 				DC16910E24281A1800B234C4 /* MapMany.swift */,
 				AAEAF0E62436D346007C35E0 /* SetOutputType.swift */,
+				788CD8FA2431228C0015B3C7 /* Amb.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -332,6 +338,7 @@
 				DC16910F24281A1800B234C4 /* MapMany.swift in Sources */,
 				78C193CF241C16C40001B7FD /* FlatMapLatest.swift in Sources */,
 				78C193DC241D0A9F0001B7FD /* Sink.swift in Sources */,
+				788CD8FB2431228C0015B3C7 /* Amb.swift in Sources */,
 				78002BB9241E91D70018AA28 /* PassthroughRelay.swift in Sources */,
 				78AA9299241B8C45009BD68B /* DemandBuffer.swift in Sources */,
 				78C193E2241D596F0001B7FD /* Dematerialize.swift in Sources */,
@@ -371,6 +378,7 @@
 				78002BBB241E97350018AA28 /* CurrentValueRelayTests.swift in Sources */,
 				78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */,
 				BF50924B241FFE8E00600DF4 /* ZipManyTests.swift in Sources */,
+				788CD8F5242F9DFB0015B3C7 /* AmbTests.swift in Sources */,
 				78988A1E241EAFDD00F3A4AF /* PassthroughRelayTests.swift in Sources */,
 				DC1691122428228200B234C4 /* MapManyTests.swift in Sources */,
 				78C193D9241CEEA80001B7FD /* CreateTests.swift in Sources */,
