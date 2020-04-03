@@ -41,6 +41,8 @@
 		78C193E0241D4D8D0001B7FD /* MaterializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */; };
 		78C193E2241D596F0001B7FD /* Dematerialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193E1241D596F0001B7FD /* Dematerialize.swift */; };
 		78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193E3241D63620001B7FD /* DematerializeTests.swift */; };
+		AAEAF0E72436D346007C35E0 /* SetOutputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEAF0E62436D346007C35E0 /* SetOutputType.swift */; };
+		AAEAF0E92436D785007C35E0 /* SetOutputTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEAF0E82436D785007C35E0 /* SetOutputTypeTests.swift */; };
 		BF50924B241FFE8E00600DF4 /* ZipManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */; };
 		BF8121BC241FF42C006A93B8 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8121BB241FF42C006A93B8 /* ZipMany.swift */; };
 		BFB4EA132428256B0096E9E9 /* CombineLatestMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */; };
@@ -83,6 +85,8 @@
 		78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterializeTests.swift; sourceTree = "<group>"; };
 		78C193E1241D596F0001B7FD /* Dematerialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dematerialize.swift; sourceTree = "<group>"; };
 		78C193E3241D63620001B7FD /* DematerializeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DematerializeTests.swift; sourceTree = "<group>"; };
+		AAEAF0E62436D346007C35E0 /* SetOutputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOutputType.swift; sourceTree = "<group>"; };
+		AAEAF0E82436D785007C35E0 /* SetOutputTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOutputTypeTests.swift; sourceTree = "<group>"; };
 		BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipManyTests.swift; sourceTree = "<group>"; };
 		BF8121BB241FF42C006A93B8 /* ZipMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipMany.swift; sourceTree = "<group>"; };
 		BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineLatestMany.swift; sourceTree = "<group>"; };
@@ -166,6 +170,7 @@
 				BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */,
 				BFB4EA1424283ECF0096E9E9 /* CombineLatestManyTests.swift */,
 				DC1691112428228200B234C4 /* MapManyTests.swift */,
+				AAEAF0E82436D785007C35E0 /* SetOutputTypeTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -215,6 +220,7 @@
 				BF8121BB241FF42C006A93B8 /* ZipMany.swift */,
 				BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */,
 				DC16910E24281A1800B234C4 /* MapMany.swift */,
+				AAEAF0E62436D346007C35E0 /* SetOutputType.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -335,6 +341,7 @@
 				BF8121BC241FF42C006A93B8 /* ZipMany.swift in Sources */,
 				78C193D4241C2DE00001B7FD /* Create.swift in Sources */,
 				OBJ_22 /* AssignToMany.swift in Sources */,
+				AAEAF0E72436D346007C35E0 /* SetOutputType.swift in Sources */,
 				78C193D7241C2E580001B7FD /* Event.swift in Sources */,
 				OBJ_23 /* WithLatestFrom.swift in Sources */,
 				BFB4EA132428256B0096E9E9 /* CombineLatestMany.swift in Sources */,
@@ -357,6 +364,7 @@
 				78C193D2241C1B750001B7FD /* FlatMapLatestTests.swift in Sources */,
 				78AA9297241B8532009BD68B /* AssignToManyTests.swift in Sources */,
 				BFB4EA1524283ECF0096E9E9 /* CombineLatestManyTests.swift in Sources */,
+				AAEAF0E92436D785007C35E0 /* SetOutputTypeTests.swift in Sources */,
 				78988A25241FFE2E00F3A4AF /* PartitionTests.swift in Sources */,
 				OBJ_41 /* WithLatestFromTests.swift in Sources */,
 				78C193E0241D4D8D0001B7FD /* MaterializeTests.swift in Sources */,
