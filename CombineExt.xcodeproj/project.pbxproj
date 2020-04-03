@@ -41,6 +41,8 @@
 		78C193E0241D4D8D0001B7FD /* MaterializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */; };
 		78C193E2241D596F0001B7FD /* Dematerialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193E1241D596F0001B7FD /* Dematerialize.swift */; };
 		78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193E3241D63620001B7FD /* DematerializeTests.swift */; };
+		AAEAF0E32436C8A8007C35E0 /* WeakAssign.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEAF0E22436C8A8007C35E0 /* WeakAssign.swift */; };
+		AAEAF0E52436C9C2007C35E0 /* WeakAssignTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEAF0E42436C9C2007C35E0 /* WeakAssignTests.swift */; };
 		BF50924B241FFE8E00600DF4 /* ZipManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */; };
 		BF8121BC241FF42C006A93B8 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8121BB241FF42C006A93B8 /* ZipMany.swift */; };
 		BFB4EA132428256B0096E9E9 /* CombineLatestMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */; };
@@ -83,6 +85,8 @@
 		78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterializeTests.swift; sourceTree = "<group>"; };
 		78C193E1241D596F0001B7FD /* Dematerialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dematerialize.swift; sourceTree = "<group>"; };
 		78C193E3241D63620001B7FD /* DematerializeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DematerializeTests.swift; sourceTree = "<group>"; };
+		AAEAF0E22436C8A8007C35E0 /* WeakAssign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakAssign.swift; sourceTree = "<group>"; };
+		AAEAF0E42436C9C2007C35E0 /* WeakAssignTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakAssignTests.swift; sourceTree = "<group>"; };
 		BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipManyTests.swift; sourceTree = "<group>"; };
 		BF8121BB241FF42C006A93B8 /* ZipMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipMany.swift; sourceTree = "<group>"; };
 		BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineLatestMany.swift; sourceTree = "<group>"; };
@@ -166,6 +170,7 @@
 				BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */,
 				BFB4EA1424283ECF0096E9E9 /* CombineLatestManyTests.swift */,
 				DC1691112428228200B234C4 /* MapManyTests.swift */,
+				AAEAF0E42436C9C2007C35E0 /* WeakAssignTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -215,6 +220,7 @@
 				BF8121BB241FF42C006A93B8 /* ZipMany.swift */,
 				BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */,
 				DC16910E24281A1800B234C4 /* MapMany.swift */,
+				AAEAF0E22436C8A8007C35E0 /* WeakAssign.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -331,6 +337,7 @@
 				78C193E2241D596F0001B7FD /* Dematerialize.swift in Sources */,
 				78002BB7241E915E0018AA28 /* CurrentValueRelay.swift in Sources */,
 				78C193DE241D46F40001B7FD /* Materialize.swift in Sources */,
+				AAEAF0E32436C8A8007C35E0 /* WeakAssign.swift in Sources */,
 				78988A23241FFE2400F3A4AF /* Partition.swift in Sources */,
 				BF8121BC241FF42C006A93B8 /* ZipMany.swift in Sources */,
 				78C193D4241C2DE00001B7FD /* Create.swift in Sources */,
@@ -362,6 +369,7 @@
 				78C193E0241D4D8D0001B7FD /* MaterializeTests.swift in Sources */,
 				78002BBB241E97350018AA28 /* CurrentValueRelayTests.swift in Sources */,
 				78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */,
+				AAEAF0E52436C9C2007C35E0 /* WeakAssignTests.swift in Sources */,
 				BF50924B241FFE8E00600DF4 /* ZipManyTests.swift in Sources */,
 				78988A1E241EAFDD00F3A4AF /* PassthroughRelayTests.swift in Sources */,
 				DC1691122428228200B234C4 /* MapManyTests.swift in Sources */,

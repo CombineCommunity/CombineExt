@@ -30,6 +30,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [zip(with:) and Collection.zip](#ZipMany)
 * [combineLatest(with:) and Collection.combineLatest](#CombineLatestMany)
 * [mapMany(_:)](#MapMany)
+* [weaklyAssign(to:on:)](#weaklyAssign)
 
 ### Publishers
 * [AnyPublisher.create](#anypublisher.create)
@@ -361,6 +362,10 @@ intArrayPublisher.send([10, 2, 2, 4, 3, 8])
 ```none
 ["10", "2", "2", "4", "3", "8"]
 ```
+
+### weaklyAssign
+
+Like Apple’s [`Publisher.assign(to:on)`](https://developer.apple.com/documentation/combine/publisher/3235801-assign), except it only `weak`ly captures `on` instead of `strong`ly.
 
 ## Publishers
 
