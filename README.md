@@ -30,6 +30,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [zip(with:) and Collection.zip](#ZipMany)
 * [combineLatest(with:) and Collection.combineLatest](#CombineLatestMany)
 * [mapMany(_:)](#MapMany)
+* [setOutputType(to:)](#setOutputType)
 
 ### Publishers
 * [AnyPublisher.create](#anypublisher.create)
@@ -361,6 +362,10 @@ intArrayPublisher.send([10, 2, 2, 4, 3, 8])
 ```none
 ["10", "2", "2", "4", "3", "8"]
 ```
+
+### setOutputType
+
+`Publisher.setOutputType(to:)` is an analog to [`.setFailureType(to:)`](https://developer.apple.com/documentation/combine/publisher/3204753-setfailuretype) for when `Output` is constrained to `Never`. This is especially helpful when chaining operators after an [`.ignoreOutput()`](https://developer.apple.com/documentation/combine/publisher/3204714-ignoreoutput) call.
 
 ## Publishers
 
