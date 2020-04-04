@@ -13,7 +13,7 @@ public extension Publisher where Output == Never {
     ///
     /// - parameter outputType: The new output type for downstream.
     ///
-    /// - Returns: A publisher with a `NewOutput` output type.
+    /// - returns: A publisher with a `NewOutput` output type.
     func setOutputType<NewOutput>(to outputType: NewOutput.Type) -> Publishers.Map<Self, NewOutput> {
         map { _ -> NewOutput in }
     }
