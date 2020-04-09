@@ -33,7 +33,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [setOutputType(to:)](#setOutputType)
 
 ### Publishers
-* [AnyPublisher.create](#anypublisher.create)
+* [AnyPublisher.create](#AnypublisherCreate)
 * [CurrentValueRelay](#CurrentValueRelay)
 * [PassthroughRelay](#PassthroughRelay)
 
