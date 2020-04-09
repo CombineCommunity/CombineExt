@@ -3,49 +3,43 @@ name: CombineExt
 on: [push, pull_request]
 
 jobs:
-  macOS:
-    name: "macOS"
+  xcode-tests:
+    name: "Test"
     runs-on: macOS-latest
+    
+    strategy:
+      matrix:
+        platform: [macOS, iOS, tvOS]
+        include:
+          - platform: macOS
+            sdk: macosx
+            destination: "arch=x86_64"
+
+          - platform: iOS
+            sdk: iphonesimulator
+            destination: "name=iPhone 11"
+
+          - platform: tvOS
+            sdk: appletvsimulator
+            destination: "name=Apple TV"
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Run tests
-      run: set -o pipefail && xcodebuild -project CombineExt.xcodeproj -scheme CombineExt-Package -enableCodeCoverage YES -sdk macosx -destination "arch=x86_64" test | xcpretty -c -r html --output logs/macOS.html
-    - uses: actions/upload-artifact@v1
-      with:
-        name: build-logs-${{ github.run_id }}
-        path: logs
+      - uses: actions/checkout@v2
+      - name: Select Xcode 11.4
+        run: sudo xcode-select -s /Applications/Xcode_11.4.app
+      - name: Run tests
+        run: set -o pipefail && xcodebuild -project CombineExt.xcodeproj -scheme CombineExt-Package -enableCodeCoverage YES -sdk ${{ matrix.sdk }} -destination "${{ matrix.destination }}" test | xcpretty -c -r html --output logs/${{ matrix.platform }}.html
+      - uses: codecov/codecov-action@v1.0.5
+        with:
+          token: 1519d58c-6fb9-483f-af6c-7f6f0b384345
+          name: CombineExt
+      - uses: actions/upload-artifact@v1
+        with:
+          name: build-logs-${{ github.run_id }}
+          path: logs
 
-  iOS:
-    name: "iOS"
-    runs-on: macOS-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Run tests
-      run: set -o pipefail && xcodebuild -project CombineExt.xcodeproj -scheme CombineExt-Package -enableCodeCoverage YES -sdk iphonesimulator -destination "name=iPhone 11" test | xcpretty -c -r html --output logs/iOS.html
-    - uses: codecov/codecov-action@v1.0.5
-      with:
-        token: 1519d58c-6fb9-483f-af6c-7f6f0b384345
-        name: CombineExt
-    - uses: actions/upload-artifact@v1
-      with:
-        name: build-logs-${{ github.run_id }}
-        path: logs
-  tvOS:
-    name: "tvOS"
-    runs-on: macOS-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Run tests
-      run: set -o pipefail && xcodebuild -project CombineExt.xcodeproj -scheme CombineExt-Package -enableCodeCoverage YES -sdk appletvsimulator -destination "name=Apple TV" test | xcpretty -c -r html --output logs/tvOS.html
-    - uses: actions/upload-artifact@v1
-      with:
-        name: build-logs-${{ github.run_id }}
-        path: logs
   SPM:
-    name: "SPM"
+    name: "Test (SPM)"
     runs-on: macOS-latest
 
     steps:

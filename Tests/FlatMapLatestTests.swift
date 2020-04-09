@@ -57,7 +57,7 @@ class FlatMapLatestTests: XCTestCase {
 
         // There is a known bug in Xcode 11.3 and below where an inner
         // completion doesn't complete the outer publisher, so this test
-        // will only work after Xcode 11.4.
+        // will only work after Xcode 11.4 and iOS/tvOS 13.4 or macOS 10.15.4.
         // See: https://forums.swift.org/t/confused-about-behaviour-of-switchtolatest-in-combine/29914/24
         // XCTAssertTrue(completed)
         _ = completed
