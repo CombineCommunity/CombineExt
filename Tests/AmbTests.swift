@@ -139,8 +139,8 @@ class AmbTests: XCTestCase {
         var valuesThree = [Int]()
         var valuesFour = [Int]()
 
-        subject1
-            .amb(with: subject2, subject3, subject4)
+        subject4
+            .amb(with: subject2, subject3, subject1)
             .sink(receiveCompletion: { completionFour = $0 },
                   receiveValue: { valuesFour.append($0) })
             .store(in: &subscriptions)

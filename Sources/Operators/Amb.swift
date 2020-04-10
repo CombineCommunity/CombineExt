@@ -26,8 +26,7 @@ public extension Publisher {
     /// - returns: A publisher which mirrors the first publisher to emit an event
     func amb<Other: Publisher>(with others: Other...)
         -> AnyPublisher<Self.Output, Self.Failure> where Other.Output == Output, Other.Failure == Failure {
-        let never = Empty<Output, Failure>(completeImmediately: false).eraseToAnyPublisher()
-        return others.reduce(never) { result, current in
+        others.reduce(self.eraseToAnyPublisher()) { result, current in
             result.amb(current).eraseToAnyPublisher()
         }
     }
