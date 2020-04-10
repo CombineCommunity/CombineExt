@@ -135,4 +135,61 @@ class WithLatestFromTests: XCTestCase {
         XCTAssertTrue(completed)
         subscription.cancel()
     }
+
+    func testWithLatestFrom2NoResultSelector() {
+        let subject1 = PassthroughSubject<Int, Never>()
+        let subject2 = PassthroughSubject<String, Never>()
+        let subject3 = PassthroughSubject<Bool, Never>()
+        var results = [String]()
+        var completed = false
+
+        subscription = subject1
+            .withLatestFrom(subject2, subject3)
+            .map { "\($0)|\($1)|\($2)" }
+            .eraseToAnyPublisher()
+            .sink(
+                receiveCompletion: { _ in completed  = true },
+                receiveValue: { results.append($0) }
+            )
+
+        subject1.send(1)
+        subject1.send(2)
+        subject1.send(3)
+
+        subject2.send("bar")
+
+        subject1.send(4)
+        subject1.send(5)
+
+        subject3.send(true)
+
+        subject1.send(10)
+
+        subject2.send("foo")
+
+        subject1.send(6)
+
+        subject2.send("qux")
+
+        subject3.send(false)
+
+        subject1.send(7)
+        subject1.send(8)
+        subject1.send(9)
+
+        XCTAssertEqual(results, ["10|bar|true",
+                                 "6|foo|true",
+                                 "7|qux|false",
+                                 "8|qux|false",
+                                 "9|qux|false"
+                                ])
+
+        XCTAssertFalse(completed)
+        subject2.send(completion: .finished)
+        XCTAssertFalse(completed)
+        subject3.send(completion: .finished)
+        XCTAssertFalse(completed)
+        subject1.send(completion: .finished)
+        XCTAssertTrue(completed)
+    }
 }
