@@ -36,6 +36,28 @@ public extension Publisher {
       -> Publishers.WithLatestFrom<Self, Other, Other.Output> {
     return .init(upstream: self, second: other) { $1 }
   }
+
+    func withLatestFrom<Other, Other1>(_ other: Other,
+                                       _ other1: Other1)
+        -> AnyPublisher<(Self.Output, Other.Output, Other1.Output), Failure>
+        where Other: Publisher, Other1: Publisher, Other.Failure == Failure, Other1.Failure == Failure {
+            let combined = combineLatest(other, other1)
+                .eraseToAnyPublisher()
+            return withLatestFrom(combined)
+                .eraseToAnyPublisher()
+    }
+
+    func withLatestFrom<Other, Other1, Other2>(_ other: Other,
+                                               _ other1: Other1,
+                                               _ other2: Other2)
+        -> AnyPublisher<(Self.Output, Other.Output, Other1.Output, Other2.Output), Failure>
+        where Other: Publisher, Other1: Publisher, Other2: Publisher,
+              Other.Failure == Failure, Other1.Failure == Failure, Other2.Failure == Failure {
+            let combined = combineLatest(other, other1, other2)
+                .eraseToAnyPublisher()
+            return withLatestFrom(combined)
+                .eraseToAnyPublisher()
+    }
 }
 
 // MARK: - Publisher
