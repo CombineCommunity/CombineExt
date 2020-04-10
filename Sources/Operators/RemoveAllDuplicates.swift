@@ -36,11 +36,11 @@ public extension Publisher where Output: Equatable {
 }
 
 public extension Publisher {
-    /// De-duplicates _all_ published value events, along the provided `by` predicate, as opposed to pairwise with `Publisher.removeDuplicates(by:)`.
+    /// De-duplicates _all_ published value events, along the provided `by` comparator, as opposed to pairwise with `Publisher.removeDuplicates(by:)`.
     ///
-    /// - parameter by: A predicate to use when determining uniqueness. `Publisher.removeAllDuplicates` will iterate
-    ///                 over all seen values applying each known unique value as the first argument to the predicate and the
-    ///                 incoming value event as the second, i.e. `by(see, next) -> Bool`. If this predicate is `true` for any
+    /// - parameter by: A comparator to use when determining uniqueness. `Publisher.removeAllDuplicates` will iterate
+    ///                 over all seen values applying each known unique value as the first argument to the comparator and the
+    ///                 incoming value event as the second, i.e. `by(see, next) -> Bool`. If this comparator is `true` for any
     ///                 seen value, the next incoming value isn’t emitted downstream.
     ///
     /// - note: It’s important to note that this operator stores all emitted values

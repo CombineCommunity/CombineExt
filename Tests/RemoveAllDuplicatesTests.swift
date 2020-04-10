@@ -167,11 +167,11 @@ final class RemoveAllDuplicatesTests: XCTestCase {
         XCTAssertEqual(completion, .failure(.anError))
     }
 
-    // MARK: - Predicate-related tests
+    // MARK: - Comparator-related tests
 
     private let isMultipleOf: (Int, Int) -> Bool = { seen, incoming in incoming.isMultiple(of: seen) }
 
-    func testPredicateExpectedDeduplication() {
+    func testComparatorExpectedDeduplication() {
         var results = [Int]()
 
         subscription = [2, 3, 3, 4].publisher
@@ -181,7 +181,7 @@ final class RemoveAllDuplicatesTests: XCTestCase {
         XCTAssertEqual(results, [2, 3])
     }
 
-    func testPredicateDeduplicationWithNoDuplicates() {
+    func testComparatorDeduplicationWithNoDuplicates() {
         var results = [Int]()
 
         subscription = [3, 5, 7, 11].publisher
@@ -191,7 +191,7 @@ final class RemoveAllDuplicatesTests: XCTestCase {
         XCTAssertEqual(results, [3, 5, 7, 11])
     }
 
-    func testPredicateDeduplicationDoesntInterfereWithFinishEvents() {
+    func testComparatorDeduplicationDoesntInterfereWithFinishEvents() {
         let integers = PassthroughSubject<Int, Never>()
 
         var completion: Subscribers.Completion<Never>?
@@ -211,7 +211,7 @@ final class RemoveAllDuplicatesTests: XCTestCase {
         XCTAssertEqual(completion, .finished)
     }
 
-    func testPredicateDeduplicationDoesntInterfereWithErrorEvents() {
+    func testComparatorDeduplicationDoesntInterfereWithErrorEvents() {
         let integers = PassthroughSubject<Int, RemoveAllDuplicatesTestError>()
 
         var completion: Subscribers.Completion<RemoveAllDuplicatesTestError>?

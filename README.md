@@ -407,7 +407,7 @@ intArrayPublisher.send([10, 2, 2, 4, 3, 8])
 
 `Publisher.removeAllDuplicates` and `.removeAllDuplicates(by:)` are stricter forms of Apple’s [`Publisher.removeDuplicates`](https://developer.apple.com/documentation/combine/publisher/3204745-removeduplicates) and [`.removeDuplicates(by:)`](https://developer.apple.com/documentation/combine/publisher/3204746-removeduplicates)—the operators de-duplicate across _all_ previous value events, instead of pairwise.
 
-If your `Output` doesn‘t conform to `Hashable` or `Equatable`, you may instead use the predicate-based version of this operator to decide whether two elements are equal.
+If your `Output` doesn‘t conform to `Hashable` or `Equatable`, you may instead use the comparator-based version of this operator to decide whether two elements are equal.
 
 ```swift
 subscription = [1, 1, 2, 1, 3, 3, 4].publisher
