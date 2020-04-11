@@ -45,7 +45,7 @@ public extension Set where Element == AnyCancellable {
         store(cancellables)
     }
 
-    /// Convenience storage method on `Set` for a `Collection` of `AnyCancellable`s.
+    /// Convenience storage method on `Set` for a `Sequence` of `AnyCancellable`s.
     ///
     /// `Set.store(_:)` can help in situations where you want to store batches of cancellables in one go, e.g.
     ///
@@ -68,7 +68,7 @@ public extension Set where Element == AnyCancellable {
     /// ```
     ///
     /// - parameter cancellables: The cancellables to store in the `Set`.
-    mutating func store<Collection: Swift.Collection>(_ cancellables: Collection) where Collection.Element == AnyCancellable {
+    mutating func store<Sequence: Swift.Sequence>(_ cancellables: Sequence) where Sequence.Element == AnyCancellable {
         cancellables.forEach { insert($0) }
     }
 }

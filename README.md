@@ -556,7 +556,7 @@ subscriptions.store(
 )
 ```
 
-and for the `Collection` variant:
+and for the `Sequence` variant:
 
 ```swift
 let firstBatchOfCancellables = […]

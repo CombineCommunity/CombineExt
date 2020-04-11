@@ -10,7 +10,7 @@ import CombineExt
 import XCTest
 
 final class SetAnyCancellableTests: XCTestCase {
-    func testStorageCollectionVariant() {
+    func testStorageSequenceVariant() {
         var subscriptions = Set<AnyCancellable>()
 
         subscriptions.store(
