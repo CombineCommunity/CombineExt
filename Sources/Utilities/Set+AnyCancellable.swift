@@ -20,7 +20,7 @@ public extension Set where Element == AnyCancellable {
     ///
     /// secondPublisher
     ///     .sink( /* … */ )
-    ///         .store(in: &subscriptions)
+    ///     .store(in: &subscriptions)
     ///
     /// thirdPublisher
     ///     .sink( /* … */ )

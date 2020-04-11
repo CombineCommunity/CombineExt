@@ -40,6 +40,9 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [CurrentValueRelay](#CurrentValueRelay)
 * [PassthroughRelay](#PassthroughRelay)
 
+### Utilities
+* [Set.store(_:)](#SetStorage)
+
 > **Note**: This is still a relatively early version of CombineExt, with much more to be desired. I gladly accept PRs, ideas, opinions, or improvements. Thank you! :)
 
 ## Installation
@@ -516,6 +519,61 @@ only
 provide
 great
 guarantees
+```
+
+## Utilities
+
+### SetStorage
+
+Two `Element == AnyCancellable`-constrained overloads of `Set.store(_:)` are provided for easier storage of cancellables into `Set`s.
+
+The variadic version can save repeated `AnyCancellable.store(in:)` calls, e.g.
+
+```swift
+firstPublisher
+    .sink( /* … */ )
+    .store(in: &subscriptions)
+
+secondPublisher
+    .sink( /* … */ )
+    .store(in: &subscriptions)
+
+thirdPublisher
+    .sink( /* … */ )
+    .store(in: &subscriptions)
+ ```
+
+can be rewritten as
+
+```swift
+subscriptions.store(
+    firstPublisher
+        .sink( /* … */ ),
+    secondPublisher
+        .sink( /* … */ ),
+    thirdPublisher
+        .sink( /* … */ )
+)
+```
+
+and for the `Collection` variant:
+
+```swift
+let firstBatchOfCancellables = […]
+
+/* … */
+
+let secondBatchOfCancellables = […]
+
+/* … */
+
+let thirdBatchOfCancellables = […]
+
+subscriptions.store(
+    firstBatchOfCancellables +
+    secondBatchOfCancellables +
+    thirdBatchOfCancellables
+)
 ```
 
 ## License
