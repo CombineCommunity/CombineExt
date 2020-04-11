@@ -43,6 +43,8 @@
 		78C193E0241D4D8D0001B7FD /* MaterializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */; };
 		78C193E2241D596F0001B7FD /* Dematerialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193E1241D596F0001B7FD /* Dematerialize.swift */; };
 		78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193E3241D63620001B7FD /* DematerializeTests.swift */; };
+		AA2A40BB24416B7D00633241 /* Set+AnyCancellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2A40BA24416B7D00633241 /* Set+AnyCancellable.swift */; };
+		AA2A40BD24416B9400633241 /* Set+AnyCancellableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2A40BC24416B9400633241 /* Set+AnyCancellableTests.swift */; };
 		AAEAF0E72436D346007C35E0 /* SetOutputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEAF0E62436D346007C35E0 /* SetOutputType.swift */; };
 		AAEAF0E92436D785007C35E0 /* SetOutputTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEAF0E82436D785007C35E0 /* SetOutputTypeTests.swift */; };
 		BF50924B241FFE8E00600DF4 /* ZipManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */; };
@@ -91,6 +93,8 @@
 		78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterializeTests.swift; sourceTree = "<group>"; };
 		78C193E1241D596F0001B7FD /* Dematerialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dematerialize.swift; sourceTree = "<group>"; };
 		78C193E3241D63620001B7FD /* DematerializeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DematerializeTests.swift; sourceTree = "<group>"; };
+		AA2A40BA24416B7D00633241 /* Set+AnyCancellable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+AnyCancellable.swift"; sourceTree = "<group>"; };
+		AA2A40BC24416B9400633241 /* Set+AnyCancellableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Set+AnyCancellableTests.swift"; sourceTree = "<group>"; };
 		AAEAF0E62436D346007C35E0 /* SetOutputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOutputType.swift; sourceTree = "<group>"; };
 		AAEAF0E82436D785007C35E0 /* SetOutputTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOutputTypeTests.swift; sourceTree = "<group>"; };
 		BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipManyTests.swift; sourceTree = "<group>"; };
@@ -163,6 +167,14 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		AA2A40B924416B6B00633241 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				AA2A40BA24416B7D00633241 /* Set+AnyCancellable.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		OBJ_11 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +193,7 @@
 				AAEAF0E82436D785007C35E0 /* SetOutputTypeTests.swift */,
 				788CD8F4242F9DFB0015B3C7 /* AmbTests.swift */,
 				BF84B7422426C332001BFA88 /* RemoveAllDuplicatesTests.swift */,
+				AA2A40BC24416B9400633241 /* Set+AnyCancellableTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -209,6 +222,7 @@
 		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				AA2A40B924416B6B00633241 /* Utilities */,
 				78C193DA241D07160001B7FD /* Common */,
 				78C193D5241C2E4F0001B7FD /* Models */,
 				78002BB3241E90FE0018AA28 /* Relays */,
@@ -357,6 +371,7 @@
 				OBJ_22 /* AssignToMany.swift in Sources */,
 				AAEAF0E72436D346007C35E0 /* SetOutputType.swift in Sources */,
 				78C193D7241C2E580001B7FD /* Event.swift in Sources */,
+				AA2A40BB24416B7D00633241 /* Set+AnyCancellable.swift in Sources */,
 				OBJ_23 /* WithLatestFrom.swift in Sources */,
 				BFB4EA132428256B0096E9E9 /* CombineLatestMany.swift in Sources */,
 				78002BB5241E910C0018AA28 /* Relay.swift in Sources */,
@@ -375,6 +390,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				AA2A40BD24416B9400633241 /* Set+AnyCancellableTests.swift in Sources */,
 				78C193D2241C1B750001B7FD /* FlatMapLatestTests.swift in Sources */,
 				78AA9297241B8532009BD68B /* AssignToManyTests.swift in Sources */,
 				BFB4EA1524283ECF0096E9E9 /* CombineLatestManyTests.swift in Sources */,
