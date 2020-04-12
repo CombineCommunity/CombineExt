@@ -104,7 +104,7 @@ class WithLatestFromTests: XCTestCase {
         var completed = false
         
         subscription = subject1
-            .withLatestFrom(subject2)
+          .withLatestFrom(subject2)
             .sink(receiveCompletion: { _ in completed  = true },
                   receiveValue: { results.append($0) })
         
@@ -136,7 +136,7 @@ class WithLatestFromTests: XCTestCase {
         subscription.cancel()
     }
 
-    func testWithLatestFrom2NoResultSelector() {
+    func testWithLatestFrom2WithResultSelector() {
         let subject1 = PassthroughSubject<Int, Never>()
         let subject2 = PassthroughSubject<String, Never>()
         let subject3 = PassthroughSubject<Bool, Never>()
@@ -144,9 +144,7 @@ class WithLatestFromTests: XCTestCase {
         var completed = false
 
         subscription = subject1
-            .withLatestFrom(subject2, subject3)
-            .map { "\($0)|\($1)|\($2)" }
-            .eraseToAnyPublisher()
+          .withLatestFrom(subject2, subject3) { "\($0)|\($1.0)|\($1.1)" }
             .sink(
                 receiveCompletion: { _ in completed  = true },
                 receiveValue: { results.append($0) }
