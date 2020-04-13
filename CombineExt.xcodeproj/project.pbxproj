@@ -45,10 +45,14 @@
 		78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C193E3241D63620001B7FD /* DematerializeTests.swift */; };
 		AAEAF0E72436D346007C35E0 /* SetOutputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEAF0E62436D346007C35E0 /* SetOutputType.swift */; };
 		AAEAF0E92436D785007C35E0 /* SetOutputTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAEAF0E82436D785007C35E0 /* SetOutputTypeTests.swift */; };
+		BF3C6B6C24421D27004D4A8A /* ShareReplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3C6B6B24421D27004D4A8A /* ShareReplay.swift */; };
 		BF50924B241FFE8E00600DF4 /* ZipManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */; };
 		BF8121BC241FF42C006A93B8 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8121BB241FF42C006A93B8 /* ZipMany.swift */; };
 		BF84B7412426B786001BFA88 /* RemoveAllDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF84B7402426B786001BFA88 /* RemoveAllDuplicates.swift */; };
 		BF84B7432426C332001BFA88 /* RemoveAllDuplicatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF84B7422426C332001BFA88 /* RemoveAllDuplicatesTests.swift */; };
+		BF9D85D32444BB92001783E6 /* ReplaySubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D85D22444BB92001783E6 /* ReplaySubject.swift */; };
+		BF9D85D52444D12F001783E6 /* ReplaySubjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D85D42444D12F001783E6 /* ReplaySubjectTests.swift */; };
+		BF9D85D724450090001783E6 /* ShareReplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D85D624450090001783E6 /* ShareReplayTests.swift */; };
 		BFB4EA132428256B0096E9E9 /* CombineLatestMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */; };
 		BFB4EA1524283ECF0096E9E9 /* CombineLatestManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4EA1424283ECF0096E9E9 /* CombineLatestManyTests.swift */; };
 		DC16910F24281A1800B234C4 /* MapMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC16910E24281A1800B234C4 /* MapMany.swift */; };
@@ -93,10 +97,14 @@
 		78C193E3241D63620001B7FD /* DematerializeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DematerializeTests.swift; sourceTree = "<group>"; };
 		AAEAF0E62436D346007C35E0 /* SetOutputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOutputType.swift; sourceTree = "<group>"; };
 		AAEAF0E82436D785007C35E0 /* SetOutputTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOutputTypeTests.swift; sourceTree = "<group>"; };
+		BF3C6B6B24421D27004D4A8A /* ShareReplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareReplay.swift; sourceTree = "<group>"; };
 		BF50924A241FFE8E00600DF4 /* ZipManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipManyTests.swift; sourceTree = "<group>"; };
 		BF8121BB241FF42C006A93B8 /* ZipMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipMany.swift; sourceTree = "<group>"; };
 		BF84B7402426B786001BFA88 /* RemoveAllDuplicates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAllDuplicates.swift; sourceTree = "<group>"; };
 		BF84B7422426C332001BFA88 /* RemoveAllDuplicatesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAllDuplicatesTests.swift; sourceTree = "<group>"; };
+		BF9D85D22444BB92001783E6 /* ReplaySubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplaySubject.swift; sourceTree = "<group>"; };
+		BF9D85D42444D12F001783E6 /* ReplaySubjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplaySubjectTests.swift; sourceTree = "<group>"; };
+		BF9D85D624450090001783E6 /* ShareReplayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareReplayTests.swift; sourceTree = "<group>"; };
 		BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineLatestMany.swift; sourceTree = "<group>"; };
 		BFB4EA1424283ECF0096E9E9 /* CombineLatestManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineLatestManyTests.swift; sourceTree = "<group>"; };
 		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -163,6 +171,14 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		BF9D85D12444BB7F001783E6 /* Subjects */ = {
+			isa = PBXGroup;
+			children = (
+				BF9D85D22444BB92001783E6 /* ReplaySubject.swift */,
+			);
+			path = Subjects;
+			sourceTree = "<group>";
+		};
 		OBJ_11 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +197,8 @@
 				AAEAF0E82436D785007C35E0 /* SetOutputTypeTests.swift */,
 				788CD8F4242F9DFB0015B3C7 /* AmbTests.swift */,
 				BF84B7422426C332001BFA88 /* RemoveAllDuplicatesTests.swift */,
+				BF9D85D42444D12F001783E6 /* ReplaySubjectTests.swift */,
+				BF9D85D624450090001783E6 /* ShareReplayTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -209,6 +227,7 @@
 		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				BF9D85D12444BB7F001783E6 /* Subjects */,
 				78C193DA241D07160001B7FD /* Common */,
 				78C193D5241C2E4F0001B7FD /* Models */,
 				78002BB3241E90FE0018AA28 /* Relays */,
@@ -233,6 +252,7 @@
 				AAEAF0E62436D346007C35E0 /* SetOutputType.swift */,
 				788CD8FA2431228C0015B3C7 /* Amb.swift */,
 				BF84B7402426B786001BFA88 /* RemoveAllDuplicates.swift */,
+				BF3C6B6B24421D27004D4A8A /* ShareReplay.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -341,6 +361,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				BF3C6B6C24421D27004D4A8A /* ShareReplay.swift in Sources */,
 				DC16910F24281A1800B234C4 /* MapMany.swift in Sources */,
 				78C193CF241C16C40001B7FD /* FlatMapLatest.swift in Sources */,
 				78C193DC241D0A9F0001B7FD /* Sink.swift in Sources */,
@@ -355,6 +376,7 @@
 				BF84B7412426B786001BFA88 /* RemoveAllDuplicates.swift in Sources */,
 				78C193D4241C2DE00001B7FD /* Create.swift in Sources */,
 				OBJ_22 /* AssignToMany.swift in Sources */,
+				BF9D85D32444BB92001783E6 /* ReplaySubject.swift in Sources */,
 				AAEAF0E72436D346007C35E0 /* SetOutputType.swift in Sources */,
 				78C193D7241C2E580001B7FD /* Event.swift in Sources */,
 				OBJ_23 /* WithLatestFrom.swift in Sources */,
@@ -378,6 +400,7 @@
 				78C193D2241C1B750001B7FD /* FlatMapLatestTests.swift in Sources */,
 				78AA9297241B8532009BD68B /* AssignToManyTests.swift in Sources */,
 				BFB4EA1524283ECF0096E9E9 /* CombineLatestManyTests.swift in Sources */,
+				BF9D85D52444D12F001783E6 /* ReplaySubjectTests.swift in Sources */,
 				AAEAF0E92436D785007C35E0 /* SetOutputTypeTests.swift in Sources */,
 				78988A25241FFE2E00F3A4AF /* PartitionTests.swift in Sources */,
 				OBJ_41 /* WithLatestFromTests.swift in Sources */,
@@ -387,6 +410,7 @@
 				78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */,
 				BF50924B241FFE8E00600DF4 /* ZipManyTests.swift in Sources */,
 				788CD8F5242F9DFB0015B3C7 /* AmbTests.swift in Sources */,
+				BF9D85D724450090001783E6 /* ShareReplayTests.swift in Sources */,
 				78988A1E241EAFDD00F3A4AF /* PassthroughRelayTests.swift in Sources */,
 				DC1691122428228200B234C4 /* MapManyTests.swift in Sources */,
 				78C193D9241CEEA80001B7FD /* CreateTests.swift in Sources */,

@@ -34,11 +34,15 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [mapMany(_:)](#MapMany)
 * [setOutputType(to:)](#setOutputType)
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
+* [share(replay:)](#ShareReplay)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
 * [CurrentValueRelay](#CurrentValueRelay)
 * [PassthroughRelay](#PassthroughRelay)
+
+### Subjects
+* [ReplaySubject](#ReplaySubject)
 
 > **Note**: This is still a relatively early version of CombineExt, with much more to be desired. I gladly accept PRs, ideas, opinions, or improvements. Thank you! :)
 
@@ -173,6 +177,8 @@ amb: 3
 amb: 6
 amb: completed with .finished
 ```
+
+------
 
 ### materialize
 
@@ -348,6 +354,8 @@ You may also use `.zip()` directly on a collection of publishers with the same o
 zipped: 10
 ```
 
+------
+
 ### CombineLatestMany
 
 This repo includes two overloads on Combine’s `Publisher.combineLatest` methods (which, at the time of writing only go up to arity three) and an `Collection.combineLatest` constrained extension.
@@ -379,6 +387,8 @@ combineLatest: [true, true, true, true]
 combineLatest: [false, true, true, true]
 ```
 
+------
+
 ### MapMany
 
 Projects each element of a publisher collection into a new publisher collection form.
@@ -399,9 +409,13 @@ intArrayPublisher.send([10, 2, 2, 4, 3, 8])
 ["10", "2", "2", "4", "3", "8"]
 ```
 
+------
+
 ### setOutputType
 
 `Publisher.setOutputType(to:)` is an analog to [`.setFailureType(to:)`](https://developer.apple.com/documentation/combine/publisher/3204753-setfailuretype) for when `Output` is constrained to `Never`. This is especially helpful when chaining operators after an [`.ignoreOutput()`](https://developer.apple.com/documentation/combine/publisher/3204714-ignoreoutput) call.
+
+------
 
 ### removeAllDuplicates
 
@@ -420,6 +434,40 @@ removeAllDuplicates: 1
 removeAllDuplicates: 2
 removeAllDuplicates: 3
 removeAllDuplicates: 4
+```
+
+------
+
+### ShareReplay
+
+Similar to [`Publisher.share`](https://developer.apple.com/documentation/combine/publisher/3204754-share), `.share(replay:)` can be used to create a publisher instance with reference semantics. But, it also replays value events to further subscribers.
+
+```swift
+let subject = PassthroughSubject<Int, Never>()
+
+let replayedPublisher = subject
+  .share(replay: 3)
+
+subscription1 = replayedPublisher
+  .sink(receiveValue: { print("first subscriber: \($0)") })
+  
+subject.send(1)
+subject.send(2)
+subject.send(3)
+subject.send(4)
+
+subscription2 = replayedPublisher
+  .sink(receiveValue: { print("second subscriber: \($0)") })
+```
+
+```none
+first subscriber: 1
+first subscriber: 2
+first subscriber: 3
+first subscriber: 4
+second subscriber: 2
+second subscriber: 3
+second subscriber: 4
 ```
 
 ## Publishers
@@ -522,6 +570,35 @@ only
 provide
 great
 guarantees
+```
+
+## Subjects
+
+### ReplaySubject
+
+A Combine analog to Rx’s [`ReplaySubject` type](http://reactivex.io/documentation/subject.html). It’s similar to a [`CurrentValueSubject`](https://developer.apple.com/documentation/combine/currentvaluesubject) in that it buffers elements, but, it takes it a step further in allowing consumers to specific the number of value events to buffer and replay to future subscribers. Also, it will handle forwarding any completion events after the buffer is cleared upon subscription.
+
+```swift
+let subject = ReplaySubject<Int, Never>(maxBufferSize: 3)
+
+subject.send(1)
+subject.send(2)
+subject.send(3)
+subject.send(4)
+
+subject
+  .sink(receiveValue: { print($0) })
+
+subject.send(5)
+```
+
+#### Output:
+
+```none
+2
+3
+4
+5
 ```
 
 ## License
