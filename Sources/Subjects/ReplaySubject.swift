@@ -14,7 +14,7 @@ import Combine
 /// future subscribers and also forwards completion events.
 ///
 /// The implementation borrows heavily from [Tristan’s](https://github.com/tcldr/Entwine/blob/b839c9fcc7466878d6a823677ce608da998b95b9/Sources/Entwine/Operators/ReplaySubject.swift)
-/// with the main modifications being leaning on Shai’s [Sink](https://github.com/CombineCommunity/CombineExt/blob/7ed4677e33fdc963af404423cb563e133c271d2b/Sources/Common/Sink.swift)
+/// with the main modifications being leaning on Shai’s [DemandBuffer](https://github.com/CombineCommunity/CombineExt/blob/7ed4677e33fdc963af404423cb563e133c271d2b/Sources/Common/DemandBuffer.swift)
 /// instead of `Entwine`’s [SinkQueue](https://github.com/tcldr/Entwine/blob/b839c9fcc7466878d6a823677ce608da998b95b9/Sources/Common/Utilities/SinkQueue.swift)
 /// and a plain ol’ `[Output]` buffer instead of a
 /// [custom, LinkedListQueue-backed one](https://github.com/tcldr/Entwine/blob/8be24a59bc91410bb29e84b1c4ae35398a5839c8/Sources/Entwine/Operators/ReplaySubject.swift#L162-L177).
@@ -54,7 +54,7 @@ extension ReplaySubject: Subject {
             buffer.removeFirst()
         }
 
-        subscriptions.forEach { $0.forwardValueToSink(value) }
+        subscriptions.forEach { $0.forwardValueToBuffer(value) }
     }
 
     public func send(completion: Subscribers.Completion<Failure>) {
@@ -62,7 +62,7 @@ extension ReplaySubject: Subject {
 
         self.completion = completion
 
-        subscriptions.forEach { $0.forwardCompletionToSink(completion) }
+        subscriptions.forEach { $0.forwardCompletionToBuffer(completion) }
     }
 
     public func send(subscription: Combine.Subscription) {
@@ -94,7 +94,7 @@ extension ReplaySubject: Publisher {
                 let self = self,
                 let subscriptionIndex = self.subscriptions
                     .firstIndex(where: { $0.innerSubscriberIdentifier == subscriberIdentifier })
-            else { return }
+                else { return }
 
             self.subscriberIdentifiers.remove(subscriberIdentifier)
             self.subscriptions.remove(at: subscriptionIndex)
@@ -115,7 +115,7 @@ extension ReplaySubject {
     where Output == Downstream.Input, Failure == Downstream.Failure {
         // MARK: - Private
 
-        private var sink: Sink<Empty<Output, Failure>, Downstream>?
+        private var demandBuffer: DemandBuffer<Downstream>?
         private var cancelHandler: (() -> Void)?
 
         // MARK: - Internal
@@ -126,15 +126,7 @@ extension ReplaySubject {
             downstream: Downstream,
             cancelHandler: (() -> Void)?
         ) {
-            self.sink = Sink(
-                upstream: Empty(completeImmediately: false), // `ReplaySubject`’s `Subject` conformance handles
-                // forwarding down into the `sink` instance. So, we can pretend `Sink.upstream` is an `Empty`,
-                // non-finishing publisher.
-                downstream: downstream,
-                transformOutput: { $0 },
-                transformFailure: { $0 }
-            )
-
+            self.demandBuffer = DemandBuffer(subscriber: downstream)
             self.innerSubscriberIdentifier = downstream.combineIdentifier
             self.cancelHandler = cancelHandler
         }
@@ -142,19 +134,19 @@ extension ReplaySubject {
         // MARK: - Internal helpers
 
         func replay(_ buffer: [Output], completion: Subscribers.Completion<Failure>?) {
-            buffer.forEach(forwardValueToSink)
+            buffer.forEach(forwardValueToBuffer)
 
             if let completion = completion {
-                forwardCompletionToSink(completion)
+                forwardCompletionToBuffer(completion)
             }
         }
 
-        func forwardValueToSink(_ value: Output) {
-            _ = sink?.receive(value)
+        func forwardValueToBuffer(_ value: Output) {
+            _ = demandBuffer?.buffer(value: value)
         }
 
-        func forwardCompletionToSink(_ completion: Subscribers.Completion<Failure>) {
-            _ = sink?.receive(completion: completion)
+        func forwardCompletionToBuffer(_ completion: Subscribers.Completion<Failure>) {
+            demandBuffer?.complete(completion: completion)
         }
     }
 }
@@ -163,7 +155,7 @@ extension ReplaySubject {
 
 extension ReplaySubject.Subscription: Subscription {
     func request(_ demand: Subscribers.Demand) {
-        sink?.demand(demand)
+        _ = demandBuffer?.demand(demand)
     }
 }
 
@@ -174,6 +166,6 @@ extension ReplaySubject.Subscription: Cancellable {
         cancelHandler?()
         cancelHandler = nil
 
-        sink = nil
+        demandBuffer = nil
     }
 }
