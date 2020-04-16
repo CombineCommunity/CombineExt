@@ -93,7 +93,7 @@ public extension Publisher {
                                                            _ other1: Other1)
     -> Publishers.WithLatestFrom<Self, AnyPublisher<(Other.Output, Other1.Output), Self.Failure>, (Other.Output, Other1.Output)>
     where Other.Failure == Failure, Other1.Failure == Failure {
-      return withLatestFrom(other, other1, resultSelector: { $1 })
+     withLatestFrom(other, other1) { $1 }
   }
 
   /// Upon an emission from self, emit the latest value from the
