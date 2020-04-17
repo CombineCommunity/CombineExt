@@ -428,21 +428,27 @@ This section outlines some of the custom Combine publishers CombineExt provides
 
 ### AnyPublisher.create
 
-A publisher which accepts a factory closure to which you can dynamically push value or completion events.
+A publisher which accepts a closure with a subscriber argument, to which you can dynamically send value or completion events.
 
 This lets you easily create custom publishers to wrap any non-publisher asynchronous work, while still respecting the downstream consumer's backpressure demand.
+
+You should return a `Cancelable`-conforming object from the closure in which you can define any cleanup actions to execute when the pubilsher completes or the subscription to the publisher is canceled.
 
 ```swift
 AnyPublisher<String, MyError>.create { subscriber in
   // Values
-  subscriber(.value("Hello"))
-  subscriber(.value("World!"))
+  subscriber.send("Hello")
+  subscriber.send("World!")
   
   // Complete with error
-  subscriber(.failure(MyError.someError))
+  subscriber.send(completion: .failure(MyError.someError))
   
   // Or, complete successfully
-  subscriber(.finished)
+  subscriber.send(completion: .finished)
+
+  return AnyCancellable { 
+    // Perform cleanup
+  }
 }
 ```
 
@@ -451,7 +457,7 @@ You can also use an `AnyPublisher` initializer with the same signature:
 ```swift
 AnyPublisher<String, MyError> { subscriber in 
     /// ...
-}
+    return AnyCancellable { }
 ```
 
 ------
