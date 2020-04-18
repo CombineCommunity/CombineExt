@@ -50,7 +50,7 @@ public extension AnyPublisher {
     - returns: A publisher whose observers will never get called.
     */
     static func never() -> AnyPublisher<Never, Failure> {
-        return Never.NeverPublisher().eraseToAnyPublisher()
+        return Empty(completeImmediately: false).eraseToAnyPublisher()
     }
 
     /**
@@ -98,11 +98,5 @@ public extension AnyPublisher {
     */
     func catchErrorJustReturn(_ output: Output) -> AnyPublisher<Output, Never> {
         return self.catch { _ in AnyPublisher.just(output) }.eraseToAnyPublisher()
-    }
-}
-
-fileprivate extension Never {
-    struct NeverPublisher<Output, Failure: Error>: Publisher {
-        func receive<S: Subscriber>(subscriber: S) {}
     }
 }
