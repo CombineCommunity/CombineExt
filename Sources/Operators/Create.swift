@@ -10,90 +10,99 @@ import Combine
 import Foundation
 
 public extension AnyPublisher {
-    /// Create a publisher which accepts a factory closure to which you
-    /// can dynamically push value or completion events
+    /// Create a publisher which accepts a closure with a subscriber argument,
+    /// to which you can dynamically send value or completion events.
+    ///
+    /// You should return a `Cancelable`-conforming object from the closure in
+    /// which you can define any cleanup actions to execute when the pubilsher
+    /// completes or the subscription to the publisher is canceled.
     ///
     /// - parameter factory: A factory with a closure to which you can
-    ///                      dynamically push value or completion events
+    ///                      dynamically send value or completion events.
+    ///                      You should return a `Cancelable`-conforming object
+    ///                      from it to encapsulate any cleanup-logic for your work.
     ///
     /// An example usage could look as follows:
     ///
     ///    ```
     ///    AnyPublisher<String, MyError>.create { subscriber in
     ///        // Values
-    ///        subscriber(.value("Hello"))
-    ///        subscriber(.value("World!"))
+    ///        subscriber.send("Hello")
+    ///        subscriber.send("World!")
     ///
     ///        // Complete with error
-    ///        subscriber(.failure(MyError.someError))
+    ///        subscriber.send(completion: .failure(MyError.someError))
     ///
     ///        // Or, complete successfully
-    ///        subscriber(.finished)
+    ///        subscriber.send(completion: .finished)
+    ///
+    ///        return AnyCancellable {
+    ///          // Perform clean-up
+    ///        }
     ///    }
     ///
-    init(_ factory: @escaping Publishers.Create<Output, Failure>.Factory) {
+    init(_ factory: @escaping Publishers.Create<Output, Failure>.SubscriberHandler) {
         self = Publishers.Create(factory: factory).eraseToAnyPublisher()
     }
 
-    /// A publisher which accepts a factory closure to which you can
-    /// dynamically push value or completion events
+    /// Create a publisher which accepts a closure with a subscriber argument,
+    /// to which you can dynamically send value or completion events.
+    ///
+    /// You should return a `Cancelable`-conforming object from the closure in
+    /// which you can define any cleanup actions to execute when the pubilsher
+    /// completes or the subscription to the publisher is canceled.
     ///
     /// - parameter factory: A factory with a closure to which you can
-    ///                      dynamically push value or completion events
+    ///                      dynamically send value or completion events.
+    ///                      You should return a `Cancelable`-conforming object
+    ///                      from it to encapsulate any cleanup-logic for your work.
     ///
     /// An example usage could look as follows:
     ///
     ///    ```
     ///    AnyPublisher<String, MyError>.create { subscriber in
     ///        // Values
-    ///        subscriber(.value("Hello"))
-    ///        subscriber(.value("World!"))
+    ///        subscriber.send("Hello")
+    ///        subscriber.send("World!")
     ///
     ///        // Complete with error
-    ///        subscriber(.failure(MyError.someError))
+    ///        subscriber.send(completion: .failure(MyError.someError))
     ///
     ///        // Or, complete successfully
-    ///        subscriber(.finished)
+    ///        subscriber.send(completion: .finished)
+    ///
+    ///        return AnyCancellable {
+    ///          // Perform clean-up
+    ///        }
     ///    }
     ///
-    static func create(_ factory: @escaping Publishers.Create<Output, Failure>.Factory) -> AnyPublisher<Output, Failure> {
+    static func create(_ factory: @escaping Publishers.Create<Output, Failure>.SubscriberHandler)
+        -> AnyPublisher<Output, Failure> {
         AnyPublisher(factory)
     }
 }
 
 // MARK: - Publisher
 public extension Publishers {
-    /// A publisher which accepts a factory closure to which you can
-    /// dynamically push value or completion events
+    /// A publisher which accepts a closure with a subscriber argument,
+    /// to which you can dynamically send value or completion events.
     ///
-    /// An example usage could look as follows:
-    ///
-    ///    ```
-    ///    Publishers.Create<String, MyError> { subscriber in
-    ///        // Values
-    ///        subscriber(.value("Hello"))
-    ///        subscriber(.value("World!"))
-    ///
-    ///        // Complete with error
-    ///        subscriber(.failure(MyError.someError))
-    ///
-    ///        // Or, complete successfully
-    ///        subscriber(.finished)
-    ///    }
-    ///    ```
+    /// You should return a `Cancelable`-conforming object from the closure in
+    /// which you can define any cleanup actions to execute when the pubilsher
+    /// completes or the subscription to the publisher is canceled.
     struct Create<Output, Failure: Swift.Error>: Publisher {
-        public typealias Factory = (@escaping (Event<Output, Failure>) -> Void) -> Void
-        private let factory: Factory
+        public typealias SubscriberHandler = (Subscriber) -> Cancellable
+        private let factory: SubscriberHandler
 
         /// Initialize the publisher with a provided factory
         ///
         /// - parameter factory: A factory with a closure to which you can
         ///                      dynamically push value or completion events
-        public init(factory: @escaping Factory) {
+        public init(factory: @escaping SubscriberHandler) {
             self.factory = factory
         }
 
-        public func receive<S: Subscriber>(subscriber: S) where Failure == S.Failure, Output == S.Input {
+        public func receive<S: Combine.Subscriber>(subscriber: S) where Failure == S.Failure, Output == S.Input {
             subscriber.receive(subscription: Subscription(factory: factory, downstream: subscriber))
         }
     }
@@ -101,37 +110,59 @@ public extension Publishers {
 
 // MARK: - Subscription
 private extension Publishers.Create {
-    class Subscription<Downstream: Subscriber>: Combine.Subscription where Output == Downstream.Input, Failure == Downstream.Failure {
+    class Subscription<Downstream: Combine.Subscriber>: Combine.Subscription where Output == Downstream.Input, Failure == Downstream.Failure {
         private let buffer: DemandBuffer<Downstream>
+        private var cancelable: Cancellable?
 
-        init(factory: @escaping Factory,
+        init(factory: @escaping SubscriberHandler,
              downstream: Downstream) {
             self.buffer = DemandBuffer(subscriber: downstream)
 
-            factory { [weak buffer] event in
-                guard let buffer = buffer else { return }
+            let subscriber = Subscriber(onValue: { [weak self] in _ = self?.buffer.buffer(value: $0) },
+                                        onCompletion: { [weak self] in self?.buffer.complete(completion: $0) })
 
-                switch event {
-                case .value(let output):
-                    _ = buffer.buffer(value: output)
-                case .failure(let error):
-                    buffer.complete(completion: .failure(error))
-                case .finished:
-                    buffer.complete(completion: .finished)
-                }
-            }
+            self.cancelable = factory(subscriber)
         }
 
         func request(_ demand: Subscribers.Demand) {
             _ = self.buffer.demand(demand)
         }
 
-        func cancel() { }
+        func cancel() {
+            self.cancelable?.cancel()
+        }
     }
 }
 
 extension Publishers.Create.Subscription: CustomStringConvertible {
     var description: String {
         return "Create.Subscription<\(Output.self), \(Failure.self)>"
+    }
+}
+
+public extension Publishers.Create {
+    struct Subscriber {
+        private let onValue: (Output) -> Void
+        private let onCompletion: (Subscribers.Completion<Failure>) -> Void
+
+        fileprivate init(onValue: @escaping (Output) -> Void,
+                         onCompletion: @escaping (Subscribers.Completion<Failure>) -> Void) {
+            self.onValue = onValue
+            self.onCompletion = onCompletion
+        }
+
+        /// Sends a value to the subscriber.
+        ///
+        /// - Parameter value: The value to send.
+        public func send(_ input: Output) {
+            onValue(input)
+        }
+
+        /// Sends a completion event to the subscriber.
+        ///
+        /// - Parameter completion: A `Completion` instance which indicates whether publishing has finished normally or failed with an error.
+        public func send(completion: Subscribers.Completion<Failure>) {
+            onCompletion(completion)
+        }
     }
 }

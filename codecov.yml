@@ -1,12 +1,10 @@
 ignore:
     - "Tests/**/*"
 
-status:
-    patch:
-      default:
-        threshold: 1%
-
-project:
+coverage:
+  status:
+    project:
       default:
         target: auto
         threshold: 1%
+        base: auto

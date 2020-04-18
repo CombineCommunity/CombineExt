@@ -23,16 +23,20 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [withLatestFrom](#withLatestFrom)
 * [flatMapLatest](#flatMapLatest)
 * [assign](#assign)
+* [amb](#amb)
 * [materialize](#materialize)
 * [values](#values)
 * [failures](#failures)
 * [dematerialize](#dematerialize)
+* [partition](#partition)
 * [zip(with:) and Collection.zip](#ZipMany)
 * [combineLatest(with:) and Collection.combineLatest](#CombineLatestMany)
 * [mapMany(_:)](#MapMany)
+* [setOutputType(to:)](#setOutputType)
+* [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
 
 ### Publishers
-* [AnyPublisher.create](#anypublisher.create)
+* [AnyPublisher.create](#AnypublisherCreate)
 * [CurrentValueRelay](#CurrentValueRelay)
 * [PassthroughRelay](#PassthroughRelay)
 
@@ -135,6 +139,40 @@ var text: UITextField
 ```
 
 ------
+
+### amb
+
+Amb takes multiple publishers and mirrors the first one to emit an event. You can think of it as a race of publishers, where the first one to emit passes its events, while the others are ignored.
+
+The name `amb` comes from the [Reactive Extensions operator](http://reactivex.io/documentation/operators/amb.html), also known in RxJS as `race`.
+
+```swift
+let subject1 = PassthroughSubject<Int, Never>()
+let subject2 = PassthroughSubject<Int, Never>()
+
+subject1
+  .amb(subject2)
+  .sink(receiveCompletion: { print("amb: completed with \($0)") },
+        receiveValue: { print("amb: \($0)") })
+
+subject2.send(3) // Since this subject emit first, it becomes the active publisher
+subject1.send(1)
+subject2.send(6)
+subject1.send(8)
+subject1.send(7)
+
+subject1.send(completion: .finished)
+// Only when subject2 finishes, amb itself finishes as well, since it's the active publisher
+subject2.send(completion: .finished)
+```
+
+#### Output:
+
+```none
+amb: 3
+amb: 6
+amb: completed with .finished
+```
 
 ### materialize
 
@@ -276,7 +314,7 @@ odd: 5
 
 This repo includes two overloads on Combine’s `Publisher.zip` methods (which, at the time of writing only go up to arity three).
 
-This lets you arbitrarily zip many publishers and receive either an array of inner publisher outputs back.
+This lets you arbitrarily zip many publishers and receive an array of inner publisher outputs back.
 
 ```swift
 let first = PassthroughSubject<Int, Never>()
@@ -341,7 +379,6 @@ combineLatest: [true, true, true, true]
 combineLatest: [false, true, true, true]
 ```
 
-
 ### MapMany
 
 Projects each element of a publisher collection into a new publisher collection form.
@@ -362,27 +399,56 @@ intArrayPublisher.send([10, 2, 2, 4, 3, 8])
 ["10", "2", "2", "4", "3", "8"]
 ```
 
+### setOutputType
+
+`Publisher.setOutputType(to:)` is an analog to [`.setFailureType(to:)`](https://developer.apple.com/documentation/combine/publisher/3204753-setfailuretype) for when `Output` is constrained to `Never`. This is especially helpful when chaining operators after an [`.ignoreOutput()`](https://developer.apple.com/documentation/combine/publisher/3204714-ignoreoutput) call.
+
+### removeAllDuplicates
+
+`Publisher.removeAllDuplicates` and `.removeAllDuplicates(by:)` are stricter forms of Apple’s [`Publisher.removeDuplicates`](https://developer.apple.com/documentation/combine/publisher/3204745-removeduplicates) and [`.removeDuplicates(by:)`](https://developer.apple.com/documentation/combine/publisher/3204746-removeduplicates)—the operators de-duplicate across _all_ previous value events, instead of pairwise.
+
+If your `Output` doesn‘t conform to `Hashable` or `Equatable`, you may instead use the comparator-based version of this operator to decide whether two elements are equal.
+
+```swift
+subscription = [1, 1, 2, 1, 3, 3, 4].publisher
+  .removeAllDuplicates()
+  .sink(receiveValue: { print("removeAllDuplicates: \($0)") })
+```
+
+```none
+removeAllDuplicates: 1
+removeAllDuplicates: 2
+removeAllDuplicates: 3
+removeAllDuplicates: 4
+```
+
 ## Publishers
 
 This section outlines some of the custom Combine publishers CombineExt provides
 
 ### AnyPublisher.create
 
-A publisher which accepts a factory closure to which you can dynamically push value or completion events.
+A publisher which accepts a closure with a subscriber argument, to which you can dynamically send value or completion events.
 
 This lets you easily create custom publishers to wrap any non-publisher asynchronous work, while still respecting the downstream consumer's backpressure demand.
+
+You should return a `Cancelable`-conforming object from the closure in which you can define any cleanup actions to execute when the pubilsher completes or the subscription to the publisher is canceled.
 
 ```swift
 AnyPublisher<String, MyError>.create { subscriber in
   // Values
-  subscriber(.value("Hello"))
-  subscriber(.value("World!"))
+  subscriber.send("Hello")
+  subscriber.send("World!")
   
   // Complete with error
-  subscriber(.failure(MyError.someError))
+  subscriber.send(completion: .failure(MyError.someError))
   
   // Or, complete successfully
-  subscriber(.finished)
+  subscriber.send(completion: .finished)
+
+  return AnyCancellable { 
+    // Perform cleanup
+  }
 }
 ```
 
@@ -391,7 +457,7 @@ You can also use an `AnyPublisher` initializer with the same signature:
 ```swift
 AnyPublisher<String, MyError> { subscriber in 
     /// ...
-}
+    return AnyCancellable { }
 ```
 
 ------

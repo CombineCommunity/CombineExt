@@ -23,18 +23,6 @@ class AnyPublisherHelpersTests: XCTestCase {
         XCTAssertEqual(completion, .finished)
     }
     
-    func testNever() {
-        var completion: Subscribers.Completion<Never>?
-        
-        subscription = AnyPublisher<Never, Never>.never()
-            .sink(
-                receiveCompletion: { completion = $0 },
-                receiveValue: { _ in }
-            )
-
-        XCTAssertEqual(completion, .finished)
-    }
-    
     func testResultSuccess() {
         var completion: Subscribers.Completion<TestFailureCondition>?
         

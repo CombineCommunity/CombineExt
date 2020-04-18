@@ -18,9 +18,11 @@ class CreateTests: XCTestCase {
     
     private var completion: Subscribers.Completion<CreateTests.MyError>?
     private var values = [String]()
+    private var canceled = false
     private let allValues = ["Hello", "World", "What's", "Up?"]
     
     override func setUp() {
+        canceled = false
         values = []
         completion = nil
     }
@@ -35,6 +37,7 @@ class CreateTests: XCTestCase {
         wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .finished)
+        XCTAssertTrue(canceled)
         XCTAssertEqual(values, allValues)
     }
 
@@ -44,14 +47,19 @@ class CreateTests: XCTestCase {
                                         expectation: expect)
 
         let publisher = AnyPublisher<String, MyError> { subscriber in
-            self.allValues.forEach { subscriber(.value($0)) }
-            subscriber(.finished)
+            self.allValues.forEach { subscriber.send($0) }
+            subscriber.send(completion: .finished)
+
+            return AnyCancellable { [weak self] in
+                self?.canceled = true
+            }
         }
         
         publisher.subscribe(subscriber)
         wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .finished)
+        XCTAssertTrue(canceled)
         XCTAssertEqual(values, Array(allValues.prefix(2)))
     }
     
@@ -65,6 +73,7 @@ class CreateTests: XCTestCase {
         wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .finished)
+        XCTAssertTrue(canceled)
         XCTAssertTrue(values.isEmpty)
     }
     
@@ -78,6 +87,7 @@ class CreateTests: XCTestCase {
         wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .failure(MyError.failure))
+        XCTAssertTrue(canceled)
         XCTAssertEqual(values, allValues)
     }
 
@@ -91,6 +101,7 @@ class CreateTests: XCTestCase {
         wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .failure(MyError.failure))
+        XCTAssertTrue(canceled)
         XCTAssertEqual(values, Array(allValues.prefix(2)))
     }
     
@@ -104,7 +115,20 @@ class CreateTests: XCTestCase {
         wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .failure(MyError.failure))
+        XCTAssertTrue(canceled)
         XCTAssertTrue(values.isEmpty)
+    }
+
+    var cancelable: Cancellable?
+    func testManualCancelation() {
+        let publisher = AnyPublisher<String, Never>.create { _ in
+            return AnyCancellable { [weak self] in self?.canceled = true }
+        }
+
+        cancelable = publisher.sink { _ in }
+        XCTAssertFalse(canceled)
+        cancelable?.cancel()
+        XCTAssertTrue(canceled)
     }
 }
 
@@ -112,14 +136,19 @@ class CreateTests: XCTestCase {
 private extension CreateTests {
     func makePublisher(fail: Bool = false) -> AnyPublisher<String, MyError> {
         AnyPublisher<String, MyError>.create { subscriber in
-            self.allValues.forEach { subscriber(.value($0)) }
-            fail ? subscriber(.failure(MyError.failure)) : subscriber(.finished)
+            self.allValues.forEach { subscriber.send($0) }
+            subscriber.send(completion: fail ? .failure(MyError.failure) : .finished)
+
+            return AnyCancellable { [weak self] in
+                self?.canceled = true
+            }
         }
     }
     
     func makeSubscriber(demand: Subscribers.Demand, expectation: XCTestExpectation?) -> AnySubscriber<String, MyError> {
         return AnySubscriber(
             receiveSubscription: { subscription in
+                XCTAssertEqual("\(subscription)", "Create.Subscription<String, MyError>")
                 subscription.request(demand)
             },
             receiveValue: { value in
