@@ -8,7 +8,7 @@
 import XCTest
 import Combine
 
-class AnyPublisherTests: XCTestCase {
+class AnyPublisherHelpersTests: XCTestCase {
     var subscription: AnyCancellable!
     
     func testEmpty() {
@@ -21,6 +21,44 @@ class AnyPublisherTests: XCTestCase {
             )
 
         XCTAssertEqual(completion, .finished)
+    }
+    
+    func testNever() {
+        var completion: Subscribers.Completion<Never>?
+        
+        subscription = AnyPublisher<Never, Never>.never()
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { _ in }
+            )
+
+        XCTAssertEqual(completion, .finished)
+    }
+    
+    func testResultSuccess() {
+        var completion: Subscribers.Completion<TestFailureCondition>?
+        
+        subscription = AnyPublisher<Bool, TestFailureCondition>.result(TestFailureCondition.exampleFailure)
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { _ in }
+            )
+
+        XCTAssertEqual(completion, .failure(TestFailureCondition.exampleFailure))
+    }
+    
+    func testResultFailure() {
+        var completion: Subscribers.Completion<Never>?
+        var completedValue = false
+        
+        subscription = AnyPublisher<Bool, Never>.result(true)
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { completedValue = $0 }
+            )
+
+        XCTAssertEqual(completion, .finished)
+        XCTAssertTrue(completedValue)
     }
     
     func testFail() {
@@ -79,7 +117,6 @@ class AnyPublisherTests: XCTestCase {
         XCTAssertTrue(outputValue)
     }
     
-    
     func testFuture() {
         let expectation = XCTestExpectation(description: self.debugDescription)
         var completion: Subscribers.Completion<TestFailureCondition>?
@@ -133,7 +170,7 @@ class AnyPublisherTests: XCTestCase {
     }
 }
 
-extension AnyPublisherTests {
+extension AnyPublisherHelpersTests {
     enum TestFailureCondition: Error {
         case exampleFailure
     }
@@ -142,7 +179,6 @@ extension AnyPublisherTests {
     func asyncAPICall(sabotage: Bool, completion completionBlock: @escaping ((Bool, TestFailureCondition?) -> Void)) {
         DispatchQueue.global(qos: .background).async {
             let delay = Int.random(in: 1...3)
-            print(" * making async call (delay of \(delay) seconds)")
             sleep(UInt32(delay))
             if sabotage {
                 completionBlock(false, TestFailureCondition.exampleFailure)
