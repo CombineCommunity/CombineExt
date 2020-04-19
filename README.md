@@ -440,7 +440,7 @@ removeAllDuplicates: 4
 
 ### ShareReplay
 
-Similar to [`Publisher.share`](https://developer.apple.com/documentation/combine/publisher/3204754-share), `.share(replay:)` can be used to create a publisher instance with reference semantics. But, it also replays value events to further subscribers.
+Similar to [`Publisher.share`](https://developer.apple.com/documentation/combine/publisher/3204754-share), `.share(replay:)` can be used to create a publisher instance with reference semantics which replays a pre-defined amount of value events to further subscribers.
 
 ```swift
 let subject = PassthroughSubject<Int, Never>()
