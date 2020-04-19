@@ -21,12 +21,14 @@ final class ShareReplayTests: XCTestCase {
     func testSharingNoReplay() {
         var subscribeCount = 0
 
-        let publisher = Publishers.Create<Int, Never> { handler in
+        let publisher = Publishers.Create<Int, Never> { subscriber in
             subscribeCount += 1
-            handler(.value(1))
-            handler(.value(2))
-            handler(.value(3))
-            handler(.finished)
+            subscriber.send(1)
+            subscriber.send(2)
+            subscriber.send(3)
+            subscriber.send(completion: .finished)
+
+            return AnyCancellable { }
         }
         .share(replay: 0)
 

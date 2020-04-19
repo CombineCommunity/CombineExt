@@ -19,6 +19,7 @@ public final class ReplaySubject<Output, Failure: Error> {
     private var buffer = [Output]()
 
     // MARK: - Internal
+    // Keeping track of all live subscriptions, so `send` events can be forwarded to them.
     var subscriptions = [Subscription<AnySubscriber<Output, Failure>>]()
 
     // We also track subscriber identifiers, to more quickly bottom-out double subscribes instead of having to do a
