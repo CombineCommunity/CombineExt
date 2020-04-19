@@ -576,7 +576,7 @@ guarantees
 
 ### ReplaySubject
 
-A Combine analog to Rx’s [`ReplaySubject` type](http://reactivex.io/documentation/subject.html). It’s similar to a [`CurrentValueSubject`](https://developer.apple.com/documentation/combine/currentvaluesubject) in that it buffers elements, but, it takes it a step further in allowing consumers to specific the number of value events to buffer and replay to future subscribers. Also, it will handle forwarding any completion events after the buffer is cleared upon subscription.
+A Combine analog to Rx’s [`ReplaySubject` type](http://reactivex.io/documentation/subject.html). It’s similar to a [`CurrentValueSubject`](https://developer.apple.com/documentation/combine/currentvaluesubject) in that it buffers values, but, it takes it a step further in allowing consumers to specify the number of values to buffer and replay to future subscribers. Also, it will handle forwarding any completion events after the buffer is cleared upon subscription.
 
 ```swift
 let subject = ReplaySubject<Int, Never>(maxBufferSize: 3)
