@@ -34,7 +34,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [mapMany(_:)](#MapMany)
 * [setOutputType(to:)](#setOutputType)
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
-* [share(replay:)](#share(replay:))
+* [share(replay:)](#sharereplay)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
