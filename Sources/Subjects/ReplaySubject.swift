@@ -88,13 +88,10 @@ extension ReplaySubject: Publisher {
         }
 
         let subscription = Subscription(
-            downstream: AnySubscriber(subscriber)
-        ) { [weak self] in
-            guard
-                let self = self,
-                let subscriptionIndex = self.subscriptions
-                    .firstIndex(where: { $0.innerSubscriberIdentifier == subscriberIdentifier })
-                else { return }
+            downstream: AnySubscriber(subscriber)) { [weak self] in
+            guard let self = self,
+                  let subscriptionIndex = self.subscriptions
+                                              .firstIndex(where: { $0.innerSubscriberIdentifier == subscriberIdentifier }) else { return }
 
             self.subscriberIdentifiers.remove(subscriberIdentifier)
             self.subscriptions.remove(at: subscriptionIndex)
