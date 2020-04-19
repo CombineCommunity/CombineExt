@@ -68,8 +68,7 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
             return
         }
 
-        let subscription = Subscription(downstream:
-        AnySubscriber(subscriber)) { [weak self] in
+        let subscription = Subscription(downstream: AnySubscriber(subscriber)) { [weak self] in
             guard let self = self,
                   let subscriptionIndex = self.subscriptions
                                               .firstIndex(where: { $0.innerSubscriberIdentifier == subscriberIdentifier }) else { return }
