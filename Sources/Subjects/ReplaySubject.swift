@@ -9,22 +9,23 @@
 import Combine
 
 /// A `ReplaySubject` is a subject that can buffer one or more values. It stores value events, up to its `bufferSize` in a
-/// [first-in-first-out](https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)) manner and then replays it to
+/// first-in-first-out manner and then replays it to
 /// future subscribers and also forwards completion events.
 ///
 /// The implementation borrows heavily from [Entwine’s](https://github.com/tcldr/Entwine/blob/b839c9fcc7466878d6a823677ce608da998b95b9/Sources/Entwine/Operators/ReplaySubject.swift).
-public final class ReplaySubject<Output, Failure: Error> {
-    // MARK: - Private
+public final class ReplaySubject<Output, Failure: Error>: Subject {
+    public typealias Output = Output
+    public typealias Failure = Failure
+
     private let bufferSize: Int
     private var buffer = [Output]()
 
-    // MARK: - Internal
     // Keeping track of all live subscriptions, so `send` events can be forwarded to them.
-    var subscriptions = [Subscription<AnySubscriber<Output, Failure>>]()
+    private var subscriptions = [Subscription<AnySubscriber<Output, Failure>>]()
 
     // We also track subscriber identifiers, to more quickly bottom-out double subscribes instead of having to do a
     // linear pass over `subscriptions`.
-    var subscriberIdentifiers = Set<CombineIdentifier>()
+    private var subscriberIdentifiers = Set<CombineIdentifier>()
 
     private var completion: Subscribers.Completion<Failure>?
     private var isActive: Bool { completion == nil }
@@ -34,11 +35,7 @@ public final class ReplaySubject<Output, Failure: Error> {
     public init(bufferSize: Int) {
         self.bufferSize = bufferSize
     }
-}
 
-// MARK: - `Subject`
-
-extension ReplaySubject: Subject {
     public func send(_ value: Output) {
         guard isActive else { return }
 
@@ -62,17 +59,8 @@ extension ReplaySubject: Subject {
     public func send(subscription: Combine.Subscription) {
         subscription.request(.unlimited)
     }
-}
 
-// MARK: - `Publisher`
-
-extension ReplaySubject: Publisher {
-    public typealias Output = Output
-    public typealias Failure = Failure
-
-    public func receive<Subscriber: Combine.Subscriber>(
-        subscriber: Subscriber
-    ) where Failure == Subscriber.Failure, Output == Subscriber.Input {
+    public func receive<Subscriber: Combine.Subscriber>(subscriber: Subscriber) where Failure == Subscriber.Failure, Output == Subscriber.Input {
         let subscriberIdentifier = subscriber.combineIdentifier
 
         guard !subscriberIdentifiers.contains(subscriberIdentifier) else {
@@ -80,8 +68,8 @@ extension ReplaySubject: Publisher {
             return
         }
 
-        let subscription = Subscription(
-            downstream: AnySubscriber(subscriber)) { [weak self] in
+        let subscription = Subscription(downstream:
+        AnySubscriber(subscriber)) { [weak self] in
             guard let self = self,
                   let subscriptionIndex = self.subscriptions
                                               .firstIndex(where: { $0.innerSubscriberIdentifier == subscriberIdentifier }) else { return }
@@ -98,29 +86,18 @@ extension ReplaySubject: Publisher {
     }
 }
 
-// MARK: - `ReplaySubject.Subscription`
-
 extension ReplaySubject {
-    final class Subscription<Downstream: Subscriber> where Output == Downstream.Input, Failure == Downstream.Failure {
-        // MARK: - Private
-
+    final class Subscription<Downstream: Subscriber>: Combine.Subscription where Output == Downstream.Input, Failure == Downstream.Failure {
         private var demandBuffer: DemandBuffer<Downstream>?
         private var cancellationHandler: (() -> Void)?
 
-        // MARK: - Internal
+        fileprivate let innerSubscriberIdentifier: CombineIdentifier
 
-        let innerSubscriberIdentifier: CombineIdentifier
-
-        init(
-            downstream: Downstream,
-            cancellationHandler: (() -> Void)?
-        ) {
+        init(downstream: Downstream, cancellationHandler: (() -> Void)?) {
             self.demandBuffer = DemandBuffer(subscriber: downstream)
             self.innerSubscriberIdentifier = downstream.combineIdentifier
             self.cancellationHandler = cancellationHandler
         }
-
-        // MARK: - Internal helpers
 
         func replay(_ buffer: [Output], completion: Subscribers.Completion<Failure>?) {
             buffer.forEach(forwardValueToBuffer)
@@ -137,24 +114,16 @@ extension ReplaySubject {
         func forwardCompletionToBuffer(_ completion: Subscribers.Completion<Failure>) {
             demandBuffer?.complete(completion: completion)
         }
-    }
-}
 
-// MARK: - `Combine.Subscription`
+        func request(_ demand: Subscribers.Demand) {
+            _ = demandBuffer?.demand(demand)
+        }
 
-extension ReplaySubject.Subscription: Subscription {
-    func request(_ demand: Subscribers.Demand) {
-        _ = demandBuffer?.demand(demand)
-    }
-}
+        func cancel() {
+            cancellationHandler?()
+            cancellationHandler = nil
 
-// MARK: - `Cancellable`
-
-extension ReplaySubject.Subscription: Cancellable {
-    func cancel() {
-        cancellationHandler?()
-        cancellationHandler = nil
-
-        demandBuffer = nil
+            demandBuffer = nil
+        }
     }
 }
