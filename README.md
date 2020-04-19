@@ -34,7 +34,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [mapMany(_:)](#MapMany)
 * [setOutputType(to:)](#setOutputType)
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
-* [share(replay:)](#ShareReplay)
+* [share(replay:)](#share(replay:))
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -438,7 +438,7 @@ removeAllDuplicates: 4
 
 ------
 
-### ShareReplay
+### share(replay:)
 
 Similar to [`Publisher.share`](https://developer.apple.com/documentation/combine/publisher/3204754-share), `.share(replay:)` can be used to create a publisher instance with reference semantics which replays a pre-defined amount of value events to further subscribers.
 
@@ -579,7 +579,7 @@ guarantees
 A Combine analog to Rx’s [`ReplaySubject` type](http://reactivex.io/documentation/subject.html). It’s similar to a [`CurrentValueSubject`](https://developer.apple.com/documentation/combine/currentvaluesubject) in that it buffers values, but, it takes it a step further in allowing consumers to specify the number of values to buffer and replay to future subscribers. Also, it will handle forwarding any completion events after the buffer is cleared upon subscription.
 
 ```swift
-let subject = ReplaySubject<Int, Never>(maxBufferSize: 3)
+let subject = ReplaySubject<Int, Never>(bufferSize: 3)
 
 subject.send(1)
 subject.send(2)

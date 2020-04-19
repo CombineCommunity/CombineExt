@@ -14,12 +14,12 @@ final class ReplaySubjectTests: XCTestCase {
     private var cancellable2: AnyCancellable!
     private var cancellable3: AnyCancellable!
 
-    private enum  AnError: Error, Equatable {
+    private enum AnError: Error, Equatable {
         case someError
     }
 
     func testReplaysNoValues() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 1)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 1)
 
         var results = [Int]()
 
@@ -30,7 +30,7 @@ final class ReplaySubjectTests: XCTestCase {
     }
 
     func testMissedValueWithEmptyBuffer() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 0)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 0)
 
         subject.send(1)
 
@@ -45,7 +45,7 @@ final class ReplaySubjectTests: XCTestCase {
     }
 
     func testMissedValueWithSingletonBuffer() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 1)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 1)
 
         subject.send(1)
 
@@ -60,7 +60,7 @@ final class ReplaySubjectTests: XCTestCase {
     }
 
     func testMissedValuesWithManyBuffer() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 3)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 3)
 
         subject.send(1)
         subject.send(2)
@@ -78,7 +78,7 @@ final class ReplaySubjectTests: XCTestCase {
     }
 
     func testMissedValuesWithManyBufferUnfilled() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 3)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 3)
 
         subject.send(1)
         subject.send(2)
@@ -94,7 +94,7 @@ final class ReplaySubjectTests: XCTestCase {
     }
 
     func testMultipleSubscribers() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 3)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 3)
 
         subject.send(1)
         subject.send(2)
@@ -126,7 +126,7 @@ final class ReplaySubjectTests: XCTestCase {
     }
 
     func testCompletionWithMultipleSubscribers() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 3)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 3)
 
         subject.send(1)
         subject.send(2)
@@ -172,7 +172,7 @@ final class ReplaySubjectTests: XCTestCase {
     }
 
     func testErrorWithMultipleSubscribers() {
-        let subject = ReplaySubject<Int, AnError>(maxBufferSize: 3)
+        let subject = ReplaySubject<Int, AnError>(bufferSize: 3)
 
         subject.send(1)
         subject.send(2)
@@ -218,7 +218,7 @@ final class ReplaySubjectTests: XCTestCase {
     }
 
     func testValueAndCompletionPreSubscribe() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 1)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 1)
 
         subject.send(1)
         subject.send(completion: .finished)
@@ -237,7 +237,7 @@ final class ReplaySubjectTests: XCTestCase {
     }
 
     func testNoValuesReplayedPostCompletion() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 1)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 1)
 
         subject.send(1)
         subject.send(completion: .finished)
@@ -257,7 +257,7 @@ final class ReplaySubjectTests: XCTestCase {
     }
 
     func testNoValuesReplayedPostError() {
-        let subject = ReplaySubject<Int, AnError>(maxBufferSize: 1)
+        let subject = ReplaySubject<Int, AnError>(bufferSize: 1)
 
         subject.send(1)
         subject.send(completion: .failure(.someError))
@@ -277,7 +277,7 @@ final class ReplaySubjectTests: XCTestCase {
     }
 
     func testDoubleSubscribe() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 1)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 1)
 
         subject.send(1)
         subject.send(completion: .finished)
@@ -297,11 +297,11 @@ final class ReplaySubjectTests: XCTestCase {
             .subscribe(sink1)
 
         XCTAssertEqual(results, [1])
-        XCTAssertEqual(completions, [.finished, .finished])
+        XCTAssertEqual(completions, [.finished])
     }
 
     func testSubscriberIdentifiers() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 1)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 1)
 
         let subscriber = AnySubscriber<Int, Never>()
         let subscriberIdentifier = subscriber.combineIdentifier
@@ -314,7 +314,7 @@ final class ReplaySubjectTests: XCTestCase {
     }
 
     func testCancellation() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 1)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 1)
 
         cancellable1 = subject
             .sink(receiveValue: { _ in })
@@ -326,7 +326,7 @@ final class ReplaySubjectTests: XCTestCase {
 
     private var demandSubscription: Subscription!
     func testRespectsDemand() {
-        let subject = ReplaySubject<Int, Never>(maxBufferSize: 4)
+        let subject = ReplaySubject<Int, Never>(bufferSize: 4)
 
         subject.send(1)
         subject.send(2)

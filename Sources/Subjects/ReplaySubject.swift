@@ -8,24 +8,17 @@
 
 import Combine
 
-/// `ReplaySubject` is a [CurrentValueSubject](https://developer.apple.com/documentation/combine/currentvaluesubject)
-/// that can buffer, well, more than one value! It stores value events, up to its `maxBufferSize` in a
+/// A `ReplaySubject` is a subject that can buffer one or more values. It stores value events, up to its `bufferSize` in a
 /// [first-in-first-out](https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)) manner and then replays it to
 /// future subscribers and also forwards completion events.
 ///
-/// The implementation borrows heavily from [Tristan’s](https://github.com/tcldr/Entwine/blob/b839c9fcc7466878d6a823677ce608da998b95b9/Sources/Entwine/Operators/ReplaySubject.swift)
-/// with the main modifications being leaning on Shai’s [DemandBuffer](https://github.com/CombineCommunity/CombineExt/blob/7ed4677e33fdc963af404423cb563e133c271d2b/Sources/Common/DemandBuffer.swift)
-/// instead of `Entwine`’s [SinkQueue](https://github.com/tcldr/Entwine/blob/b839c9fcc7466878d6a823677ce608da998b95b9/Sources/Common/Utilities/SinkQueue.swift)
-/// and a plain ol’ `[Output]` buffer instead of a
-/// [custom, LinkedListQueue-backed one](https://github.com/tcldr/Entwine/blob/8be24a59bc91410bb29e84b1c4ae35398a5839c8/Sources/Entwine/Operators/ReplaySubject.swift#L162-L177).
+/// The implementation borrows heavily from [Entwine’s](https://github.com/tcldr/Entwine/blob/b839c9fcc7466878d6a823677ce608da998b95b9/Sources/Entwine/Operators/ReplaySubject.swift).
 public final class ReplaySubject<Output, Failure: Error> {
     // MARK: - Private
-
-    private let maxBufferSize: UInt
+    private let bufferSize: Int
     private var buffer = [Output]()
 
     // MARK: - Internal
-
     var subscriptions = [Subscription<AnySubscriber<Output, Failure>>]()
 
     // We also track subscriber identifiers, to more quickly bottom-out double subscribes instead of having to do a
@@ -35,10 +28,10 @@ public final class ReplaySubject<Output, Failure: Error> {
     private var completion: Subscribers.Completion<Failure>?
     private var isActive: Bool { completion == nil }
 
-    /// The initialization point for `ReplaySubject`s.
-    /// - Parameter maxBufferSize: The maximum number of value events to buffer and replay to all future subscribers.
-    public init(maxBufferSize: UInt) {
-        self.maxBufferSize = maxBufferSize
+    /// Create a `ReplaySubject`, buffering up to `bufferSize` values and replaying them to new subscribers
+    /// - Parameter bufferSize: The maximum number of value events to buffer and replay to all future subscribers.
+    public init(bufferSize: Int) {
+        self.bufferSize = bufferSize
     }
 }
 
@@ -50,7 +43,7 @@ extension ReplaySubject: Subject {
 
         buffer.append(value)
 
-        if buffer.count > maxBufferSize {
+        if buffer.count > bufferSize {
             buffer.removeFirst()
         }
 
@@ -83,7 +76,6 @@ extension ReplaySubject: Publisher {
 
         guard !subscriberIdentifiers.contains(subscriberIdentifier) else {
             subscriber.receive(subscription: Subscriptions.empty)
-            subscriber.receive(completion: .finished)
             return
         }
 
@@ -108,12 +100,11 @@ extension ReplaySubject: Publisher {
 // MARK: - `ReplaySubject.Subscription`
 
 extension ReplaySubject {
-    final class Subscription<Downstream: Subscriber>
-    where Output == Downstream.Input, Failure == Downstream.Failure {
+    final class Subscription<Downstream: Subscriber> where Output == Downstream.Input, Failure == Downstream.Failure {
         // MARK: - Private
 
         private var demandBuffer: DemandBuffer<Downstream>?
-        private var cancelHandler: (() -> Void)?
+        private var cancellationHandler: (() -> Void)?
 
         // MARK: - Internal
 
@@ -121,11 +112,11 @@ extension ReplaySubject {
 
         init(
             downstream: Downstream,
-            cancelHandler: (() -> Void)?
+            cancellationHandler: (() -> Void)?
         ) {
             self.demandBuffer = DemandBuffer(subscriber: downstream)
             self.innerSubscriberIdentifier = downstream.combineIdentifier
-            self.cancelHandler = cancelHandler
+            self.cancellationHandler = cancellationHandler
         }
 
         // MARK: - Internal helpers
@@ -160,8 +151,8 @@ extension ReplaySubject.Subscription: Subscription {
 
 extension ReplaySubject.Subscription: Cancellable {
     func cancel() {
-        cancelHandler?()
-        cancelHandler = nil
+        cancellationHandler?()
+        cancellationHandler = nil
 
         demandBuffer = nil
     }
