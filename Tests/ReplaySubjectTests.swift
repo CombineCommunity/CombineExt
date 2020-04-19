@@ -10,7 +10,7 @@ import Combine
 import XCTest
 
 final class ReplaySubjectTests: XCTestCase {
-    private var cancellables = Set<AnyCancellable>()
+    private var subscriptions = Set<AnyCancellable>()
 
     private enum AnError: Error, Equatable {
         case someError
@@ -21,10 +21,9 @@ final class ReplaySubjectTests: XCTestCase {
 
         var results = [Int]()
 
-        cancellables = Set([
-            subject
-                .sink(receiveValue: { results.append($0) })
-            ])
+        subject
+            .sink(receiveValue: { results.append($0) })
+            .store(in: &subscriptions)
 
         XCTAssertTrue(results.isEmpty)
     }
@@ -36,10 +35,9 @@ final class ReplaySubjectTests: XCTestCase {
 
         var results = [Int]()
 
-        cancellables = Set([
-            subject
-                .sink(receiveValue: { results.append($0) })
-            ])
+        subject
+            .sink(receiveValue: { results.append($0) })
+            .store(in: &subscriptions)
 
         subject.send(2)
 
@@ -53,10 +51,9 @@ final class ReplaySubjectTests: XCTestCase {
 
         var results = [Int]()
 
-        cancellables = Set([
-            subject
-                .sink(receiveValue: { results.append($0) })
-            ])
+        subject
+            .sink(receiveValue: { results.append($0) })
+            .store(in: &subscriptions)
 
         subject.send(2)
 
@@ -73,10 +70,9 @@ final class ReplaySubjectTests: XCTestCase {
 
         var results = [Int]()
 
-        cancellables = Set([
-            subject
-                .sink(receiveValue: { results.append($0) })
-            ])
+        subject
+            .sink(receiveValue: { results.append($0) })
+            .store(in: &subscriptions)
 
         subject.send(5)
 
@@ -91,10 +87,9 @@ final class ReplaySubjectTests: XCTestCase {
 
         var results = [Int]()
 
-        cancellables = Set([
-            subject
-                .sink(receiveValue: { results.append($0) })
-            ])
+        subject
+            .sink(receiveValue: { results.append($0) })
+            .store(in: &subscriptions)
 
         subject.send(3)
 
@@ -111,14 +106,17 @@ final class ReplaySubjectTests: XCTestCase {
         var results2 = [Int]()
         var results3 = [Int]()
 
-        cancellables = Set([
-            subject
-                .sink(receiveValue: { results1.append($0) }),
-            subject
-                .sink(receiveValue: { results2.append($0) }),
-            subject
-                .sink(receiveValue: { results3.append($0) })
-            ])
+        subject
+            .sink(receiveValue: { results1.append($0) })
+            .store(in: &subscriptions)
+
+        subject
+            .sink(receiveValue: { results2.append($0) })
+            .store(in: &subscriptions)
+
+        subject
+            .sink(receiveValue: { results3.append($0) })
+            .store(in: &subscriptions)
 
         subject.send(3)
 
@@ -143,23 +141,26 @@ final class ReplaySubjectTests: XCTestCase {
         var results3 = [Int]()
         var completions3 = [Subscribers.Completion<Never>]()
 
-        cancellables = Set([
-            subject
-                .sink(
-                    receiveCompletion: { completions1.append($0) },
-                    receiveValue: { results1.append($0) }
-                ),
-            subject
-                .sink(
-                    receiveCompletion: { completions2.append($0) },
-                    receiveValue: { results2.append($0) }
-                ),
-            subject
-                .sink(
-                    receiveCompletion: { completions3.append($0) },
-                    receiveValue: { results3.append($0) }
-                )
-            ])
+        subject
+            .sink(
+                receiveCompletion: { completions1.append($0) },
+                receiveValue: { results1.append($0) }
+            )
+            .store(in: &subscriptions)
+
+        subject
+            .sink(
+                receiveCompletion: { completions2.append($0) },
+                receiveValue: { results2.append($0) }
+            )
+            .store(in: &subscriptions)
+
+        subject
+            .sink(
+                receiveCompletion: { completions3.append($0) },
+                receiveValue: { results3.append($0) }
+            )
+            .store(in: &subscriptions)
 
         subject.send(3)
 
@@ -189,23 +190,27 @@ final class ReplaySubjectTests: XCTestCase {
         var results3 = [Int]()
         var completions3 = [Subscribers.Completion<AnError>]()
 
-        cancellables = Set([
-            subject
-                .sink(
-                    receiveCompletion: { completions1.append($0) },
-                    receiveValue: { results1.append($0) }
-                ),
-            subject
-                .sink(
-                    receiveCompletion: { completions2.append($0) },
-                    receiveValue: { results2.append($0) }
-                ),
-            subject
-                .sink(
-                    receiveCompletion: { completions3.append($0) },
-                    receiveValue: { results3.append($0) }
-                )
-            ])
+
+        subject
+            .sink(
+                receiveCompletion: { completions1.append($0) },
+                receiveValue: { results1.append($0) }
+            )
+            .store(in: &subscriptions)
+
+        subject
+            .sink(
+                receiveCompletion: { completions2.append($0) },
+                receiveValue: { results2.append($0) }
+            )
+            .store(in: &subscriptions)
+
+        subject
+            .sink(
+                receiveCompletion: { completions3.append($0) },
+                receiveValue: { results3.append($0) }
+            )
+            .store(in: &subscriptions)
 
         subject.send(3)
 
@@ -228,13 +233,12 @@ final class ReplaySubjectTests: XCTestCase {
         var results1 = [Int]()
         var completed = false
 
-        cancellables = Set([
-            subject
-                .sink(
-                    receiveCompletion: { _ in completed = true },
-                    receiveValue: { results1.append($0) }
-                )
-            ])
+        subject
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results1.append($0) }
+            )
+            .store(in: &subscriptions)
 
         XCTAssertEqual(results1, [1])
         XCTAssertTrue(completed)
@@ -250,13 +254,12 @@ final class ReplaySubjectTests: XCTestCase {
         var results1 = [Int]()
         var completed = false
 
-        cancellables = Set([
-            subject
-                .sink(
-                    receiveCompletion: { _ in completed = true },
-                    receiveValue: { results1.append($0) }
-                )
-            ])
+        subject
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results1.append($0) }
+            )
+            .store(in: &subscriptions)
 
         XCTAssertEqual(results1, [1])
         XCTAssertTrue(completed)
@@ -272,13 +275,12 @@ final class ReplaySubjectTests: XCTestCase {
         var results1 = [Int]()
         var completed = false
 
-        cancellables = Set([
-            subject
-                .sink(
-                    receiveCompletion: { _ in completed = true },
-                    receiveValue: { results1.append($0) }
-                )
-            ])
+        subject
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results1.append($0) }
+            )
+            .store(in: &subscriptions)
 
         XCTAssertEqual(results1, [1])
         XCTAssertTrue(completed)

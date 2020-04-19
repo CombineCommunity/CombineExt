@@ -10,7 +10,7 @@ import CombineExt
 import XCTest
 
 final class ShareReplayTests: XCTestCase {
-    private var cancellables = Set<AnyCancellable>()
+    private var subscriptions = Set<AnyCancellable>()
 
     private enum AnError: Error {
         case someError
@@ -30,14 +30,17 @@ final class ShareReplayTests: XCTestCase {
         }
         .share(replay: 0)
 
-        cancellables = Set([
-            publisher
-                .sink(receiveValue: { _ in }),
-            publisher
-                .sink(receiveValue: { _ in }),
-            publisher
-                .sink(receiveValue: { _ in })
-            ])
+        publisher
+            .sink(receiveValue: { _ in })
+            .store(in: &subscriptions)
+
+        publisher
+            .sink(receiveValue: { _ in })
+            .store(in: &subscriptions)
+
+        publisher
+            .sink(receiveValue: { _ in })
+            .store(in: &subscriptions)
 
         XCTAssertEqual(subscribeCount, 1)
     }
@@ -50,10 +53,9 @@ final class ShareReplayTests: XCTestCase {
 
         var results = [Int]()
 
-        cancellables = Set([
-            publisher
-                .sink(receiveValue: { results.append($0) })
-            ])
+        publisher
+            .sink(receiveValue: { results.append($0) })
+            .store(in: &subscriptions)
 
         subject.send(2)
 
@@ -69,20 +71,18 @@ final class ShareReplayTests: XCTestCase {
         let publisher = subject
             .share(replay: 3)
 
-        cancellables = Set([
-            publisher
-                .sink(receiveValue: { results1.append($0) })
-            ])
+        publisher
+            .sink(receiveValue: { results1.append($0) })
+            .store(in: &subscriptions)
 
         subject.send(1)
         subject.send(2)
         subject.send(3)
         subject.send(4)
 
-        cancellables.insert(
-            publisher
-                .sink(receiveValue: { results2.append($0) })
-            )
+        publisher
+            .sink(receiveValue: { results2.append($0) })
+            .store(in: &subscriptions)
 
         XCTAssertEqual(results1, [1, 2, 3, 4])
         XCTAssertEqual(results2, [2, 3, 4])
@@ -100,13 +100,12 @@ final class ShareReplayTests: XCTestCase {
         let publisher = subject
             .share(replay: 3)
 
-        cancellables = Set([
-            publisher
-                .sink(
-                    receiveCompletion: { completions1.append($0) },
-                    receiveValue: { results1.append($0) }
-                )
-            ])
+        publisher
+            .sink(
+                receiveCompletion: { completions1.append($0) },
+                receiveValue: { results1.append($0) }
+            )
+            .store(in: &subscriptions)
 
         subject.send(1)
         subject.send(2)
@@ -114,13 +113,12 @@ final class ShareReplayTests: XCTestCase {
         subject.send(4)
         subject.send(completion: .finished)
 
-        cancellables.insert(
-            publisher
-                .sink(
-                    receiveCompletion: { completions2.append($0) },
-                    receiveValue: { results2.append($0) }
-                )
+        publisher
+            .sink(
+                receiveCompletion: { completions2.append($0) },
+                receiveValue: { results2.append($0) }
             )
+            .store(in: &subscriptions)
 
         XCTAssertEqual(results1, [1, 2, 3, 4])
         XCTAssertEqual(completions1, [.finished])
@@ -141,13 +139,12 @@ final class ShareReplayTests: XCTestCase {
         let publisher = subject
             .share(replay: 3)
 
-        cancellables = Set([
-            publisher
-                .sink(
-                    receiveCompletion: { completions1.append($0) },
-                    receiveValue: { results1.append($0) }
-                )
-            ])
+        publisher
+            .sink(
+                receiveCompletion: { completions1.append($0) },
+                receiveValue: { results1.append($0) }
+            )
+            .store(in: &subscriptions)
 
         subject.send(1)
         subject.send(2)
@@ -155,13 +152,12 @@ final class ShareReplayTests: XCTestCase {
         subject.send(4)
         subject.send(completion: .failure(.someError))
 
-        cancellables.insert(
-            publisher
-                .sink(
-                    receiveCompletion: { completions2.append($0) },
-                    receiveValue: { results2.append($0) }
-                )
+        publisher
+            .sink(
+                receiveCompletion: { completions2.append($0) },
+                receiveValue: { results2.append($0) }
             )
+            .store(in: &subscriptions)
 
         XCTAssertEqual(results1, [1, 2, 3, 4])
         XCTAssertEqual(completions1, [.failure(.someError)])
@@ -179,13 +175,12 @@ final class ShareReplayTests: XCTestCase {
         let publisher = subject
             .share(replay: 1)
 
-        cancellables = Set([
-            publisher
-                .sink(
-                    receiveCompletion: { completions.append($0) },
-                    receiveValue: { results.append($0) }
-                )
-            ])
+        publisher
+            .sink(
+                receiveCompletion: { completions.append($0) },
+                receiveValue: { results.append($0) }
+            )
+            .store(in: &subscriptions)
 
         subject.send(completion: .finished)
         subject.send(1)
@@ -203,13 +198,12 @@ final class ShareReplayTests: XCTestCase {
         let publisher = subject
             .share(replay: 1)
 
-        cancellables = Set([
-            publisher
-                .sink(
-                    receiveCompletion: { completions.append($0) },
-                    receiveValue: { results.append($0) }
-                )
-            ])
+        publisher
+            .sink(
+                receiveCompletion: { completions.append($0) },
+                receiveValue: { results.append($0) }
+            )
+            .store(in: &subscriptions)
 
         subject.send(completion: .failure(.someError))
         subject.send(1)
