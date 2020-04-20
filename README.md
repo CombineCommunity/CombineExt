@@ -409,7 +409,31 @@ intArrayPublisher.send([10, 2, 2, 4, 3, 8])
 ["10", "2", "2", "4", "3", "8"]
 ```
 
-------
+### TryMapMany
+
+Projects each element of a publisher collection into a new publisher collection form.
+However, if  `transform`  closure throws an error, the publisher fails with the thrown error.
+
+```swift
+let intArrayPublisher = PassthroughSubject<[Int], NumberError>()
+    
+intArrayPublisher
+    .tryMapMany { number in
+        if number < 5 {
+            throw NumberError.numberSmallerThanFive
+        }
+        return "\(number)"
+    }
+    .sink(receiveValue: { print($0) })
+
+intArrayPublisher.send([10, 20, 20, 40, 30, 8])
+```
+
+#### Output:
+
+```none
+["10", "20", "20", "40", "30", "80"]
+```
 
 ### setOutputType
 
