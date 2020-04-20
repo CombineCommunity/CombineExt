@@ -13,7 +13,7 @@ public extension Publisher {
   ///  Merges two publishers into a single publisher by combining each value
   ///  from self with the latest value from the second publisher, if any.
   ///
-  ///  - parameter other: Second observable source.
+  ///  - parameter other: A second publisher source.
   ///  - parameter resultSelector: Function to invoke for each value from the self combined
   ///                              with the latest value from the second source, if any.
   ///
@@ -22,19 +22,94 @@ public extension Publisher {
   ///             specified result selector function.
   func withLatestFrom<Other: Publisher, Result>(_ other: Other,
                                                 resultSelector: @escaping (Output, Other.Output) -> Result)
-      -> Publishers.WithLatestFrom<Self, Other, Result> {
-    return .init(upstream: self, second: other, resultSelector: resultSelector)
+    -> Publishers.WithLatestFrom<Self, Other, Result> {
+      return .init(upstream: self, second: other, resultSelector: resultSelector)
+  }
+
+
+  ///  Merges three publishers into a single publisher by combining each value
+  ///  from self with the latest value from the second and third publisher, if any.
+  ///
+  ///  - parameter other: A second publisher source.
+  ///  - parameter other1: A third publisher source.
+  ///  - parameter resultSelector: Function to invoke for each value from the self combined
+  ///                              with the latest value from the second and third source, if any.
+  ///
+  ///  - returns: A publisher containing the result of combining each value of the self
+  ///             with the latest value from the second and third publisher, if any, using the
+  ///             specified result selector function.
+  func withLatestFrom<Other: Publisher, Other1: Publisher, Result>(_ other: Other,
+                                                                   _ other1: Other1,
+                                                                   resultSelector: @escaping (Output, (Other.Output, Other1.Output)) -> Result)
+    -> Publishers.WithLatestFrom<Self, AnyPublisher<(Other.Output, Other1.Output), Self.Failure>, Result>
+    where Other.Failure == Failure, Other1.Failure == Failure {
+      let combined = other.combineLatest(other1)
+        .eraseToAnyPublisher()
+      return .init(upstream: self, second: combined, resultSelector: resultSelector)
+  }
+
+  ///  Merges four publishers into a single publisher by combining each value
+  ///  from self with the latest value from the second, third and fourth publisher, if any.
+  ///
+  ///  - parameter other: A second publisher source.
+  ///  - parameter other1: A third publisher source.
+  ///  - parameter other2: A fourth publisher source.
+  ///  - parameter resultSelector: Function to invoke for each value from the self combined
+  ///                              with the latest value from the second, third and fourth source, if any.
+  ///
+  ///  - returns: A publisher containing the result of combining each value of the self
+  ///             with the latest value from the second, third and fourth publisher, if any, using the
+  ///             specified result selector function.
+  func withLatestFrom<Other: Publisher, Other1: Publisher, Other2: Publisher, Result>(_ other: Other,
+                                                                                      _ other1: Other1,
+                                                                                      _ other2: Other2,
+                                                                                      resultSelector: @escaping (Output, (Other.Output, Other1.Output, Other2.Output)) -> Result)
+    -> Publishers.WithLatestFrom<Self, AnyPublisher<(Other.Output, Other1.Output, Other2.Output), Self.Failure>, Result>
+    where Other.Failure == Failure, Other1.Failure == Failure, Other2.Failure == Failure {
+      let combined = other.combineLatest(other1, other2)
+        .eraseToAnyPublisher()
+      return .init(upstream: self, second: combined, resultSelector: resultSelector)
   }
 
   ///  Upon an emission from self, emit the latest value from the
   ///  second publisher, if any exists.
   ///
-  ///  - parameter other: Second observable source.
+  ///  - parameter other: A second publisher source.
   ///
   ///  - returns: A publisher containing the latest value from the second publisher, if any.
   func withLatestFrom<Other: Publisher>(_ other: Other)
-      -> Publishers.WithLatestFrom<Self, Other, Other.Output> {
-    return .init(upstream: self, second: other) { $1 }
+    -> Publishers.WithLatestFrom<Self, Other, Other.Output> {
+      return .init(upstream: self, second: other) { $1 }
+  }
+
+  /// Upon an emission from self, emit the latest value from the
+  /// second and third publisher, if any exists.
+  ///
+  /// - parameter other: A second publisher source.
+  /// - parameter other1: A third publisher source.
+  ///
+  /// - returns: A publisher containing the latest value from the second and third publisher, if any.
+  func withLatestFrom<Other: Publisher, Other1: Publisher>(_ other: Other,
+                                                           _ other1: Other1)
+    -> Publishers.WithLatestFrom<Self, AnyPublisher<(Other.Output, Other1.Output), Self.Failure>, (Other.Output, Other1.Output)>
+    where Other.Failure == Failure, Other1.Failure == Failure {
+     withLatestFrom(other, other1) { $1 }
+  }
+
+  /// Upon an emission from self, emit the latest value from the
+  /// second, third and forth publisher, if any exists.
+  ///
+  /// - parameter other: A second publisher source.
+  /// - parameter other1: A third publisher source.
+  /// - parameter other2: A forth publisher source.
+  ///
+  /// - returns: A publisher containing the latest value from the second, third and forth publisher, if any.
+  func withLatestFrom<Other: Publisher, Other1: Publisher, Other2: Publisher>(_ other: Other,
+                                                                              _ other1: Other1,
+                                                                              _ other2: Other2)
+    -> Publishers.WithLatestFrom<Self, AnyPublisher<(Other.Output, Other1.Output, Other2.Output), Self.Failure>, (Other.Output, Other1.Output, Other2.Output)>
+    where Other.Failure == Failure, Other1.Failure == Failure, Other2.Failure == Failure {
+     withLatestFrom(other, other1, other2) { $1 }
   }
 }
 
