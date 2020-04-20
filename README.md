@@ -76,7 +76,7 @@ This section outlines some of the custom operators CombineExt provides.
 
 ### withLatestFrom
 
-Merges two publishers into a single publisher by combining each value from `self` with the _latest_ value from the second publisher, if any.
+Merges up to fours publishers into a single publisher by combining each value from `self` with the _latest_ value from the other publishers, if any.
 
 ```swift
 let taps = PassthroughSubject<Void, Never>()
