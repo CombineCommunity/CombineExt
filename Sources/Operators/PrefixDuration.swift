@@ -24,9 +24,7 @@ public extension Publisher {
                 tolerance: TimeInterval? = nil,
                 on runLoop: RunLoop = .main,
                 in mode: RunLoop.Mode = .default,
-                options: RunLoop.SchedulerOptions? = nil) -> Publishers.PrefixUntilOutput<Self, Publishers.Output<Publishers.Autoconnect<Timer.TimerPublisher>>> {
-        prefix(untilOutputFrom: Timer.publish(every: duration, tolerance: tolerance, on: runLoop, in: mode, options: options)
-                .autoconnect()
-                .prefix(1))
+                options: RunLoop.SchedulerOptions? = nil) -> Publishers.PrefixUntilOutput<Self, Publishers.Autoconnect<Timer.TimerPublisher>> {
+        prefix(untilOutputFrom: Timer.publish(every: duration, tolerance: tolerance, on: runLoop, in: mode, options: options).autoconnect())
     }
 }
