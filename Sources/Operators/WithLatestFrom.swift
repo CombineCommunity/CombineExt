@@ -8,6 +8,8 @@
 
 import Combine
 
+// swiftlint:disable large_tuple
+
 // MARK: - Operator methods
 public extension Publisher {
   ///  Merges two publishers into a single publisher by combining each value
@@ -25,7 +27,6 @@ public extension Publisher {
     -> Publishers.WithLatestFrom<Self, Other, Result> {
       return .init(upstream: self, second: other, resultSelector: resultSelector)
   }
-
 
   ///  Merges three publishers into a single publisher by combining each value
   ///  from self with the latest value from the second and third publisher, if any.

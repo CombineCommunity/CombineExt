@@ -35,6 +35,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [setOutputType(to:)](#setOutputType)
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
 * [share(replay:)](#sharereplay)
+* [prefix(duration:tolerance:on:in:options:)](#prefixdurationtoleranceoninoptions)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -468,6 +469,32 @@ first subscriber: 4
 second subscriber: 2
 second subscriber: 3
 second subscriber: 4
+```
+
+### prefix(duration:tolerance:on:in:options:)
+
+A time-based overload on `Publisher.prefix` that accepts value and completions events from an upstream publisher for a specified `duration` of time (in seconds). After expiring, the operator will emit a `.finished` event and ignore all future output. Configuration options are also exposed for the underlying timer, if needed.
+
+```swift
+let subject = PassthroughSubject<Int, Never>()
+
+subscription = subject
+  .prefix(duration: 0.5)
+  .sink(receiveValue: { print($0) })
+  
+subject.send(1)
+subject.send(2)
+subject.send(3)
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+  subject.send(4)
+}
+```
+
+```none
+1
+2
+3
 ```
 
 ## Publishers
