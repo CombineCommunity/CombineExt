@@ -325,22 +325,24 @@ final class ReplaySubjectTests: XCTestCase {
         subject.send(2)
         subject.send(completion: .finished)
 
-        var results = [Int]()
+        var results = [String]()
         var completions = [Subscribers.Completion<Never>]()
 
-        let subscriber = AnySubscriber<Int, Never>(
+        let subscriber = AnySubscriber<String, Never>(
             receiveSubscription: { $0.request(.max(1)) },
             receiveValue: { results.append($0); return .none },
             receiveCompletion: { completions.append($0) }
         )
 
         subject
+            .map { "a\($0)" }
             .subscribe(subscriber)
 
         subject
+            .map { "b\($0)" }
             .subscribe(subscriber)
 
-        XCTAssertEqual([2, 2], results)
+        XCTAssertEqual(["a2", "b2"], results)
         XCTAssertEqual([.finished, .finished], completions)
     }
 }
