@@ -23,10 +23,6 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
     // Keeping track of all live subscriptions, so `send` events can be forwarded to them.
     private var subscriptions = [Subscription<AnySubscriber<Output, Failure>>]()
 
-    // We also track subscriber identifiers, to more quickly bottom-out double subscribes instead of having to do a
-    // linear pass over `subscriptions`.
-    private var subscriberIdentifiers = Set<CombineIdentifier>()
-
     private var completion: Subscribers.Completion<Failure>?
     private var isActive: Bool { completion == nil }
 
@@ -63,21 +59,14 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
     public func receive<Subscriber: Combine.Subscriber>(subscriber: Subscriber) where Failure == Subscriber.Failure, Output == Subscriber.Input {
         let subscriberIdentifier = subscriber.combineIdentifier
 
-        guard !subscriberIdentifiers.contains(subscriberIdentifier) else {
-            subscriber.receive(subscription: Subscriptions.empty)
-            return
-        }
-
         let subscription = Subscription(downstream: AnySubscriber(subscriber)) { [weak self] in
             guard let self = self,
                   let subscriptionIndex = self.subscriptions
                                               .firstIndex(where: { $0.innerSubscriberIdentifier == subscriberIdentifier }) else { return }
 
-            self.subscriberIdentifiers.remove(subscriberIdentifier)
             self.subscriptions.remove(at: subscriptionIndex)
         }
 
-        subscriberIdentifiers.insert(subscriberIdentifier)
         subscriptions.append(subscription)
 
         subscriber.receive(subscription: subscription)
