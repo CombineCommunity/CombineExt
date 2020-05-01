@@ -286,30 +286,6 @@ final class ReplaySubjectTests: XCTestCase {
         XCTAssertTrue(completed)
     }
 
-    func testDoubleSubscribe() {
-        let subject = ReplaySubject<Int, Never>(bufferSize: 1)
-
-        subject.send(1)
-        subject.send(completion: .finished)
-
-        var results = [Int]()
-        var completions = [Subscribers.Completion<Never>]()
-
-        let sink1 = Subscribers.Sink<Int, Never>(
-            receiveCompletion: { completions.append($0) },
-            receiveValue: { results.append($0) }
-        )
-
-        subject
-            .subscribe(sink1)
-
-        subject
-            .subscribe(sink1)
-
-        XCTAssertEqual(results, [1])
-        XCTAssertEqual(completions, [.finished])
-    }
-
     private var demandSubscription: Subscription!
     func testRespectsDemand() {
         let subject = ReplaySubject<Int, Never>(bufferSize: 4)
@@ -340,5 +316,31 @@ final class ReplaySubjectTests: XCTestCase {
         subject.send(completion: .finished)
 
         XCTAssertTrue(completed)
+    }
+
+    func testDoubleSubscribe() {
+        let subject = ReplaySubject<Int, Never>(bufferSize: 1)
+
+        subject.send(1)
+        subject.send(2)
+        subject.send(completion: .finished)
+
+        var results = [Int]()
+        var completions = [Subscribers.Completion<Never>]()
+
+        let subscriber = AnySubscriber<Int, Never>(
+            receiveSubscription: { $0.request(.max(1)) },
+            receiveValue: { results.append($0); return .none },
+            receiveCompletion: { completions.append($0) }
+        )
+
+        subject
+            .subscribe(subscriber)
+
+        subject
+            .subscribe(subscriber)
+
+        XCTAssertEqual([2, 2], results)
+        XCTAssertEqual([.finished, .finished], completions)
     }
 }
