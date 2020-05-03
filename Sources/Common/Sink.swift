@@ -6,11 +6,13 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if canImport(Combine)
 import Combine
 
 /// A generic sink using an underlying demand buffer to balance
 /// the demand of a downstream subscriber for the events of an
 /// upstream publisher
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
     typealias TransformFailure = (Upstream.Failure) -> Downstream.Failure?
     typealias TransformOutput = (Upstream.Output) -> Downstream.Input?
@@ -96,3 +98,4 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
 
     deinit { cancelUpstream() }
 }
+#endif

@@ -6,10 +6,12 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if !os(watchOS)
 import XCTest
 import Combine
 import CombineExt
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class AmbTests: XCTestCase {
     var subscriptions = Set<AnyCancellable>()
 
@@ -186,3 +188,4 @@ class AmbTests: XCTestCase {
         XCTAssertEqual(completionFour, .finished)
     }
 }
+#endif

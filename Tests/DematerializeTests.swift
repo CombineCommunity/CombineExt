@@ -6,10 +6,12 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if !os(watchOS)
 import XCTest
 import Combine
 import CombineExt
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class DematerializeTests: XCTestCase {
     var subscription: AnyCancellable?
     var values = [String]()
@@ -117,6 +119,7 @@ class DematerializeTests: XCTestCase {
     }
 }
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension DematerializeTests {
     func makeSubscriber(demand: Subscribers.Demand, expectation: XCTestExpectation?) -> AnySubscriber<String, MyError> {
         return AnySubscriber(
@@ -133,3 +136,4 @@ private extension DematerializeTests {
             })
     }
 }
+#endif

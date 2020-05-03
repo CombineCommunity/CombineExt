@@ -6,10 +6,12 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if !os(watchOS)
 import XCTest
 import Combine
 import CombineExt
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class FlatMapLatestTests: XCTestCase {
     var subscription: AnyCancellable!
     
@@ -63,3 +65,4 @@ class FlatMapLatestTests: XCTestCase {
         _ = completed
     }
 }
+#endif

@@ -6,9 +6,11 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if canImport(Combine)
 import Combine
 
 // MARK: - Operator methods
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publisher {
   ///  Merges two publishers into a single publisher by combining each value
   ///  from self with the latest value from the second publisher, if any.
@@ -113,6 +115,7 @@ public extension Publisher {
 }
 
 // MARK: - Publisher
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publishers {
   struct WithLatestFrom<Upstream: Publisher,
                         Other: Publisher,
@@ -143,6 +146,7 @@ public extension Publishers {
 }
 
 // MARK: - Subscription
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.WithLatestFrom {
   class Subscription<Downstream: Subscriber>: Combine.Subscription, CustomStringConvertible where Downstream.Input == Output, Downstream.Failure == Failure {
     private let resultSelector: ResultSelector
@@ -231,3 +235,4 @@ private extension Publishers.WithLatestFrom {
     }
   }
 }
+#endif

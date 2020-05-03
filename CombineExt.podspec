@@ -10,10 +10,10 @@ Pod::Spec.new do |s|
     s.license      = { :type => "MIT", :file => "LICENSE" }
     s.authors      = { "Combine Community" => "https://github.com/CombineCommunity", "Shai Mishali" => "freak4pc@gmail.com" }
   
-    s.ios.deployment_target = '13.0'
-    s.osx.deployment_target = '10.15'
-    s.watchos.deployment_target = '6.0'
-    s.tvos.deployment_target = '13.0'
+    s.ios.deployment_target = '10.0'
+    s.osx.deployment_target = '10.12'
+    s.watchos.deployment_target = '3.0'
+    s.tvos.deployment_target = '10.0'
   
     s.source       = { :git => "https://github.com/CombineCommunity/CombineExt.git", :tag => s.version }
     s.source_files = 'Sources/**/*.swift'

@@ -6,6 +6,7 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if canImport(Combine)
 import Combine
 
 /// A relay that broadcasts values to downstream subscribers.
@@ -14,6 +15,7 @@ import Combine
 /// It cannot send a failure event.
 ///
 /// - note: Unlike CurrentValueRelay, a PassthroughRelay doesn’t have an initial value or a buffer of the most recently-published value.
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public class PassthroughRelay<Output>: Relay {
     private let storage: PassthroughSubject<Output, Never>
     private var subscriptions = [Subscription<PassthroughSubject<Output, Never>,
@@ -49,6 +51,7 @@ public class PassthroughRelay<Output>: Relay {
     }
 }
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension PassthroughRelay {
     class Subscription<Upstream: Publisher, Downstream: Subscriber>: Combine.Subscription where Upstream.Output == Downstream.Input, Upstream.Failure == Downstream.Failure {
         private var sink: Sink<Upstream, Downstream>?
@@ -79,6 +82,7 @@ private extension PassthroughRelay {
     }
 }
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension PassthroughRelay {
     class Sink<Upstream: Publisher, Downstream: Subscriber>: CombineExt.Sink<Upstream, Downstream> {
         var shouldForwardCompletion = false
@@ -88,3 +92,4 @@ private extension PassthroughRelay {
         }
     }
 }
+#endif

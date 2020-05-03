@@ -6,8 +6,10 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if canImport(Combine)
 import Combine
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publisher {
     /// A variation on [share()](https://developer.apple.com/documentation/combine/publisher/3204754-share)
     /// that allows for buffering and replaying a `replay` amount of value events to future subscribers.
@@ -19,3 +21,4 @@ public extension Publisher {
             .autoconnect()
     }
 }
+#endif

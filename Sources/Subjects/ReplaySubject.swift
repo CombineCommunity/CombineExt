@@ -6,6 +6,7 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if canImport(Combine)
 import Combine
 
 /// A `ReplaySubject` is a subject that can buffer one or more values. It stores value events, up to its `bufferSize` in a
@@ -13,6 +14,7 @@ import Combine
 /// future subscribers and also forwards completion events.
 ///
 /// The implementation borrows heavily from [Entwine’s](https://github.com/tcldr/Entwine/blob/b839c9fcc7466878d6a823677ce608da998b95b9/Sources/Entwine/Operators/ReplaySubject.swift).
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public final class ReplaySubject<Output, Failure: Error>: Subject {
     public typealias Output = Output
     public typealias Failure = Failure
@@ -74,6 +76,7 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
     }
 }
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension ReplaySubject {
     final class Subscription<Downstream: Subscriber>: Combine.Subscription where Output == Downstream.Input, Failure == Downstream.Failure {
         private var demandBuffer: DemandBuffer<Downstream>?
@@ -115,3 +118,4 @@ extension ReplaySubject {
         }
     }
 }
+#endif
