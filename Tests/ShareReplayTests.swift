@@ -5,10 +5,12 @@
 //  Created by Jasdev Singh on 4/13/20.
 //
 
+#if !os(watchOS)
 import Combine
 import CombineExt
 import XCTest
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 final class ShareReplayTests: XCTestCase {
     private var subscriptions = Set<AnyCancellable>()
 
@@ -212,3 +214,4 @@ final class ShareReplayTests: XCTestCase {
         XCTAssertEqual(completions, [.failure(.someError)])
     }
 }
+#endif

@@ -6,8 +6,10 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if canImport(Combine)
 import Combine
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publisher {
     /// Returns a publisher which mirrors the first publisher to emit an event
     ///
@@ -33,6 +35,7 @@ public extension Publisher {
 }
 
 // MARK: - Publisher
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publishers {
     struct Amb<First: Publisher, Second: Publisher>: Publisher where First.Output == Second.Output, First.Failure == Second.Failure {
         public func receive<S: Subscriber>(subscriber: S) where Failure == S.Failure, Output == S.Input {
@@ -56,6 +59,7 @@ public extension Publishers {
 }
 
 // MARK: - Subscription
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.Amb {
     class Subscription<Downstream: Subscriber>: Combine.Subscription where Output == Downstream.Input, Failure == Downstream.Failure {
         private var firstSink: Sink<First, Downstream>?
@@ -113,12 +117,14 @@ private extension Publishers.Amb {
     }
 }
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private enum Decision {
     case first
     case second
 }
 
 // MARK: - Sink
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.Amb {
     class Sink<Upstream: Publisher, Downstream: Subscriber>: CombineExt.Sink<Upstream, Downstream> where Upstream.Output == Downstream.Input, Upstream.Failure == Downstream.Failure {
         private let emitted: () -> Void
@@ -152,3 +158,4 @@ private extension Publishers.Amb {
         }
     }
 }
+#endif

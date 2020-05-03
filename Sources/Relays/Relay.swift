@@ -6,10 +6,12 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if canImport(Combine)
 import Combine
 
 /// A publisher that exposes a method for outside callers to publish values.
 /// It is identical to a `Subject`, but it cannot publish a finish event (until it's deallocated).
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public protocol Relay: Publisher where Failure == Never {
     associatedtype Output
 
@@ -26,6 +28,7 @@ public protocol Relay: Publisher where Failure == Never {
     func subscribe<P: Publisher>(_ publisher: P) -> AnyCancellable where P.Failure == Failure, P.Output == Output
 }
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publisher where Failure == Never {
     /// Attaches the specified relay to this publisher.
     ///
@@ -37,9 +40,11 @@ public extension Publisher where Failure == Never {
     }
 }
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Relay where Output == Void {
     /// Relay a void to the subscriber.
     func accept() {
         accept(())
     }
 }
+#endif

@@ -6,9 +6,11 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if canImport(Combine)
 import Combine
 import Foundation
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension AnyPublisher {
     /// Create a publisher which accepts a closure with a subscriber argument,
     /// to which you can dynamically send value or completion events.
@@ -83,6 +85,7 @@ public extension AnyPublisher {
 }
 
 // MARK: - Publisher
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publishers {
     /// A publisher which accepts a closure with a subscriber argument,
     /// to which you can dynamically send value or completion events.
@@ -109,6 +112,7 @@ public extension Publishers {
 }
 
 // MARK: - Subscription
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.Create {
     class Subscription<Downstream: Combine.Subscriber>: Combine.Subscription where Output == Downstream.Input, Failure == Downstream.Failure {
         private let buffer: DemandBuffer<Downstream>
@@ -134,12 +138,14 @@ private extension Publishers.Create {
     }
 }
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Publishers.Create.Subscription: CustomStringConvertible {
     var description: String {
         return "Create.Subscription<\(Output.self), \(Failure.self)>"
     }
 }
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publishers.Create {
     struct Subscriber {
         private let onValue: (Output) -> Void
@@ -166,3 +172,4 @@ public extension Publishers.Create {
         }
     }
 }
+#endif

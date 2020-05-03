@@ -6,6 +6,7 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if canImport(Combine)
 import Combine
 import class Foundation.NSRecursiveLock
 
@@ -18,6 +19,7 @@ import class Foundation.NSRecursiveLock
 /// In a sense, the subscription only relays the requests for demand, as well
 /// the events emitted by the upstream — to this buffer, which manages
 /// the entire behavior and backpressure contract
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class DemandBuffer<S: Subscriber> {
     private let lock = NSRecursiveLock()
     private var buffer = [S.Input]()
@@ -115,6 +117,7 @@ class DemandBuffer<S: Subscriber> {
 }
 
 // MARK: - Private Helpers
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension DemandBuffer {
     /// A model that tracks the downstream's
     /// accumulated demand state
@@ -126,6 +129,7 @@ private extension DemandBuffer {
 }
 
 // MARK: - Internally-scoped helpers
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Subscription {
     /// Reqeust demand if it's not empty
     ///
@@ -136,6 +140,7 @@ extension Subscription {
     }
 }
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Optional where Wrapped == Subscription {
     /// Cancel the Optional subscription and nullify it
     mutating func kill() {
@@ -143,3 +148,4 @@ extension Optional where Wrapped == Subscription {
         self = nil
     }
 }
+#endif

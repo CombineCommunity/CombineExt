@@ -6,10 +6,12 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if !os(watchOS)
 import XCTest
 import Combine
 import CombineExt
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class CreateTests: XCTestCase {
     var subscription: AnyCancellable!
     enum MyError: Swift.Error {
@@ -133,6 +135,7 @@ class CreateTests: XCTestCase {
 }
 
 // MARK: - Private Helpers
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension CreateTests {
     func makePublisher(fail: Bool = false) -> AnyPublisher<String, MyError> {
         AnyPublisher<String, MyError>.create { subscriber in
@@ -161,3 +164,4 @@ private extension CreateTests {
             })
     }
 }
+#endif

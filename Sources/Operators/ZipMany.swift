@@ -6,8 +6,10 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if canImport(Combine)
 import Combine
 
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publisher {
     /// Zips `self` with an array of publishers with the same output and failure types.
     ///
@@ -39,7 +41,7 @@ public extension Publisher {
 }
 
 // MARK: - Collection Helpers
-
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Collection where Element: Publisher {
     /// Zip an array of publishers with the same output and failure types.
     ///
@@ -60,3 +62,4 @@ public extension Collection where Element: Publisher {
         }
     }
 }
+#endif
