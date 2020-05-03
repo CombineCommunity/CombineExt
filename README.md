@@ -473,7 +473,7 @@ second subscriber: 4
 
 ### prefix(duration:)
 
-A time-based overload on `Publisher.prefix` that accepts value and completions events from an upstream publisher for a specified `duration` of time (in seconds). After expiring, the operator will emit a `.finished` event and ignore all future output. Configuration options are also exposed for the underlying timer, if needed.
+An overload on `Publisher.prefix` that that republishes values for a provided `duration` (in seconds), and then completes.
 
 ```swift
 let subject = PassthroughSubject<Int, Never>()

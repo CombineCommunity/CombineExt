@@ -37,6 +37,40 @@ final class PrefixDurationTests: XCTestCase {
         XCTAssertEqual(results, [1])
     }
 
+    func testMultipleEventsInAndOutOfWindow() {
+        let subject = PassthroughSubject<Int, Never>()
+        let expectation = XCTestExpectation()
+
+        var results = [Int]()
+        var completions = [Subscribers.Completion<Never>]()
+
+        cancellable = subject
+            .prefix(duration: 0.5)
+            .sink(receiveCompletion: { completions.append($0); expectation.fulfill() },
+                  receiveValue: { results.append($0) })
+
+        subject.send(1)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            subject.send(2)
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            subject.send(3)
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+            subject.send(4)
+            subject.send(5)
+            subject.send(completion: .finished)
+        }
+
+        wait(for: [expectation], timeout: 2)
+
+        XCTAssertEqual(results, [1, 2, 3])
+        XCTAssertEqual(completions, [.finished])
+    }
+
     func testNoValueEventsInWindow() {
         let subject = PassthroughSubject<Int, Never>()
         let expectation = XCTestExpectation()

@@ -8,8 +8,6 @@
 
 import Combine
 
-// swiftlint:disable large_tuple
-
 // MARK: - Operator methods
 public extension Publisher {
   ///  Merges two publishers into a single publisher by combining each value
