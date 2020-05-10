@@ -50,6 +50,8 @@
 		BF8121BC241FF42C006A93B8 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8121BB241FF42C006A93B8 /* ZipMany.swift */; };
 		BF84B7412426B786001BFA88 /* RemoveAllDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF84B7402426B786001BFA88 /* RemoveAllDuplicates.swift */; };
 		BF84B7432426C332001BFA88 /* RemoveAllDuplicatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF84B7422426C332001BFA88 /* RemoveAllDuplicatesTests.swift */; };
+		BF8EDF4C2453529000B0CC75 /* PrefixDuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8EDF4B2453529000B0CC75 /* PrefixDuration.swift */; };
+		BF8EDF4E2453540D00B0CC75 /* PrefixDurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8EDF4D2453540D00B0CC75 /* PrefixDurationTests.swift */; };
 		BF9D85D32444BB92001783E6 /* ReplaySubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D85D22444BB92001783E6 /* ReplaySubject.swift */; };
 		BF9D85D52444D12F001783E6 /* ReplaySubjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D85D42444D12F001783E6 /* ReplaySubjectTests.swift */; };
 		BF9D85D724450090001783E6 /* ShareReplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D85D624450090001783E6 /* ShareReplayTests.swift */; };
@@ -102,6 +104,8 @@
 		BF8121BB241FF42C006A93B8 /* ZipMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipMany.swift; sourceTree = "<group>"; };
 		BF84B7402426B786001BFA88 /* RemoveAllDuplicates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAllDuplicates.swift; sourceTree = "<group>"; };
 		BF84B7422426C332001BFA88 /* RemoveAllDuplicatesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAllDuplicatesTests.swift; sourceTree = "<group>"; };
+		BF8EDF4B2453529000B0CC75 /* PrefixDuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefixDuration.swift; sourceTree = "<group>"; };
+		BF8EDF4D2453540D00B0CC75 /* PrefixDurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefixDurationTests.swift; sourceTree = "<group>"; };
 		BF9D85D22444BB92001783E6 /* ReplaySubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplaySubject.swift; sourceTree = "<group>"; };
 		BF9D85D42444D12F001783E6 /* ReplaySubjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplaySubjectTests.swift; sourceTree = "<group>"; };
 		BF9D85D624450090001783E6 /* ShareReplayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareReplayTests.swift; sourceTree = "<group>"; };
@@ -199,6 +203,7 @@
 				BF84B7422426C332001BFA88 /* RemoveAllDuplicatesTests.swift */,
 				BF9D85D42444D12F001783E6 /* ReplaySubjectTests.swift */,
 				BF9D85D624450090001783E6 /* ShareReplayTests.swift */,
+				BF8EDF4D2453540D00B0CC75 /* PrefixDurationTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -253,6 +258,7 @@
 				788CD8FA2431228C0015B3C7 /* Amb.swift */,
 				BF84B7402426B786001BFA88 /* RemoveAllDuplicates.swift */,
 				BF3C6B6B24421D27004D4A8A /* ShareReplay.swift */,
+				BF8EDF4B2453529000B0CC75 /* PrefixDuration.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -376,6 +382,7 @@
 				BF84B7412426B786001BFA88 /* RemoveAllDuplicates.swift in Sources */,
 				78C193D4241C2DE00001B7FD /* Create.swift in Sources */,
 				OBJ_22 /* AssignToMany.swift in Sources */,
+				BF8EDF4C2453529000B0CC75 /* PrefixDuration.swift in Sources */,
 				BF9D85D32444BB92001783E6 /* ReplaySubject.swift in Sources */,
 				AAEAF0E72436D346007C35E0 /* SetOutputType.swift in Sources */,
 				78C193D7241C2E580001B7FD /* Event.swift in Sources */,
@@ -408,6 +415,7 @@
 				78C193E0241D4D8D0001B7FD /* MaterializeTests.swift in Sources */,
 				78002BBB241E97350018AA28 /* CurrentValueRelayTests.swift in Sources */,
 				78C193E4241D63620001B7FD /* DematerializeTests.swift in Sources */,
+				BF8EDF4E2453540D00B0CC75 /* PrefixDurationTests.swift in Sources */,
 				BF50924B241FFE8E00600DF4 /* ZipManyTests.swift in Sources */,
 				788CD8F5242F9DFB0015B3C7 /* AmbTests.swift in Sources */,
 				BF9D85D724450090001783E6 /* ShareReplayTests.swift in Sources */,

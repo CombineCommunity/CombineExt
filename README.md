@@ -35,6 +35,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [setOutputType(to:)](#setOutputType)
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
 * [share(replay:)](#sharereplay)
+* [prefix(duration:tolerance:on:in:options:)](#prefixduration)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -468,6 +469,32 @@ first subscriber: 4
 second subscriber: 2
 second subscriber: 3
 second subscriber: 4
+```
+
+### prefix(duration:)
+
+An overload on `Publisher.prefix` that that republishes values for a provided `duration` (in seconds), and then completes.
+
+```swift
+let subject = PassthroughSubject<Int, Never>()
+
+subscription = subject
+  .prefix(duration: 0.5)
+  .sink(receiveValue: { print($0) })
+  
+subject.send(1)
+subject.send(2)
+subject.send(3)
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+  subject.send(4)
+}
+```
+
+```none
+1
+2
+3
 ```
 
 ## Publishers

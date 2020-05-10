@@ -26,7 +26,6 @@ public extension Publisher {
       return .init(upstream: self, second: other, resultSelector: resultSelector)
   }
 
-
   ///  Merges three publishers into a single publisher by combining each value
   ///  from self with the latest value from the second and third publisher, if any.
   ///
