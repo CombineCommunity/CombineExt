@@ -23,7 +23,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [withLatestFrom](#withLatestFrom)
 * [flatMapLatest](#flatMapLatest)
 * [assign](#assign)
-* [amb](#amb)
+* [amb and Collection.amb](#amb)
 * [materialize](#materialize)
 * [values](#values)
 * [failures](#failures)
@@ -147,7 +147,7 @@ var text: UITextField
 
 ### amb
 
-Amb takes multiple publishers and mirrors the first one to emit an event. You can think of it as a race of publishers, where the first one to emit passes its events, while the others are ignored.
+Amb takes multiple publishers and mirrors the first one to emit an event. You can think of it as a race of publishers, where the first one to emit passes its events, while the others are ignored (there’s also a `Collection.amb` method to ease working with multiple publishers).
 
 The name `amb` comes from the [Reactive Extensions operator](http://reactivex.io/documentation/operators/amb.html), also known in RxJS as `race`.
 
