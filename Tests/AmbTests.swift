@@ -187,5 +187,63 @@ class AmbTests: XCTestCase {
         subject4.send(completion: .finished)
         XCTAssertEqual(completionFour, .finished)
     }
+
+    func testAmbCollectionNone() {
+        var results = [Int]()
+        var completion: Subscribers.Completion<Never>?
+
+        [AnyPublisher<Int, Never>]()
+            .amb()
+            .sink(receiveCompletion: { completion = $0 },
+                  receiveValue: { results.append($0) })
+            .store(in: &subscriptions)
+
+        XCTAssertTrue(results.isEmpty)
+        XCTAssertEqual(.finished, completion)
+    }
+
+    func testAmbCollectionOne() {
+        let subject1 = PassthroughSubject<Int, Never>()
+
+        var results = [Int]()
+        var completion: Subscribers.Completion<Never>?
+
+        [subject1]
+            .amb()
+            .sink(receiveCompletion: { completion = $0 },
+                  receiveValue: { results.append($0) })
+            .store(in: &subscriptions)
+
+        subject1.send(1)
+        subject1.send(completion: .finished)
+
+        XCTAssertEqual([1], results)
+        XCTAssertEqual(.finished, completion)
+    }
+
+    func testAmbCollectionMany() {
+        let subject1 = PassthroughSubject<Int, Never>()
+        let subject2 = PassthroughSubject<Int, Never>()
+        let subject3 = PassthroughSubject<Int, Never>()
+
+        var results = [Int]()
+        var completion: Subscribers.Completion<Never>?
+
+        [subject1, subject2, subject3]
+            .amb()
+            .sink(receiveCompletion: { completion = $0 },
+                  receiveValue: { results.append($0) })
+            .store(in: &subscriptions)
+
+        subject1.send(1)
+        subject2.send(2)
+        subject3.send(3)
+        subject1.send(4)
+
+        subject1.send(completion: .finished)
+
+        XCTAssertEqual([1, 4], results)
+        XCTAssertEqual(.finished, completion)
+    }
 }
 #endif

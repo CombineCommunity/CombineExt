@@ -11,25 +11,58 @@ import Combine
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publisher {
-    /// Returns a publisher which mirrors the first publisher to emit an event
+    /// Returns a publisher which mirrors the first publisher to emit an event.
     ///
-    /// - parameter other: The second publisher to "compete" against
+    /// - parameter other: The second publisher to "compete" against.
     ///
-    /// - returns: A publisher which mirrors either `self` or `other`
+    /// - returns: A publisher which mirrors either `self` or `other`.
     func amb<Other: Publisher>(_ other: Other)
         -> Publishers.Amb<Self, Other> where Other.Output == Output, Other.Failure == Failure {
         Publishers.Amb(first: self, second: other)
     }
 
-    /// Returns a publisher which mirrors the first publisher to emit an event
+    /// Returns a publisher which mirrors the first publisher to emit an event.
     ///
-    /// - parameter other: The second publisher to "compete" against
+    /// - parameter others: Other publishers to "compete" against.
     ///
-    /// - returns: A publisher which mirrors the first publisher to emit an event
+    /// - returns: A publisher which mirrors the first publisher to emit an event.
     func amb<Other: Publisher>(with others: Other...)
         -> AnyPublisher<Self.Output, Self.Failure> where Other.Output == Output, Other.Failure == Failure {
-        others.reduce(self.eraseToAnyPublisher()) { result, current in
-            result.amb(current).eraseToAnyPublisher()
+        amb(with: others)
+    }
+
+    /// Returns a publisher which mirrors the first publisher to emit an event.
+    ///
+    /// - parameter others: Other publishers to "compete" against.
+    ///
+    /// - returns: A publisher which mirrors the first publisher to emit an event.
+    func amb<Others: Collection>(with others: Others)
+        -> AnyPublisher<Self.Output, Self.Failure>
+        where Others.Element: Publisher, Others.Element.Output == Output, Others.Element.Failure == Failure {
+            others.reduce(self.eraseToAnyPublisher()) { result, current in
+                result.amb(current).eraseToAnyPublisher()
+            }
+    }
+}
+
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+public extension Collection where Element: Publisher {
+    /// Projects a collection of publishers onto one that has each “compete”. The publisher that wins out by emitting first will be mirrored.
+    ///
+    /// - Returns: A publisher which mirrors the first publisher to emit an event.
+    func amb() -> AnyPublisher<Element.Output, Element.Failure> {
+        switch count {
+        case 0:
+            return Empty().eraseToAnyPublisher()
+        case 1:
+            return self[startIndex]
+                .amb(with: [Element]())
+        default:
+            let first = self[startIndex]
+            let others = self[index(after: startIndex)...]
+
+            return first
+                .amb(with: others)
         }
     }
 }
