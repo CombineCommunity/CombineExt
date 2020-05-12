@@ -35,7 +35,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [setOutputType(to:)](#setOutputType)
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
 * [share(replay:)](#sharereplay)
-* [prefix(duration:tolerance:on:in:options:)](#prefixduration)
+* [prefix(duration:tolerance:​on:in:options:)](#prefixduration)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
