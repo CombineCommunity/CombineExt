@@ -21,6 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		712E87BD2465DEDE00431F5C /* ObjectOwnership.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E87BC2465DEDE00431F5C /* ObjectOwnership.swift */; };
+		71E6F4EC24655F3A00FB4103 /* AssignOwnership.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E6F4EB24655F3A00FB4103 /* AssignOwnership.swift */; };
+		71E6F4EE2465616100FB4103 /* AssignOwnershipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E6F4ED2465616100FB4103 /* AssignOwnershipTests.swift */; };
 		78002BB5241E910C0018AA28 /* Relay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BB4241E910C0018AA28 /* Relay.swift */; };
 		78002BB7241E915E0018AA28 /* CurrentValueRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BB6241E915E0018AA28 /* CurrentValueRelay.swift */; };
 		78002BB9241E91D70018AA28 /* PassthroughRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78002BB8241E91D70018AA28 /* PassthroughRelay.swift */; };
@@ -76,6 +79,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		712E87BC2465DEDE00431F5C /* ObjectOwnership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectOwnership.swift; sourceTree = "<group>"; };
+		71E6F4EB24655F3A00FB4103 /* AssignOwnership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignOwnership.swift; sourceTree = "<group>"; };
+		71E6F4ED2465616100FB4103 /* AssignOwnershipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignOwnershipTests.swift; sourceTree = "<group>"; };
 		78002BB4241E910C0018AA28 /* Relay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Relay.swift; sourceTree = "<group>"; };
 		78002BB6241E915E0018AA28 /* CurrentValueRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValueRelay.swift; sourceTree = "<group>"; };
 		78002BB8241E91D70018AA28 /* PassthroughRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassthroughRelay.swift; sourceTree = "<group>"; };
@@ -162,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				78C193D6241C2E580001B7FD /* Event.swift */,
+				712E87BC2465DEDE00431F5C /* ObjectOwnership.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -188,6 +195,7 @@
 			children = (
 				OBJ_12 /* WithLatestFromTests.swift */,
 				78AA9296241B8532009BD68B /* AssignToManyTests.swift */,
+				71E6F4ED2465616100FB4103 /* AssignOwnershipTests.swift */,
 				78C193D0241C1B450001B7FD /* FlatMapLatestTests.swift */,
 				78C193D8241CEEA80001B7FD /* CreateTests.swift */,
 				78C193DF241D4D8D0001B7FD /* MaterializeTests.swift */,
@@ -245,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_9 /* AssignToMany.swift */,
+				71E6F4EB24655F3A00FB4103 /* AssignOwnership.swift */,
 				OBJ_10 /* WithLatestFrom.swift */,
 				78C193CE241C16C40001B7FD /* FlatMapLatest.swift */,
 				78C193D3241C2DE00001B7FD /* Create.swift */,
@@ -380,11 +389,13 @@
 				78988A23241FFE2400F3A4AF /* Partition.swift in Sources */,
 				BF8121BC241FF42C006A93B8 /* ZipMany.swift in Sources */,
 				BF84B7412426B786001BFA88 /* RemoveAllDuplicates.swift in Sources */,
+				71E6F4EC24655F3A00FB4103 /* AssignOwnership.swift in Sources */,
 				78C193D4241C2DE00001B7FD /* Create.swift in Sources */,
 				OBJ_22 /* AssignToMany.swift in Sources */,
 				BF8EDF4C2453529000B0CC75 /* PrefixDuration.swift in Sources */,
 				BF9D85D32444BB92001783E6 /* ReplaySubject.swift in Sources */,
 				AAEAF0E72436D346007C35E0 /* SetOutputType.swift in Sources */,
+				712E87BD2465DEDE00431F5C /* ObjectOwnership.swift in Sources */,
 				78C193D7241C2E580001B7FD /* Event.swift in Sources */,
 				OBJ_23 /* WithLatestFrom.swift in Sources */,
 				BFB4EA132428256B0096E9E9 /* CombineLatestMany.swift in Sources */,
@@ -407,6 +418,7 @@
 				78C193D2241C1B750001B7FD /* FlatMapLatestTests.swift in Sources */,
 				78AA9297241B8532009BD68B /* AssignToManyTests.swift in Sources */,
 				BFB4EA1524283ECF0096E9E9 /* CombineLatestManyTests.swift in Sources */,
+				71E6F4EE2465616100FB4103 /* AssignOwnershipTests.swift in Sources */,
 				BF9D85D52444D12F001783E6 /* ReplaySubjectTests.swift in Sources */,
 				AAEAF0E92436D785007C35E0 /* SetOutputTypeTests.swift in Sources */,
 				78988A25241FFE2E00F3A4AF /* PartitionTests.swift in Sources */,

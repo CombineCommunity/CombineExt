@@ -143,6 +143,20 @@ var text: UITextField
             and: \.text, on: text)
 ```
 
+CombineExt provides an additional overload — `assign(to:on​:ownership)` — which lets you specify the kind of ownersip you want for your assign operation: `strong`, `weak` or `unowned`.
+
+```swift
+// Retain `self` strongly
+subscription = subject.assign(to: \.value, on: self)
+subscription = subject.assign(to: \.value, on: self, ownership: .strong)
+
+// Use a `weak` reference to `self`
+subscription = subject.assign(to: \.value, on: self, ownership: .weak)
+
+// Use an `unowned` reference to `self`
+subscription = subject.assign(to: \.value, on: self, ownership: .unowned)
+```
+
 ------
 
 ### amb

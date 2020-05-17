@@ -11,7 +11,7 @@ import Combine
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publisher where Self.Failure == Never {
-    /// Assigns each element from a Publisher to properties of the provided object
+    /// Assigns each element from a Publisher to properties of the provided objects
     ///
     /// - Parameters:
     ///   - keyPath1: The key path of the first property to assign.
@@ -28,7 +28,7 @@ public extension Publisher where Self.Failure == Never {
         })
     }
 
-    /// Assigns each element from a Publisher to properties of the provided object
+    /// Assigns each element from a Publisher to properties of the provided objects
     ///
     /// - Parameters:
     ///   - keyPath1: The key path of the first property to assign.
