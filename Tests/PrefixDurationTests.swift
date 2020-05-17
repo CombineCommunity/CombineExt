@@ -47,7 +47,7 @@ final class PrefixDurationTests: XCTestCase {
         var completions = [Subscribers.Completion<Never>]()
 
         cancellable = subject
-            .prefix(duration: 0.5)
+            .prefix(duration: 0.8)
             .sink(receiveCompletion: { completions.append($0); expectation.fulfill() },
                   receiveValue: { results.append($0) })
 
@@ -61,7 +61,7 @@ final class PrefixDurationTests: XCTestCase {
             subject.send(3)
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             subject.send(4)
             subject.send(5)
             subject.send(completion: .finished)

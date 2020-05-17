@@ -60,6 +60,8 @@
 		BF9D85D724450090001783E6 /* ShareReplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9D85D624450090001783E6 /* ShareReplayTests.swift */; };
 		BFB4EA132428256B0096E9E9 /* CombineLatestMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */; };
 		BFB4EA1524283ECF0096E9E9 /* CombineLatestManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4EA1424283ECF0096E9E9 /* CombineLatestManyTests.swift */; };
+		BFF0BFF12469D7D800399570 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF0BFF02469D7D800399570 /* Optional.swift */; };
+		BFF0BFF52469D92C00399570 /* OptionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF0BFF42469D92C00399570 /* OptionalTests.swift */; };
 		DC16910F24281A1800B234C4 /* MapMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC16910E24281A1800B234C4 /* MapMany.swift */; };
 		DC1691122428228200B234C4 /* MapManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1691112428228200B234C4 /* MapManyTests.swift */; };
 		OBJ_22 /* AssignToMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* AssignToMany.swift */; };
@@ -117,6 +119,8 @@
 		BF9D85D624450090001783E6 /* ShareReplayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareReplayTests.swift; sourceTree = "<group>"; };
 		BFB4EA122428256B0096E9E9 /* CombineLatestMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineLatestMany.swift; sourceTree = "<group>"; };
 		BFB4EA1424283ECF0096E9E9 /* CombineLatestManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineLatestManyTests.swift; sourceTree = "<group>"; };
+		BFF0BFF02469D7D800399570 /* Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
+		BFF0BFF42469D92C00399570 /* OptionalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalTests.swift; sourceTree = "<group>"; };
 		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CombineExt::CombineExtTests::Product" /* CombineExtTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = CombineExtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC16910E24281A1800B234C4 /* MapMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMany.swift; sourceTree = "<group>"; };
@@ -190,6 +194,14 @@
 			path = Subjects;
 			sourceTree = "<group>";
 		};
+		BFF0BFEF2469D7A500399570 /* Convenience */ = {
+			isa = PBXGroup;
+			children = (
+				BFF0BFF02469D7D800399570 /* Optional.swift */,
+			);
+			path = Convenience;
+			sourceTree = "<group>";
+		};
 		OBJ_11 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -212,6 +224,7 @@
 				BF9D85D42444D12F001783E6 /* ReplaySubjectTests.swift */,
 				BF9D85D624450090001783E6 /* ShareReplayTests.swift */,
 				BF8EDF4D2453540D00B0CC75 /* PrefixDurationTests.swift */,
+				BFF0BFF42469D92C00399570 /* OptionalTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -240,6 +253,7 @@
 		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				BFF0BFEF2469D7A500399570 /* Convenience */,
 				BF9D85D12444BB7F001783E6 /* Subjects */,
 				78C193DA241D07160001B7FD /* Common */,
 				78C193D5241C2E4F0001B7FD /* Models */,
@@ -378,6 +392,7 @@
 			files = (
 				BF3C6B6C24421D27004D4A8A /* ShareReplay.swift in Sources */,
 				DC16910F24281A1800B234C4 /* MapMany.swift in Sources */,
+				BFF0BFF12469D7D800399570 /* Optional.swift in Sources */,
 				78C193CF241C16C40001B7FD /* FlatMapLatest.swift in Sources */,
 				78C193DC241D0A9F0001B7FD /* Sink.swift in Sources */,
 				788CD8FB2431228C0015B3C7 /* Amb.swift in Sources */,
@@ -416,6 +431,7 @@
 			buildActionMask = 0;
 			files = (
 				78C193D2241C1B750001B7FD /* FlatMapLatestTests.swift in Sources */,
+				BFF0BFF52469D92C00399570 /* OptionalTests.swift in Sources */,
 				78AA9297241B8532009BD68B /* AssignToManyTests.swift in Sources */,
 				BFB4EA1524283ECF0096E9E9 /* CombineLatestManyTests.swift in Sources */,
 				71E6F4EE2465616100FB4103 /* AssignOwnershipTests.swift in Sources */,
