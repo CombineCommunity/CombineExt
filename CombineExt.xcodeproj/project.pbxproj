@@ -88,6 +88,7 @@
 		78002BB6241E915E0018AA28 /* CurrentValueRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValueRelay.swift; sourceTree = "<group>"; };
 		78002BB8241E91D70018AA28 /* PassthroughRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassthroughRelay.swift; sourceTree = "<group>"; };
 		78002BBA241E97350018AA28 /* CurrentValueRelayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentValueRelayTests.swift; sourceTree = "<group>"; };
+		78330686247180A000E5E1C8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Sources/Info.plist; sourceTree = "<group>"; };
 		788CD8F4242F9DFB0015B3C7 /* AmbTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbTests.swift; sourceTree = "<group>"; };
 		788CD8FA2431228C0015B3C7 /* Amb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amb.swift; sourceTree = "<group>"; };
 		78988A1D241EAFDD00F3A4AF /* PassthroughRelayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassthroughRelayTests.swift; sourceTree = "<group>"; };
@@ -242,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
+				78330686247180A000E5E1C8 /* Info.plist */,
 				OBJ_7 /* Sources */,
 				OBJ_11 /* Tests */,
 				OBJ_13 /* Products */,
