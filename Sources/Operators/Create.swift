@@ -148,8 +148,8 @@ extension Publishers.Create.Subscription: CustomStringConvertible {
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publishers.Create {
     struct Subscriber {
-        private let onValue: (Output) -> Void
-        private let onCompletion: (Subscribers.Completion<Failure>) -> Void
+        let onValue: (Output) -> Void
+        let onCompletion: (Subscribers.Completion<Failure>) -> Void
 
         fileprivate init(onValue: @escaping (Output) -> Void,
                          onCompletion: @escaping (Subscribers.Completion<Failure>) -> Void) {
