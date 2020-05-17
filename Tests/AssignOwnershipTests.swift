@@ -6,6 +6,7 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
+#if !os(watchOS)
 import XCTest
 import Combine
 import CombineExt
@@ -13,7 +14,9 @@ import CombineExt
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class AssignOwnershipTests: XCTestCase {
     var subscription: AnyCancellable!
-    var value = 0
+    var value1 = 0
+    var value2 = 0
+    var value3 = 0
     var subject: PassthroughSubject<Int, Never>!
 
     override func setUp() {
@@ -21,66 +24,75 @@ class AssignOwnershipTests: XCTestCase {
 
         subscription = nil
         subject = PassthroughSubject<Int, Never>()
-        value = 0
+        value1 = 0
+        value2 = 0
+        value3 = 0
     }
 
-    override func tearDown() {
-        super.tearDown()
-
-        subject = nil
-    }
-
-    func testWeakAssign() {
-        checkSingleAssign(for: .weak)
-    }
-
-    func testStrongAssign() {
-        checkSingleAssign(for: .strong)
-    }
-
-    func testUnownedAssign() {
-        checkSingleAssign(for: .unowned)
-    }
-
-    func testWeakRetain() {
-        checkRetainValue(for: .weak) { initialRetainCount, resultRetainCount in
-            XCTAssertEqual(initialRetainCount, resultRetainCount)
-        }
-    }
-
-    func testStrongRetain() {
-        checkRetainValue(for: .strong) { initialRetainCount, resultRetainCount in
-            XCTAssertEqual(initialRetainCount + 1, resultRetainCount)
-        }
-    }
-
-    func testUnownedRetain() {
-        checkRetainValue(for: .unowned) { initialRetainCount, resultRetainCount in
-            XCTAssertEqual(initialRetainCount, resultRetainCount)
-        }
-    }
-
-    private func checkSingleAssign(for ownership: ObjectOwnership) {
-        subscription = subject
-            .assign(to: \.value, on: self, ownership: ownership)
-
-        let newValue1 = 10
-        subject.send(newValue1)
-        XCTAssertEqual(value, newValue1)
-
-        let newValue2 = 11
-        subject.send(newValue2)
-        XCTAssertEqual(value, newValue2)
-    }
-
-    private func checkRetainValue(for ownership: ObjectOwnership, completion: (Int, Int) -> Void) {
+    func testWeakOwnership() {
         let initialRetainCount = CFGetRetainCount(self)
 
         subscription = subject
-            .assign(to: \.value, on: self, ownership: ownership)
+            .assign(to: \.value1, on: self, ownership: .weak)
+        subject.send(10)
+        let resultRetainCount1 = CFGetRetainCount(self)
+        XCTAssertEqual(initialRetainCount, resultRetainCount1)
 
-        let resultRetainCount = CFGetRetainCount(self)
+        subscription = subject
+            .assign(to: \.value1, on: self, and: \.value2, on: self, ownership: .weak)
+        subject.send(15)
+        let resultRetainCount2 = CFGetRetainCount(self)
+        XCTAssertEqual(initialRetainCount, resultRetainCount2)
 
-        completion(initialRetainCount, resultRetainCount)
+        subscription = subject
+            .assign(to: \.value1, on: self, and: \.value2, on: self, and: \.value3, on: self, ownership: .weak)
+        subject.send(20)
+        let resultRetainCount3 = CFGetRetainCount(self)
+        XCTAssertEqual(initialRetainCount, resultRetainCount3)
+    }
+
+    func testUnownedOwnership() {
+        let initialRetainCount = CFGetRetainCount(self)
+
+        subscription = subject
+            .assign(to: \.value1, on: self, ownership: .unowned)
+        subject.send(10)
+        let resultRetainCount1 = CFGetRetainCount(self)
+        XCTAssertEqual(initialRetainCount, resultRetainCount1)
+
+        subscription = subject
+            .assign(to: \.value1, on: self, and: \.value2, on: self, ownership: .unowned)
+        subject.send(15)
+        let resultRetainCount2 = CFGetRetainCount(self)
+        XCTAssertEqual(initialRetainCount, resultRetainCount2)
+
+        subscription = subject
+            .assign(to: \.value1, on: self, and: \.value2, on: self, and: \.value3, on: self, ownership: .unowned)
+        subject.send(20)
+        let resultRetainCount3 = CFGetRetainCount(self)
+        XCTAssertEqual(initialRetainCount, resultRetainCount3)
+    }
+
+    func testStrongOwnership() {
+        let initialRetainCount = CFGetRetainCount(self)
+
+        subscription = subject
+            .assign(to: \.value1, on: self, ownership: .strong)
+        subject.send(10)
+        let resultRetainCount1 = CFGetRetainCount(self)
+        XCTAssertEqual(initialRetainCount + 1, resultRetainCount1)
+
+        subscription = subject
+            .assign(to: \.value1, on: self, and: \.value2, on: self, ownership: .strong)
+        subject.send(15)
+        let resultRetainCount2 = CFGetRetainCount(self)
+        XCTAssertEqual(initialRetainCount + 2, resultRetainCount2)
+
+        subscription = subject
+            .assign(to: \.value1, on: self, and: \.value2, on: self, and: \.value3, on: self, ownership: .strong)
+        subject.send(20)
+        let resultRetainCount3 = CFGetRetainCount(self)
+        XCTAssertEqual(initialRetainCount + 3, resultRetainCount3)
     }
 }
+#endif
