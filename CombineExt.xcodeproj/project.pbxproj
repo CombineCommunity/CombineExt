@@ -9,12 +9,12 @@
 /* Begin PBXAggregateTarget section */
 		CombineExt::CombineExtPackageTests::ProductTarget /* CombineExtPackageTests */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = OBJ_110 /* Build configuration list for PBXAggregateTarget "CombineExtPackageTests" */;
+			buildConfigurationList = OBJ_113 /* Build configuration list for PBXAggregateTarget "CombineExtPackageTests" */;
 			buildPhases = (
-				185283E6FF0089756F9D6E6A /* SwiftLint */,
+				6EE0AF2A56FE8FE91E8566DF /* SwiftLint */,
 			);
 			dependencies = (
-				OBJ_113 /* PBXTargetDependency */,
+				OBJ_116 /* PBXTargetDependency */,
 			);
 			name = CombineExtPackageTests;
 			productName = CombineExtPackageTests;
@@ -22,53 +22,55 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		OBJ_100 /* Relay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* Relay.swift */; };
-		OBJ_101 /* ReplaySubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* ReplaySubject.swift */; };
-		OBJ_108 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
-		OBJ_119 /* AmbTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* AmbTests.swift */; };
-		OBJ_120 /* AssignOwnershipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_41 /* AssignOwnershipTests.swift */; };
-		OBJ_121 /* AssignToManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* AssignToManyTests.swift */; };
-		OBJ_122 /* CombineLatestManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* CombineLatestManyTests.swift */; };
-		OBJ_123 /* CreateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_44 /* CreateTests.swift */; };
-		OBJ_124 /* CurrentValueRelayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_45 /* CurrentValueRelayTests.swift */; };
-		OBJ_125 /* DematerializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_46 /* DematerializeTests.swift */; };
-		OBJ_126 /* FlatMapLatestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_47 /* FlatMapLatestTests.swift */; };
-		OBJ_127 /* MapManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* MapManyTests.swift */; };
-		OBJ_128 /* MaterializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* MaterializeTests.swift */; };
-		OBJ_129 /* OptionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* OptionalTests.swift */; };
-		OBJ_130 /* PartitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_51 /* PartitionTests.swift */; };
-		OBJ_131 /* PassthroughRelayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_52 /* PassthroughRelayTests.swift */; };
-		OBJ_132 /* PrefixDurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_53 /* PrefixDurationTests.swift */; };
-		OBJ_133 /* RemoveAllDuplicatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_54 /* RemoveAllDuplicatesTests.swift */; };
-		OBJ_134 /* ReplaySubjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* ReplaySubjectTests.swift */; };
-		OBJ_135 /* SetOutputTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_56 /* SetOutputTypeTests.swift */; };
-		OBJ_136 /* ShareReplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_57 /* ShareReplayTests.swift */; };
-		OBJ_137 /* WithLatestFromTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_58 /* WithLatestFromTests.swift */; };
-		OBJ_138 /* ZipManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_59 /* ZipManyTests.swift */; };
-		OBJ_140 /* CombineExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CombineExt::CombineExt::Product /* CombineExt.framework */; };
-		OBJ_77 /* DemandBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* DemandBuffer.swift */; };
-		OBJ_78 /* Sink.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Sink.swift */; };
-		OBJ_79 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Optional.swift */; };
-		OBJ_80 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* Event.swift */; };
-		OBJ_81 /* ObjectOwnership.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* ObjectOwnership.swift */; };
-		OBJ_82 /* Amb.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Amb.swift */; };
-		OBJ_83 /* AssignOwnership.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* AssignOwnership.swift */; };
-		OBJ_84 /* AssignToMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* AssignToMany.swift */; };
-		OBJ_85 /* CombineLatestMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* CombineLatestMany.swift */; };
-		OBJ_86 /* Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* Create.swift */; };
-		OBJ_87 /* Dematerialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Dematerialize.swift */; };
-		OBJ_88 /* FlatMapLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* FlatMapLatest.swift */; };
-		OBJ_89 /* MapMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* MapMany.swift */; };
-		OBJ_90 /* Materialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* Materialize.swift */; };
-		OBJ_91 /* Partition.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* Partition.swift */; };
-		OBJ_92 /* PrefixDuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* PrefixDuration.swift */; };
-		OBJ_93 /* RemoveAllDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* RemoveAllDuplicates.swift */; };
-		OBJ_94 /* SetOutputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* SetOutputType.swift */; };
-		OBJ_95 /* ShareReplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* ShareReplay.swift */; };
-		OBJ_96 /* WithLatestFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* WithLatestFrom.swift */; };
-		OBJ_97 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* ZipMany.swift */; };
-		OBJ_98 /* CurrentValueRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* CurrentValueRelay.swift */; };
-		OBJ_99 /* PassthroughRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* PassthroughRelay.swift */; };
+		OBJ_100 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ZipMany.swift */; };
+		OBJ_101 /* CurrentValueRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* CurrentValueRelay.swift */; };
+		OBJ_102 /* PassthroughRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* PassthroughRelay.swift */; };
+		OBJ_103 /* Relay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* Relay.swift */; };
+		OBJ_104 /* ReplaySubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* ReplaySubject.swift */; };
+		OBJ_111 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_122 /* AmbTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_41 /* AmbTests.swift */; };
+		OBJ_123 /* AssignOwnershipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* AssignOwnershipTests.swift */; };
+		OBJ_124 /* AssignToManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* AssignToManyTests.swift */; };
+		OBJ_125 /* CombineLatestManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_44 /* CombineLatestManyTests.swift */; };
+		OBJ_126 /* CreateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_45 /* CreateTests.swift */; };
+		OBJ_127 /* CurrentValueRelayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_46 /* CurrentValueRelayTests.swift */; };
+		OBJ_128 /* DematerializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_47 /* DematerializeTests.swift */; };
+		OBJ_129 /* FlatMapLatestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* FlatMapLatestTests.swift */; };
+		OBJ_130 /* MapManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* MapManyTests.swift */; };
+		OBJ_131 /* MaterializeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* MaterializeTests.swift */; };
+		OBJ_132 /* OptionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_51 /* OptionalTests.swift */; };
+		OBJ_133 /* PartitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_52 /* PartitionTests.swift */; };
+		OBJ_134 /* PassthroughRelayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_53 /* PassthroughRelayTests.swift */; };
+		OBJ_135 /* PrefixDurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_54 /* PrefixDurationTests.swift */; };
+		OBJ_136 /* RemoveAllDuplicatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* RemoveAllDuplicatesTests.swift */; };
+		OBJ_137 /* ReplaySubjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_56 /* ReplaySubjectTests.swift */; };
+		OBJ_138 /* SetOutputTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_57 /* SetOutputTypeTests.swift */; };
+		OBJ_139 /* ShareReplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_58 /* ShareReplayTests.swift */; };
+		OBJ_140 /* ToggleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_59 /* ToggleTests.swift */; };
+		OBJ_141 /* WithLatestFromTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_60 /* WithLatestFromTests.swift */; };
+		OBJ_142 /* ZipManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_61 /* ZipManyTests.swift */; };
+		OBJ_144 /* CombineExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CombineExt::CombineExt::Product /* CombineExt.framework */; };
+		OBJ_79 /* DemandBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* DemandBuffer.swift */; };
+		OBJ_80 /* Sink.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Sink.swift */; };
+		OBJ_81 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Optional.swift */; };
+		OBJ_82 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* Event.swift */; };
+		OBJ_83 /* ObjectOwnership.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* ObjectOwnership.swift */; };
+		OBJ_84 /* Amb.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* Amb.swift */; };
+		OBJ_85 /* AssignOwnership.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* AssignOwnership.swift */; };
+		OBJ_86 /* AssignToMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* AssignToMany.swift */; };
+		OBJ_87 /* CombineLatestMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* CombineLatestMany.swift */; };
+		OBJ_88 /* Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* Create.swift */; };
+		OBJ_89 /* Dematerialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Dematerialize.swift */; };
+		OBJ_90 /* FlatMapLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* FlatMapLatest.swift */; };
+		OBJ_91 /* MapMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* MapMany.swift */; };
+		OBJ_92 /* Materialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* Materialize.swift */; };
+		OBJ_93 /* Partition.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* Partition.swift */; };
+		OBJ_94 /* PrefixDuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* PrefixDuration.swift */; };
+		OBJ_95 /* RemoveAllDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* RemoveAllDuplicates.swift */; };
+		OBJ_96 /* SetOutputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* SetOutputType.swift */; };
+		OBJ_97 /* ShareReplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* ShareReplay.swift */; };
+		OBJ_98 /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* Toggle.swift */; };
+		OBJ_99 /* WithLatestFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* WithLatestFrom.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,55 +94,57 @@
 		OBJ_28 /* RemoveAllDuplicates.swift */ = {isa = PBXFileReference; path = RemoveAllDuplicates.swift; sourceTree = "<group>"; };
 		OBJ_29 /* SetOutputType.swift */ = {isa = PBXFileReference; path = SetOutputType.swift; sourceTree = "<group>"; };
 		OBJ_30 /* ShareReplay.swift */ = {isa = PBXFileReference; path = ShareReplay.swift; sourceTree = "<group>"; };
-		OBJ_31 /* WithLatestFrom.swift */ = {isa = PBXFileReference; path = WithLatestFrom.swift; sourceTree = "<group>"; };
-		OBJ_32 /* ZipMany.swift */ = {isa = PBXFileReference; path = ZipMany.swift; sourceTree = "<group>"; };
-		OBJ_34 /* CurrentValueRelay.swift */ = {isa = PBXFileReference; path = CurrentValueRelay.swift; sourceTree = "<group>"; };
-		OBJ_35 /* PassthroughRelay.swift */ = {isa = PBXFileReference; path = PassthroughRelay.swift; sourceTree = "<group>"; };
-		OBJ_36 /* Relay.swift */ = {isa = PBXFileReference; path = Relay.swift; sourceTree = "<group>"; };
-		OBJ_38 /* ReplaySubject.swift */ = {isa = PBXFileReference; path = ReplaySubject.swift; sourceTree = "<group>"; };
-		OBJ_40 /* AmbTests.swift */ = {isa = PBXFileReference; path = AmbTests.swift; sourceTree = "<group>"; };
-		OBJ_41 /* AssignOwnershipTests.swift */ = {isa = PBXFileReference; path = AssignOwnershipTests.swift; sourceTree = "<group>"; };
-		OBJ_42 /* AssignToManyTests.swift */ = {isa = PBXFileReference; path = AssignToManyTests.swift; sourceTree = "<group>"; };
-		OBJ_43 /* CombineLatestManyTests.swift */ = {isa = PBXFileReference; path = CombineLatestManyTests.swift; sourceTree = "<group>"; };
-		OBJ_44 /* CreateTests.swift */ = {isa = PBXFileReference; path = CreateTests.swift; sourceTree = "<group>"; };
-		OBJ_45 /* CurrentValueRelayTests.swift */ = {isa = PBXFileReference; path = CurrentValueRelayTests.swift; sourceTree = "<group>"; };
-		OBJ_46 /* DematerializeTests.swift */ = {isa = PBXFileReference; path = DematerializeTests.swift; sourceTree = "<group>"; };
-		OBJ_47 /* FlatMapLatestTests.swift */ = {isa = PBXFileReference; path = FlatMapLatestTests.swift; sourceTree = "<group>"; };
-		OBJ_48 /* MapManyTests.swift */ = {isa = PBXFileReference; path = MapManyTests.swift; sourceTree = "<group>"; };
-		OBJ_49 /* MaterializeTests.swift */ = {isa = PBXFileReference; path = MaterializeTests.swift; sourceTree = "<group>"; };
-		OBJ_50 /* OptionalTests.swift */ = {isa = PBXFileReference; path = OptionalTests.swift; sourceTree = "<group>"; };
-		OBJ_51 /* PartitionTests.swift */ = {isa = PBXFileReference; path = PartitionTests.swift; sourceTree = "<group>"; };
-		OBJ_52 /* PassthroughRelayTests.swift */ = {isa = PBXFileReference; path = PassthroughRelayTests.swift; sourceTree = "<group>"; };
-		OBJ_53 /* PrefixDurationTests.swift */ = {isa = PBXFileReference; path = PrefixDurationTests.swift; sourceTree = "<group>"; };
-		OBJ_54 /* RemoveAllDuplicatesTests.swift */ = {isa = PBXFileReference; path = RemoveAllDuplicatesTests.swift; sourceTree = "<group>"; };
-		OBJ_55 /* ReplaySubjectTests.swift */ = {isa = PBXFileReference; path = ReplaySubjectTests.swift; sourceTree = "<group>"; };
-		OBJ_56 /* SetOutputTypeTests.swift */ = {isa = PBXFileReference; path = SetOutputTypeTests.swift; sourceTree = "<group>"; };
-		OBJ_57 /* ShareReplayTests.swift */ = {isa = PBXFileReference; path = ShareReplayTests.swift; sourceTree = "<group>"; };
-		OBJ_58 /* WithLatestFromTests.swift */ = {isa = PBXFileReference; path = WithLatestFromTests.swift; sourceTree = "<group>"; };
-		OBJ_59 /* ZipManyTests.swift */ = {isa = PBXFileReference; path = ZipManyTests.swift; sourceTree = "<group>"; };
+		OBJ_31 /* Toggle.swift */ = {isa = PBXFileReference; path = Toggle.swift; sourceTree = "<group>"; };
+		OBJ_32 /* WithLatestFrom.swift */ = {isa = PBXFileReference; path = WithLatestFrom.swift; sourceTree = "<group>"; };
+		OBJ_33 /* ZipMany.swift */ = {isa = PBXFileReference; path = ZipMany.swift; sourceTree = "<group>"; };
+		OBJ_35 /* CurrentValueRelay.swift */ = {isa = PBXFileReference; path = CurrentValueRelay.swift; sourceTree = "<group>"; };
+		OBJ_36 /* PassthroughRelay.swift */ = {isa = PBXFileReference; path = PassthroughRelay.swift; sourceTree = "<group>"; };
+		OBJ_37 /* Relay.swift */ = {isa = PBXFileReference; path = Relay.swift; sourceTree = "<group>"; };
+		OBJ_39 /* ReplaySubject.swift */ = {isa = PBXFileReference; path = ReplaySubject.swift; sourceTree = "<group>"; };
+		OBJ_41 /* AmbTests.swift */ = {isa = PBXFileReference; path = AmbTests.swift; sourceTree = "<group>"; };
+		OBJ_42 /* AssignOwnershipTests.swift */ = {isa = PBXFileReference; path = AssignOwnershipTests.swift; sourceTree = "<group>"; };
+		OBJ_43 /* AssignToManyTests.swift */ = {isa = PBXFileReference; path = AssignToManyTests.swift; sourceTree = "<group>"; };
+		OBJ_44 /* CombineLatestManyTests.swift */ = {isa = PBXFileReference; path = CombineLatestManyTests.swift; sourceTree = "<group>"; };
+		OBJ_45 /* CreateTests.swift */ = {isa = PBXFileReference; path = CreateTests.swift; sourceTree = "<group>"; };
+		OBJ_46 /* CurrentValueRelayTests.swift */ = {isa = PBXFileReference; path = CurrentValueRelayTests.swift; sourceTree = "<group>"; };
+		OBJ_47 /* DematerializeTests.swift */ = {isa = PBXFileReference; path = DematerializeTests.swift; sourceTree = "<group>"; };
+		OBJ_48 /* FlatMapLatestTests.swift */ = {isa = PBXFileReference; path = FlatMapLatestTests.swift; sourceTree = "<group>"; };
+		OBJ_49 /* MapManyTests.swift */ = {isa = PBXFileReference; path = MapManyTests.swift; sourceTree = "<group>"; };
+		OBJ_50 /* MaterializeTests.swift */ = {isa = PBXFileReference; path = MaterializeTests.swift; sourceTree = "<group>"; };
+		OBJ_51 /* OptionalTests.swift */ = {isa = PBXFileReference; path = OptionalTests.swift; sourceTree = "<group>"; };
+		OBJ_52 /* PartitionTests.swift */ = {isa = PBXFileReference; path = PartitionTests.swift; sourceTree = "<group>"; };
+		OBJ_53 /* PassthroughRelayTests.swift */ = {isa = PBXFileReference; path = PassthroughRelayTests.swift; sourceTree = "<group>"; };
+		OBJ_54 /* PrefixDurationTests.swift */ = {isa = PBXFileReference; path = PrefixDurationTests.swift; sourceTree = "<group>"; };
+		OBJ_55 /* RemoveAllDuplicatesTests.swift */ = {isa = PBXFileReference; path = RemoveAllDuplicatesTests.swift; sourceTree = "<group>"; };
+		OBJ_56 /* ReplaySubjectTests.swift */ = {isa = PBXFileReference; path = ReplaySubjectTests.swift; sourceTree = "<group>"; };
+		OBJ_57 /* SetOutputTypeTests.swift */ = {isa = PBXFileReference; path = SetOutputTypeTests.swift; sourceTree = "<group>"; };
+		OBJ_58 /* ShareReplayTests.swift */ = {isa = PBXFileReference; path = ShareReplayTests.swift; sourceTree = "<group>"; };
+		OBJ_59 /* ToggleTests.swift */ = {isa = PBXFileReference; path = ToggleTests.swift; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		OBJ_63 /* Resources */ = {isa = PBXFileReference; path = Resources; sourceTree = SOURCE_ROOT; };
-		OBJ_64 /* Carthage */ = {isa = PBXFileReference; path = Carthage; sourceTree = SOURCE_ROOT; };
-		OBJ_65 /* scripts */ = {isa = PBXFileReference; path = scripts; sourceTree = SOURCE_ROOT; };
-		OBJ_66 /* codecov.yml */ = {isa = PBXFileReference; path = codecov.yml; sourceTree = "<group>"; };
-		OBJ_67 /* LICENSE */ = {isa = PBXFileReference; path = LICENSE; sourceTree = "<group>"; };
-		OBJ_68 /* CHANGELOG.md */ = {isa = PBXFileReference; path = CHANGELOG.md; sourceTree = "<group>"; };
-		OBJ_69 /* Makefile */ = {isa = PBXFileReference; path = Makefile; sourceTree = "<group>"; };
-		OBJ_70 /* CombineExt.podspec */ = {isa = PBXFileReference; path = CombineExt.podspec; sourceTree = "<group>"; };
-		OBJ_71 /* README.md */ = {isa = PBXFileReference; path = README.md; sourceTree = "<group>"; };
+		OBJ_60 /* WithLatestFromTests.swift */ = {isa = PBXFileReference; path = WithLatestFromTests.swift; sourceTree = "<group>"; };
+		OBJ_61 /* ZipManyTests.swift */ = {isa = PBXFileReference; path = ZipManyTests.swift; sourceTree = "<group>"; };
+		OBJ_65 /* Resources */ = {isa = PBXFileReference; path = Resources; sourceTree = SOURCE_ROOT; };
+		OBJ_66 /* Carthage */ = {isa = PBXFileReference; path = Carthage; sourceTree = SOURCE_ROOT; };
+		OBJ_67 /* scripts */ = {isa = PBXFileReference; path = scripts; sourceTree = SOURCE_ROOT; };
+		OBJ_68 /* codecov.yml */ = {isa = PBXFileReference; path = codecov.yml; sourceTree = "<group>"; };
+		OBJ_69 /* LICENSE */ = {isa = PBXFileReference; path = LICENSE; sourceTree = "<group>"; };
+		OBJ_70 /* CHANGELOG.md */ = {isa = PBXFileReference; path = CHANGELOG.md; sourceTree = "<group>"; };
+		OBJ_71 /* Makefile */ = {isa = PBXFileReference; path = Makefile; sourceTree = "<group>"; };
+		OBJ_72 /* CombineExt.podspec */ = {isa = PBXFileReference; path = CombineExt.podspec; sourceTree = "<group>"; };
+		OBJ_73 /* README.md */ = {isa = PBXFileReference; path = README.md; sourceTree = "<group>"; };
 		OBJ_9 /* DemandBuffer.swift */ = {isa = PBXFileReference; path = DemandBuffer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		OBJ_102 /* Frameworks */ = {
+		OBJ_105 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
 			);
 		};
-		OBJ_139 /* Frameworks */ = {
+		OBJ_143 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
-				OBJ_140 /* CombineExt.framework in Frameworks */,
+				OBJ_144 /* CombineExt.framework in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -182,56 +186,58 @@
 				OBJ_28 /* RemoveAllDuplicates.swift */,
 				OBJ_29 /* SetOutputType.swift */,
 				OBJ_30 /* ShareReplay.swift */,
-				OBJ_31 /* WithLatestFrom.swift */,
-				OBJ_32 /* ZipMany.swift */,
+				OBJ_31 /* Toggle.swift */,
+				OBJ_32 /* WithLatestFrom.swift */,
+				OBJ_33 /* ZipMany.swift */,
 			);
 			name = Operators;
 			path = Operators;
 			sourceTree = "<group>";
 		};
-		OBJ_33 /* Relays */ = {
+		OBJ_34 /* Relays */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_34 /* CurrentValueRelay.swift */,
-				OBJ_35 /* PassthroughRelay.swift */,
-				OBJ_36 /* Relay.swift */,
+				OBJ_35 /* CurrentValueRelay.swift */,
+				OBJ_36 /* PassthroughRelay.swift */,
+				OBJ_37 /* Relay.swift */,
 			);
 			name = Relays;
 			path = Relays;
 			sourceTree = "<group>";
 		};
-		OBJ_37 /* Subjects */ = {
+		OBJ_38 /* Subjects */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_38 /* ReplaySubject.swift */,
+				OBJ_39 /* ReplaySubject.swift */,
 			);
 			name = Subjects;
 			path = Subjects;
 			sourceTree = "<group>";
 		};
-		OBJ_39 /* Tests */ = {
+		OBJ_40 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_40 /* AmbTests.swift */,
-				OBJ_41 /* AssignOwnershipTests.swift */,
-				OBJ_42 /* AssignToManyTests.swift */,
-				OBJ_43 /* CombineLatestManyTests.swift */,
-				OBJ_44 /* CreateTests.swift */,
-				OBJ_45 /* CurrentValueRelayTests.swift */,
-				OBJ_46 /* DematerializeTests.swift */,
-				OBJ_47 /* FlatMapLatestTests.swift */,
-				OBJ_48 /* MapManyTests.swift */,
-				OBJ_49 /* MaterializeTests.swift */,
-				OBJ_50 /* OptionalTests.swift */,
-				OBJ_51 /* PartitionTests.swift */,
-				OBJ_52 /* PassthroughRelayTests.swift */,
-				OBJ_53 /* PrefixDurationTests.swift */,
-				OBJ_54 /* RemoveAllDuplicatesTests.swift */,
-				OBJ_55 /* ReplaySubjectTests.swift */,
-				OBJ_56 /* SetOutputTypeTests.swift */,
-				OBJ_57 /* ShareReplayTests.swift */,
-				OBJ_58 /* WithLatestFromTests.swift */,
-				OBJ_59 /* ZipManyTests.swift */,
+				OBJ_41 /* AmbTests.swift */,
+				OBJ_42 /* AssignOwnershipTests.swift */,
+				OBJ_43 /* AssignToManyTests.swift */,
+				OBJ_44 /* CombineLatestManyTests.swift */,
+				OBJ_45 /* CreateTests.swift */,
+				OBJ_46 /* CurrentValueRelayTests.swift */,
+				OBJ_47 /* DematerializeTests.swift */,
+				OBJ_48 /* FlatMapLatestTests.swift */,
+				OBJ_49 /* MapManyTests.swift */,
+				OBJ_50 /* MaterializeTests.swift */,
+				OBJ_51 /* OptionalTests.swift */,
+				OBJ_52 /* PartitionTests.swift */,
+				OBJ_53 /* PassthroughRelayTests.swift */,
+				OBJ_54 /* PrefixDurationTests.swift */,
+				OBJ_55 /* RemoveAllDuplicatesTests.swift */,
+				OBJ_56 /* ReplaySubjectTests.swift */,
+				OBJ_57 /* SetOutputTypeTests.swift */,
+				OBJ_58 /* ShareReplayTests.swift */,
+				OBJ_59 /* ToggleTests.swift */,
+				OBJ_60 /* WithLatestFromTests.swift */,
+				OBJ_61 /* ZipManyTests.swift */,
 			);
 			name = Tests;
 			path = Tests;
@@ -242,22 +248,22 @@
 			children = (
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
-				OBJ_39 /* Tests */,
-				OBJ_60 /* Products */,
-				OBJ_63 /* Resources */,
-				OBJ_64 /* Carthage */,
-				OBJ_65 /* scripts */,
-				OBJ_66 /* codecov.yml */,
-				OBJ_67 /* LICENSE */,
-				OBJ_68 /* CHANGELOG.md */,
-				OBJ_69 /* Makefile */,
-				OBJ_70 /* CombineExt.podspec */,
-				OBJ_71 /* README.md */,
+				OBJ_40 /* Tests */,
+				OBJ_62 /* Products */,
+				OBJ_65 /* Resources */,
+				OBJ_66 /* Carthage */,
+				OBJ_67 /* scripts */,
+				OBJ_68 /* codecov.yml */,
+				OBJ_69 /* LICENSE */,
+				OBJ_70 /* CHANGELOG.md */,
+				OBJ_71 /* Makefile */,
+				OBJ_72 /* CombineExt.podspec */,
+				OBJ_73 /* README.md */,
 			);
 			path = "";
 			sourceTree = "<group>";
 		};
-		OBJ_60 /* Products */ = {
+		OBJ_62 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				CombineExt::CombineExt::Product /* CombineExt.framework */,
@@ -274,8 +280,8 @@
 				OBJ_11 /* Convenience */,
 				OBJ_13 /* Models */,
 				OBJ_16 /* Operators */,
-				OBJ_33 /* Relays */,
-				OBJ_37 /* Subjects */,
+				OBJ_34 /* Relays */,
+				OBJ_38 /* Subjects */,
 			);
 			name = Sources;
 			path = Sources;
@@ -296,11 +302,11 @@
 /* Begin PBXNativeTarget section */
 		CombineExt::CombineExt /* CombineExt */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_73 /* Build configuration list for PBXNativeTarget "CombineExt" */;
+			buildConfigurationList = OBJ_75 /* Build configuration list for PBXNativeTarget "CombineExt" */;
 			buildPhases = (
-				688D872E79F6AC7056B9CB6F /* SwiftLint */,
-				OBJ_76 /* Sources */,
-				OBJ_102 /* Frameworks */,
+				1210ED10315C0090135F691A /* SwiftLint */,
+				OBJ_78 /* Sources */,
+				OBJ_105 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -313,16 +319,16 @@
 		};
 		CombineExt::CombineExtTests /* CombineExtTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_115 /* Build configuration list for PBXNativeTarget "CombineExtTests" */;
+			buildConfigurationList = OBJ_118 /* Build configuration list for PBXNativeTarget "CombineExtTests" */;
 			buildPhases = (
-				3C81BD76E0A2B1061B324401 /* SwiftLint */,
-				OBJ_118 /* Sources */,
-				OBJ_139 /* Frameworks */,
+				FB6378A2693A5D2CD3AAEC97 /* SwiftLint */,
+				OBJ_121 /* Sources */,
+				OBJ_143 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_141 /* PBXTargetDependency */,
+				OBJ_145 /* PBXTargetDependency */,
 			);
 			name = CombineExtTests;
 			productName = CombineExtTests;
@@ -331,10 +337,10 @@
 		};
 		CombineExt::SwiftPMPackageDescription /* CombineExtPackageDescription */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_104 /* Build configuration list for PBXNativeTarget "CombineExtPackageDescription" */;
+			buildConfigurationList = OBJ_107 /* Build configuration list for PBXNativeTarget "CombineExtPackageDescription" */;
 			buildPhases = (
-				EF0AB1A81712BE796884E22A /* SwiftLint */,
-				OBJ_107 /* Sources */,
+				A13DDE5E69B5BC4613224897 /* SwiftLint */,
+				OBJ_110 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -361,7 +367,7 @@
 				en,
 			);
 			mainGroup = OBJ_5;
-			productRefGroup = OBJ_60 /* Products */;
+			productRefGroup = OBJ_62 /* Products */;
 			projectDirPath = .;
 			targets = (
 				CombineExt::CombineExt /* CombineExt */,
@@ -373,7 +379,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		185283E6FF0089756F9D6E6A /* SwiftLint */ = {
+		1210ED10315C0090135F691A /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -391,7 +397,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed\"\nfi       \n";
 		};
-		3C81BD76E0A2B1061B324401 /* SwiftLint */ = {
+		6EE0AF2A56FE8FE91E8566DF /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -409,7 +415,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed\"\nfi       \n";
 		};
-		688D872E79F6AC7056B9CB6F /* SwiftLint */ = {
+		A13DDE5E69B5BC4613224897 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -427,7 +433,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed\"\nfi       \n";
 		};
-		EF0AB1A81712BE796884E22A /* SwiftLint */ = {
+		FB6378A2693A5D2CD3AAEC97 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -448,82 +454,84 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJ_107 /* Sources */ = {
+		OBJ_110 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
-				OBJ_108 /* Package.swift in Sources */,
+				OBJ_111 /* Package.swift in Sources */,
 			);
 		};
-		OBJ_118 /* Sources */ = {
+		OBJ_121 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
-				OBJ_119 /* AmbTests.swift in Sources */,
-				OBJ_120 /* AssignOwnershipTests.swift in Sources */,
-				OBJ_121 /* AssignToManyTests.swift in Sources */,
-				OBJ_122 /* CombineLatestManyTests.swift in Sources */,
-				OBJ_123 /* CreateTests.swift in Sources */,
-				OBJ_124 /* CurrentValueRelayTests.swift in Sources */,
-				OBJ_125 /* DematerializeTests.swift in Sources */,
-				OBJ_126 /* FlatMapLatestTests.swift in Sources */,
-				OBJ_127 /* MapManyTests.swift in Sources */,
-				OBJ_128 /* MaterializeTests.swift in Sources */,
-				OBJ_129 /* OptionalTests.swift in Sources */,
-				OBJ_130 /* PartitionTests.swift in Sources */,
-				OBJ_131 /* PassthroughRelayTests.swift in Sources */,
-				OBJ_132 /* PrefixDurationTests.swift in Sources */,
-				OBJ_133 /* RemoveAllDuplicatesTests.swift in Sources */,
-				OBJ_134 /* ReplaySubjectTests.swift in Sources */,
-				OBJ_135 /* SetOutputTypeTests.swift in Sources */,
-				OBJ_136 /* ShareReplayTests.swift in Sources */,
-				OBJ_137 /* WithLatestFromTests.swift in Sources */,
-				OBJ_138 /* ZipManyTests.swift in Sources */,
+				OBJ_122 /* AmbTests.swift in Sources */,
+				OBJ_123 /* AssignOwnershipTests.swift in Sources */,
+				OBJ_124 /* AssignToManyTests.swift in Sources */,
+				OBJ_125 /* CombineLatestManyTests.swift in Sources */,
+				OBJ_126 /* CreateTests.swift in Sources */,
+				OBJ_127 /* CurrentValueRelayTests.swift in Sources */,
+				OBJ_128 /* DematerializeTests.swift in Sources */,
+				OBJ_129 /* FlatMapLatestTests.swift in Sources */,
+				OBJ_130 /* MapManyTests.swift in Sources */,
+				OBJ_131 /* MaterializeTests.swift in Sources */,
+				OBJ_132 /* OptionalTests.swift in Sources */,
+				OBJ_133 /* PartitionTests.swift in Sources */,
+				OBJ_134 /* PassthroughRelayTests.swift in Sources */,
+				OBJ_135 /* PrefixDurationTests.swift in Sources */,
+				OBJ_136 /* RemoveAllDuplicatesTests.swift in Sources */,
+				OBJ_137 /* ReplaySubjectTests.swift in Sources */,
+				OBJ_138 /* SetOutputTypeTests.swift in Sources */,
+				OBJ_139 /* ShareReplayTests.swift in Sources */,
+				OBJ_140 /* ToggleTests.swift in Sources */,
+				OBJ_141 /* WithLatestFromTests.swift in Sources */,
+				OBJ_142 /* ZipManyTests.swift in Sources */,
 			);
 		};
-		OBJ_76 /* Sources */ = {
+		OBJ_78 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
-				OBJ_77 /* DemandBuffer.swift in Sources */,
-				OBJ_78 /* Sink.swift in Sources */,
-				OBJ_79 /* Optional.swift in Sources */,
-				OBJ_80 /* Event.swift in Sources */,
-				OBJ_81 /* ObjectOwnership.swift in Sources */,
-				OBJ_82 /* Amb.swift in Sources */,
-				OBJ_83 /* AssignOwnership.swift in Sources */,
-				OBJ_84 /* AssignToMany.swift in Sources */,
-				OBJ_85 /* CombineLatestMany.swift in Sources */,
-				OBJ_86 /* Create.swift in Sources */,
-				OBJ_87 /* Dematerialize.swift in Sources */,
-				OBJ_88 /* FlatMapLatest.swift in Sources */,
-				OBJ_89 /* MapMany.swift in Sources */,
-				OBJ_90 /* Materialize.swift in Sources */,
-				OBJ_91 /* Partition.swift in Sources */,
-				OBJ_92 /* PrefixDuration.swift in Sources */,
-				OBJ_93 /* RemoveAllDuplicates.swift in Sources */,
-				OBJ_94 /* SetOutputType.swift in Sources */,
-				OBJ_95 /* ShareReplay.swift in Sources */,
-				OBJ_96 /* WithLatestFrom.swift in Sources */,
-				OBJ_97 /* ZipMany.swift in Sources */,
-				OBJ_98 /* CurrentValueRelay.swift in Sources */,
-				OBJ_99 /* PassthroughRelay.swift in Sources */,
-				OBJ_100 /* Relay.swift in Sources */,
-				OBJ_101 /* ReplaySubject.swift in Sources */,
+				OBJ_79 /* DemandBuffer.swift in Sources */,
+				OBJ_80 /* Sink.swift in Sources */,
+				OBJ_81 /* Optional.swift in Sources */,
+				OBJ_82 /* Event.swift in Sources */,
+				OBJ_83 /* ObjectOwnership.swift in Sources */,
+				OBJ_84 /* Amb.swift in Sources */,
+				OBJ_85 /* AssignOwnership.swift in Sources */,
+				OBJ_86 /* AssignToMany.swift in Sources */,
+				OBJ_87 /* CombineLatestMany.swift in Sources */,
+				OBJ_88 /* Create.swift in Sources */,
+				OBJ_89 /* Dematerialize.swift in Sources */,
+				OBJ_90 /* FlatMapLatest.swift in Sources */,
+				OBJ_91 /* MapMany.swift in Sources */,
+				OBJ_92 /* Materialize.swift in Sources */,
+				OBJ_93 /* Partition.swift in Sources */,
+				OBJ_94 /* PrefixDuration.swift in Sources */,
+				OBJ_95 /* RemoveAllDuplicates.swift in Sources */,
+				OBJ_96 /* SetOutputType.swift in Sources */,
+				OBJ_97 /* ShareReplay.swift in Sources */,
+				OBJ_98 /* Toggle.swift in Sources */,
+				OBJ_99 /* WithLatestFrom.swift in Sources */,
+				OBJ_100 /* ZipMany.swift in Sources */,
+				OBJ_101 /* CurrentValueRelay.swift in Sources */,
+				OBJ_102 /* PassthroughRelay.swift in Sources */,
+				OBJ_103 /* Relay.swift in Sources */,
+				OBJ_104 /* ReplaySubject.swift in Sources */,
 			);
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		OBJ_113 /* PBXTargetDependency */ = {
+		OBJ_116 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CombineExt::CombineExtTests /* CombineExtTests */;
 		};
-		OBJ_141 /* PBXTargetDependency */ = {
+		OBJ_145 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CombineExt::CombineExt /* CombineExt */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		OBJ_105 /* Debug */ = {
+		OBJ_108 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD = /usr/bin/true;
@@ -532,7 +540,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_106 /* Release */ = {
+		OBJ_109 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD = /usr/bin/true;
@@ -541,19 +549,19 @@
 			};
 			name = Release;
 		};
-		OBJ_111 /* Debug */ = {
+		OBJ_114 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
 			name = Debug;
 		};
-		OBJ_112 /* Release */ = {
+		OBJ_115 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
 			name = Release;
 		};
-		OBJ_116 /* Debug */ = {
+		OBJ_119 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -578,7 +586,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_117 /* Release */ = {
+		OBJ_120 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -654,7 +662,7 @@
 			};
 			name = Release;
 		};
-		OBJ_74 /* Debug */ = {
+		OBJ_76 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -682,7 +690,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_75 /* Release */ = {
+		OBJ_77 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -713,29 +721,29 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		OBJ_104 /* Build configuration list for PBXNativeTarget "CombineExtPackageDescription" */ = {
+		OBJ_107 /* Build configuration list for PBXNativeTarget "CombineExtPackageDescription" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_105 /* Debug */,
-				OBJ_106 /* Release */,
+				OBJ_108 /* Debug */,
+				OBJ_109 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_110 /* Build configuration list for PBXAggregateTarget "CombineExtPackageTests" */ = {
+		OBJ_113 /* Build configuration list for PBXAggregateTarget "CombineExtPackageTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_111 /* Debug */,
-				OBJ_112 /* Release */,
+				OBJ_114 /* Debug */,
+				OBJ_115 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_115 /* Build configuration list for PBXNativeTarget "CombineExtTests" */ = {
+		OBJ_118 /* Build configuration list for PBXNativeTarget "CombineExtTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_116 /* Debug */,
-				OBJ_117 /* Release */,
+				OBJ_119 /* Debug */,
+				OBJ_120 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -749,11 +757,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_73 /* Build configuration list for PBXNativeTarget "CombineExt" */ = {
+		OBJ_75 /* Build configuration list for PBXNativeTarget "CombineExt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_74 /* Debug */,
-				OBJ_75 /* Release */,
+				OBJ_76 /* Debug */,
+				OBJ_77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
