@@ -36,6 +36,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
 * [share(replay:)](#sharereplay)
 * [prefix(duration:tolerance:​on:in:options:)](#prefixduration)
+* [weakAssign(to:on:)](#weakAssign)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -513,6 +514,25 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
 2
 3
 ```
+
+### weakAssign
+
+weakAssign allows you to assign values to an object without retaining the object itself. Helpfull if you need to assign long living Publishers to properties in the same class.
+
+```
+class SomeObj {
+    private var cancelable = [AnyCancellable]()
+    private let subject = CurrentValueSubject<Int, Never>(5)
+    private(set) var value: Int = 0
+
+    init() {
+        subject.weakAssign(to: \.value, on: self).store(in: &cancelable)
+    }
+}
+
+```
+If we would use `.assign` instead of  `.weakAssign` the object would retain itself forever.
+
 
 ## Publishers
 
