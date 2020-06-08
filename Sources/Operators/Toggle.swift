@@ -15,7 +15,7 @@ public extension Publisher where Output == Bool {
     ///
     /// - returns: A toggled value.
     func toggle() -> Publishers.Map<Self, Bool> {
-        map { !$0 }
+        map(!)
     }
 }
 #endif
