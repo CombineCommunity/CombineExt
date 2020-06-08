@@ -36,6 +36,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
 * [share(replay:)](#sharereplay)
 * [prefix(duration:tolerance:​on:in:options:)](#prefixduration)
+* [toggle()](#toggle)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -512,6 +513,28 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
 1
 2
 3
+```
+
+### toggle()
+
+Toggle each boolean element of a publisher collection.
+
+```swift
+let subject = PassthroughSubject<Bool, Never>()
+
+subscription = subject
+  .toggle()
+  .sink(receiveValue: { print($0) })
+  
+subject.send(true)
+subject.send(false)
+subject.send(true)
+```
+
+```none
+false
+true
+false
 ```
 
 ## Publishers
