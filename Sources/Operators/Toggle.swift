@@ -11,7 +11,7 @@ import Combine
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publisher where Output == Bool {
-    /// Toggle a boolean publisher.
+    /// Toggles boolean values emitted by a publisher.
     ///
     /// - returns: A toggled value.
     func toggle() -> Publishers.Map<Self, Bool> {
