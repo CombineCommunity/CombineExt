@@ -15,11 +15,11 @@ import XCTest
 final class ToggleTests: XCTestCase {
     func testSomeInitialization() {
         var results = [Bool]()
-        _ = [true, false].publisher
+        _ = [true, false, true, false, true].publisher
             .toggle()
             .sink { results.append($0) }
 
-        XCTAssertEqual([false, true], results)
+        XCTAssertEqual([false, true, false, true, false], results)
     }
 }
 #endif
