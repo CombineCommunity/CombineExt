@@ -30,13 +30,10 @@ class CreateTests: XCTestCase {
     }
     
     func testUnlimitedDemandFinished() {
-        let expect = expectation(description: "4 values and finished event")
-        let subscriber = makeSubscriber(demand: .unlimited,
-                                        expectation: expect)
+        let subscriber = makeSubscriber(demand: .unlimited)
         let publisher = makePublisher(fail: false)
 
         publisher.subscribe(subscriber)
-        wait(for: [expect], timeout: 1)
         
         XCTAssertEqual(completion, .finished)
         XCTAssertTrue(canceled)
@@ -44,9 +41,7 @@ class CreateTests: XCTestCase {
     }
 
     func testLimitedDemandFinished() {
-        let expect = expectation(description: "2 values and finished event")
-        let subscriber = makeSubscriber(demand: .max(2),
-                                        expectation: expect)
+        let subscriber = makeSubscriber(demand: .max(2))
 
         let publisher = AnyPublisher<String, MyError> { subscriber in
             self.allValues.forEach { subscriber.send($0) }
@@ -56,66 +51,53 @@ class CreateTests: XCTestCase {
                 self?.canceled = true
             }
         }
-        
+
         publisher.subscribe(subscriber)
-        wait(for: [expect], timeout: 1)
-        
+
         XCTAssertEqual(completion, .finished)
         XCTAssertTrue(canceled)
         XCTAssertEqual(values, Array(allValues.prefix(2)))
     }
-    
+
     func testNoDemandFinished() {
-        let expect = expectation(description: "no values and finished event")
-        let subscriber = makeSubscriber(demand: .none,
-                                        expectation: expect)
+        let subscriber = makeSubscriber(demand: .none)
         let publisher = makePublisher(fail: false)
-        
+
         publisher.subscribe(subscriber)
-        wait(for: [expect], timeout: 1)
-        
+
         XCTAssertEqual(completion, .finished)
         XCTAssertTrue(canceled)
         XCTAssertTrue(values.isEmpty)
     }
-    
+
     func testUnlimitedDemandError() {
-        let expect = expectation(description: "4 values and error event")
-        let subscriber = makeSubscriber(demand: .unlimited,
-                                        expectation: expect)
+        let subscriber = makeSubscriber(demand: .unlimited)
         let publisher = makePublisher(fail: true)
 
         publisher.subscribe(subscriber)
-        wait(for: [expect], timeout: 1)
-        
+
         XCTAssertEqual(completion, .failure(MyError.failure))
         XCTAssertTrue(canceled)
         XCTAssertEqual(values, allValues)
     }
 
     func testLimitedDemandError() {
-        let expect = expectation(description: "2 values and error event")
-        let subscriber = makeSubscriber(demand: .max(2),
-                                        expectation: expect)
+        let subscriber = makeSubscriber(demand: .max(2))
         let publisher = makePublisher(fail: true)
-        
+
         publisher.subscribe(subscriber)
-        wait(for: [expect], timeout: 1)
-        
+
         XCTAssertEqual(completion, .failure(MyError.failure))
         XCTAssertTrue(canceled)
         XCTAssertEqual(values, Array(allValues.prefix(2)))
     }
-    
+
     func testNoDemandError() {
-        let expect = expectation(description: "no values and error event")
-        let subscriber = makeSubscriber(demand: .none,
-                                        expectation: expect)
+        let subscriber = makeSubscriber(demand: .none)
         let publisher = makePublisher(fail: true)
-        
+
         publisher.subscribe(subscriber)
-        wait(for: [expect], timeout: 1)
-        
+
         XCTAssertEqual(completion, .failure(MyError.failure))
         XCTAssertTrue(canceled)
         XCTAssertTrue(values.isEmpty)
@@ -146,9 +128,10 @@ private extension CreateTests {
                 self?.canceled = true
             }
         }
+        .eraseToAnyPublisher()
     }
     
-    func makeSubscriber(demand: Subscribers.Demand, expectation: XCTestExpectation?) -> AnySubscriber<String, MyError> {
+    func makeSubscriber(demand: Subscribers.Demand) -> AnySubscriber<String, MyError> {
         return AnySubscriber(
             receiveSubscription: { subscription in
                 XCTAssertEqual("\(subscription)", "Create.Subscription<String, MyError>")
@@ -160,7 +143,6 @@ private extension CreateTests {
             },
             receiveCompletion: { finished in
                 self.completion = finished
-                expectation?.fulfill()
             })
     }
 }

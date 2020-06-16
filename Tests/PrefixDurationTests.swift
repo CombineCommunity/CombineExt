@@ -9,6 +9,7 @@
 #if !os(watchOS)
 import Combine
 import CombineExt
+import CombineSchedulers
 import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -16,58 +17,61 @@ final class PrefixDurationTests: XCTestCase {
     private var cancellable: AnyCancellable!
 
     func testValueEventInWindow() {
+        let scheduler = DispatchQueue.testScheduler
+
         let subject = PassthroughSubject<Int, Never>()
-        let expectation = XCTestExpectation()
-
-        var results = [Int]()
-
-        cancellable = subject
-            .prefix(duration: 0.5)
-            .sink(receiveCompletion: { _ in expectation.fulfill() },
-                  receiveValue: { results.append($0) })
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            subject.send(1)
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            subject.send(2)
-        }
-
-        wait(for: [expectation], timeout: 2)
-
-        XCTAssertEqual(results, [1])
-    }
-
-    func testMultipleEventsInAndOutOfWindow() {
-        let subject = PassthroughSubject<Int, Never>()
-        let expectation = XCTestExpectation()
 
         var results = [Int]()
         var completions = [Subscribers.Completion<Never>]()
 
         cancellable = subject
-            .prefix(duration: 0.8)
-            .sink(receiveCompletion: { completions.append($0); expectation.fulfill() },
+            .prefix(duration: 0.5, on: scheduler)
+            .sink(receiveCompletion: { completions.append($0) },
+                  receiveValue: { results.append($0) })
+
+        scheduler.schedule(after: scheduler.now.advanced(by: 0.25)) {
+            subject.send(1)
+        }
+
+        scheduler.schedule(after: scheduler.now.advanced(by: 1.5)) {
+            subject.send(2)
+        }
+
+        scheduler.advance(by: 2)
+
+        XCTAssertEqual(results, [1])
+        XCTAssertEqual(completions, [.finished])
+    }
+
+    func testMultipleEventsInAndOutOfWindow() {
+        let subject = PassthroughSubject<Int, Never>()
+        let scheduler = DispatchQueue.testScheduler
+
+        var results = [Int]()
+        var completions = [Subscribers.Completion<Never>]()
+
+        cancellable = subject
+            .prefix(duration: 0.8, on: scheduler)
+            .sink(receiveCompletion: { completions.append($0) },
                   receiveValue: { results.append($0) })
 
         subject.send(1)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+        scheduler.schedule(after: scheduler.now.advanced(by: 0.25)) {
             subject.send(2)
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+        scheduler.schedule(after: scheduler.now.advanced(by: 0.4)) {
             subject.send(3)
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        scheduler.schedule(after: scheduler.now.advanced(by: 1)) {
             subject.send(4)
             subject.send(5)
             subject.send(completion: .finished)
         }
 
-        wait(for: [expectation], timeout: 2)
+        scheduler.advance(by: 2)
 
         XCTAssertEqual(results, [1, 2, 3])
         XCTAssertEqual(completions, [.finished])
@@ -75,40 +79,41 @@ final class PrefixDurationTests: XCTestCase {
 
     func testNoValueEventsInWindow() {
         let subject = PassthroughSubject<Int, Never>()
-        let expectation = XCTestExpectation()
+        let scheduler = DispatchQueue.testScheduler
 
         var results = [Int]()
+        var completions = [Subscribers.Completion<Never>]()
 
         cancellable = subject
-            .prefix(duration: 0.5)
-            .sink(receiveCompletion: { _ in expectation.fulfill() },
+            .prefix(duration: 0.5, on: scheduler)
+            .sink(receiveCompletion: { completions.append($0 ) },
                   receiveValue: { results.append($0) })
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        scheduler.schedule(after: scheduler.now.advanced(by: 1.5)) {
             subject.send(1)
         }
 
-        wait(for: [expectation], timeout: 2)
+        scheduler.advance(by: 2)
 
         XCTAssertTrue(results.isEmpty)
     }
 
     func testFinishedInWindow() {
         let subject = PassthroughSubject<Int, Never>()
-        let expectation = XCTestExpectation()
+        let scheduler = DispatchQueue.testScheduler
 
         var results = [Subscribers.Completion<Never>]()
 
         cancellable = subject
-            .prefix(duration: 0.5)
-            .sink(receiveCompletion: { results.append($0); expectation.fulfill() },
+            .prefix(duration: 0.5, on: scheduler)
+            .sink(receiveCompletion: { results.append($0) },
                   receiveValue: { _ in })
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+        scheduler.schedule(after: scheduler.now.advanced(by: 0.25)) {
             subject.send(completion: .finished)
         }
 
-        wait(for: [expectation], timeout: 2)
+        scheduler.advance(by: 2)
 
         XCTAssertEqual(results, [.finished])
     }
@@ -119,40 +124,40 @@ final class PrefixDurationTests: XCTestCase {
 
     func testErrorInWindow() {
         let subject = PassthroughSubject<Int, AnError>()
-        let expectation = XCTestExpectation()
+        let scheduler = DispatchQueue.testScheduler
 
         var results = [Subscribers.Completion<AnError>]()
 
         cancellable = subject
-            .prefix(duration: 0.5)
-            .sink(receiveCompletion: { results.append($0); expectation.fulfill() },
+            .prefix(duration: 0.5, on: scheduler)
+            .sink(receiveCompletion: { results.append($0) },
                   receiveValue: { _ in })
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+        scheduler.schedule(after: scheduler.now.advanced(by: 0.25)) {
             subject.send(completion: .failure(.someError))
         }
 
-        wait(for: [expectation], timeout: 2)
+        scheduler.advance(by: 2)
 
         XCTAssertEqual(results, [.failure(.someError)])
     }
 
     func testErrorEventOutsideWindowDoesntAffectFinishEvent() {
         let subject = PassthroughSubject<Int, AnError>()
-        let expectation = XCTestExpectation()
+        let scheduler = DispatchQueue.testScheduler
 
         var results = [Subscribers.Completion<AnError>]()
 
         cancellable = subject
-            .prefix(duration: 0.5)
-            .sink(receiveCompletion: { results.append($0); expectation.fulfill() },
+            .prefix(duration: 0.5, on: scheduler)
+            .sink(receiveCompletion: { results.append($0) },
                   receiveValue: { _ in })
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+        scheduler.schedule(after: scheduler.now.advanced(by: 0.75)) {
             subject.send(completion: .failure(.someError))
         }
 
-        wait(for: [expectation], timeout: 2)
+        scheduler.advance(by: 2)
 
         XCTAssertEqual(results, [.finished])
     }
