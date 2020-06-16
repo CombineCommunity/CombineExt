@@ -72,7 +72,7 @@ class DematerializeTests: XCTestCase {
     }
     
     func testFinishedLimitedDemand() {
-        let subscriber = makeSubscriber(demand: .max(2), expectation: nil)
+        let subscriber = makeSubscriber(demand: .max(2))
         
         subject
             .dematerialize()
@@ -103,7 +103,7 @@ class DematerializeTests: XCTestCase {
     }
     
     func testErrorLimitedDemand() {
-        let subscriber = makeSubscriber(demand: .max(2), expectation: nil)
+        let subscriber = makeSubscriber(demand: .max(2))
         
         subject
             .dematerialize()
@@ -121,8 +121,8 @@ class DematerializeTests: XCTestCase {
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension DematerializeTests {
-    func makeSubscriber(demand: Subscribers.Demand, expectation: XCTestExpectation?) -> AnySubscriber<String, MyError> {
-        return AnySubscriber(
+    func makeSubscriber(demand: Subscribers.Demand) -> AnySubscriber<String, MyError> {
+        AnySubscriber(
             receiveSubscription: { subscription in
                 subscription.request(demand)
             },
@@ -132,7 +132,6 @@ private extension DematerializeTests {
             },
             receiveCompletion: { finished in
                 self.completion = finished
-                expectation?.fulfill()
             })
     }
 }

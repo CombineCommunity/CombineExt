@@ -35,7 +35,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [setOutputType(to:)](#setOutputType)
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
 * [share(replay:)](#sharereplay)
-* [prefix(duration:tolerance:​on:in:options:)](#prefixduration)
+* [prefix(duration:tolerance:​on:options:)](#prefixduration)
 * [toggle()](#toggle)
 
 ### Publishers
@@ -497,7 +497,7 @@ An overload on `Publisher.prefix` that that republishes values for a provided `d
 let subject = PassthroughSubject<Int, Never>()
 
 subscription = subject
-  .prefix(duration: 0.5)
+  .prefix(duration: 0.5, on: DispatchQueue.main)
   .sink(receiveValue: { print($0) })
   
 subject.send(1)

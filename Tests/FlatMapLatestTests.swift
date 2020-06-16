@@ -10,6 +10,7 @@
 import XCTest
 import Combine
 import CombineExt
+import CombineSchedulers
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class FlatMapLatestTests: XCTestCase {
@@ -21,18 +22,15 @@ class FlatMapLatestTests: XCTestCase {
         var values = 0
         var cancellations = 0
         var completed = false
+        let scheduler = DispatchQueue.testScheduler
         
         func publish() -> AnyPublisher<String, Never> {
-            Timer
-                .publish(every: 0.5, on: .main, in: .common)
+            Publishers.Timer(every: 0.5, scheduler: scheduler)
                 .autoconnect()
                 .map { _ in UUID().uuidString }
                 .prefix(2)
                 .eraseToAnyPublisher()
         }
-        
-        let waiter = XCTWaiter()
-        let expect = expectation(description: "")
         
         subscription = trigger
             .flatMapLatest { _ -> AnyPublisher<String, Never> in
@@ -43,7 +41,6 @@ class FlatMapLatestTests: XCTestCase {
             }
             .sink(receiveCompletion: { _ in
                     completed = true
-                    expect.fulfill()
                   },
                   receiveValue: { _ in values += 1 })
             
@@ -51,8 +48,9 @@ class FlatMapLatestTests: XCTestCase {
         trigger.send()
         trigger.send()
         trigger.send()
-        
-        waiter.wait(for: [expect], timeout: 5.0)
+
+        scheduler.advance(by: 5)
+
         XCTAssertEqual(subscriptions, 4)
         XCTAssertEqual(cancellations, 3)
         XCTAssertEqual(values, 2)
