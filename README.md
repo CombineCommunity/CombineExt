@@ -37,6 +37,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [share(replay:)](#sharereplay)
 * [prefix(duration:tolerance:​on:options:)](#prefixduration)
 * [toggle()](#toggle)
+* [nwise(_:) and pairwise()](#nwise)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -536,6 +537,58 @@ false
 true
 false
 ```
+
+### nwise(_:) and pairwise()
+
+#### nwise(_:)
+
+Groups the elements of the source publisher into arrays of N consecutive elements.
+
+```swift
+let subject = PassthroughSubject<Int, Never>()
+
+subscription = subject
+  .nwise(3)
+  .sink(receiveValue: { print($0) })
+  
+subject.send(1)
+subject.send(2)
+subject.send(3)
+subject.send(4)
+subject.send(5)
+```
+
+```none
+[1, 2, 3]
+[2, 3, 4]
+[3, 4, 5]
+```
+
+#### pairwise
+
+Groups the elements of the source publisher into tuples of the previous and current elements
+
+```swift
+let subject = PassthroughSubject<Int, Never>()
+
+subscription = subject
+  .pairwise()
+  .sink(receiveValue: { print("\($0.0) -> \($0.1)") })
+
+subject.send(1)
+subject.send(2)
+subject.send(3)
+subject.send(4)
+subject.send(5)
+```
+
+```none
+1 -> 2
+2 -> 3
+3 -> 4
+4 -> 5
+```
+
 
 ## Publishers
 

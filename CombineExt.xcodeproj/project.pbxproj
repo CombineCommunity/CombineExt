@@ -23,6 +23,8 @@
 
 /* Begin PBXBuildFile section */
 		AA9C3E7A249858840002A111 /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = AA9C3E79249858840002A111 /* CombineSchedulers */; };
+		C387777C24E6BBE900FAD2D8 /* Nwise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387777B24E6BBE900FAD2D8 /* Nwise.swift */; };
+		C387777F24E6BF8F00FAD2D8 /* NwiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */; };
 		OBJ_100 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ZipMany.swift */; };
 		OBJ_101 /* CurrentValueRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* CurrentValueRelay.swift */; };
 		OBJ_102 /* PassthroughRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* PassthroughRelay.swift */; };
@@ -92,6 +94,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C387777B24E6BBE900FAD2D8 /* Nwise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nwise.swift; sourceTree = "<group>"; };
+		C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NwiseTests.swift; sourceTree = "<group>"; };
 		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CombineExt::CombineExtTests::Product" /* CombineExtTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = CombineExtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* Sink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sink.swift; sourceTree = "<group>"; };
@@ -202,6 +206,7 @@
 				OBJ_23 /* FlatMapLatest.swift */,
 				OBJ_24 /* MapMany.swift */,
 				OBJ_25 /* Materialize.swift */,
+				C387777B24E6BBE900FAD2D8 /* Nwise.swift */,
 				OBJ_26 /* Partition.swift */,
 				OBJ_27 /* PrefixDuration.swift */,
 				OBJ_28 /* RemoveAllDuplicates.swift */,
@@ -245,6 +250,7 @@
 				OBJ_48 /* FlatMapLatestTests.swift */,
 				OBJ_49 /* MapManyTests.swift */,
 				OBJ_50 /* MaterializeTests.swift */,
+				C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */,
 				OBJ_51 /* OptionalTests.swift */,
 				OBJ_52 /* PartitionTests.swift */,
 				OBJ_53 /* PassthroughRelayTests.swift */,
@@ -492,6 +498,7 @@
 				OBJ_125 /* CombineLatestManyTests.swift in Sources */,
 				OBJ_126 /* CreateTests.swift in Sources */,
 				OBJ_127 /* CurrentValueRelayTests.swift in Sources */,
+				C387777F24E6BF8F00FAD2D8 /* NwiseTests.swift in Sources */,
 				OBJ_128 /* DematerializeTests.swift in Sources */,
 				OBJ_129 /* FlatMapLatestTests.swift in Sources */,
 				OBJ_130 /* MapManyTests.swift in Sources */,
@@ -517,6 +524,7 @@
 				OBJ_79 /* DemandBuffer.swift in Sources */,
 				OBJ_80 /* Sink.swift in Sources */,
 				OBJ_81 /* Optional.swift in Sources */,
+				C387777C24E6BBE900FAD2D8 /* Nwise.swift in Sources */,
 				OBJ_82 /* Event.swift in Sources */,
 				OBJ_83 /* ObjectOwnership.swift in Sources */,
 				OBJ_84 /* Amb.swift in Sources */,
