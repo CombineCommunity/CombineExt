@@ -540,7 +540,7 @@ false
 
 ### nwise(_:) and pairwise()
 
-#### nwise(_:)
+#### nwise
 
 Groups the elements of the source publisher into arrays of N consecutive elements.
 
