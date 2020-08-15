@@ -36,7 +36,7 @@ public extension Publisher {
     ///
     /// - returns: A type erased publisher that holds a tuple with 2 elements.
     func pairwise() -> AnyPublisher<(Output, Output), Failure> {
-        return nwise(2)
+        nwise(2)
             .map { ($0[0], $0[1]) }
             .eraseToAnyPublisher()
     }
