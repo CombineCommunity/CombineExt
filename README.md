@@ -538,9 +538,7 @@ true
 false
 ```
 
-### nwise(_:) and pairwise()
-
-#### nwise
+### nwise
 
 Groups the elements of the source publisher into arrays of N consecutive elements.
 
@@ -564,7 +562,7 @@ subject.send(5)
 [3, 4, 5]
 ```
 
-#### pairwise
+### pairwise
 
 Groups the elements of the source publisher into tuples of the previous and current elements
 
