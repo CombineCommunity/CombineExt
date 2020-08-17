@@ -22,9 +22,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		832B984624ED2F2200B28E67 /* XCTestCase+Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832B984524ED2F2200B28E67 /* XCTestCase+Fixtures.swift */; };
 		AA9C3E7A249858840002A111 /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = AA9C3E79249858840002A111 /* CombineSchedulers */; };
 		C387777C24E6BBE900FAD2D8 /* Nwise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387777B24E6BBE900FAD2D8 /* Nwise.swift */; };
 		C387777F24E6BF8F00FAD2D8 /* NwiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */; };
+		D836234824EA9446002353AC /* MergeMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = D836234724EA9446002353AC /* MergeMany.swift */; };
+		D836234A24EA9888002353AC /* MergeManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D836234924EA9888002353AC /* MergeManyTests.swift */; };
 		OBJ_100 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ZipMany.swift */; };
 		OBJ_101 /* CurrentValueRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* CurrentValueRelay.swift */; };
 		OBJ_102 /* PassthroughRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* PassthroughRelay.swift */; };
@@ -94,10 +97,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		832B984524ED2F2200B28E67 /* XCTestCase+Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Fixtures.swift"; sourceTree = "<group>"; };
 		C387777B24E6BBE900FAD2D8 /* Nwise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nwise.swift; sourceTree = "<group>"; };
 		C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NwiseTests.swift; sourceTree = "<group>"; };
 		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CombineExt::CombineExtTests::Product" /* CombineExtTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = CombineExtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D836234724EA9446002353AC /* MergeMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeMany.swift; sourceTree = "<group>"; };
+		D836234924EA9888002353AC /* MergeManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeManyTests.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Sink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sink.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
 		OBJ_14 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -177,6 +183,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		832B984424ED2F0C00B28E67 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				832B984524ED2F2200B28E67 /* XCTestCase+Fixtures.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		OBJ_11 /* Convenience */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,6 +219,7 @@
 				OBJ_22 /* Dematerialize.swift */,
 				OBJ_23 /* FlatMapLatest.swift */,
 				OBJ_24 /* MapMany.swift */,
+				D836234724EA9446002353AC /* MergeMany.swift */,
 				OBJ_25 /* Materialize.swift */,
 				C387777B24E6BBE900FAD2D8 /* Nwise.swift */,
 				OBJ_26 /* Partition.swift */,
@@ -250,6 +265,7 @@
 				OBJ_48 /* FlatMapLatestTests.swift */,
 				OBJ_49 /* MapManyTests.swift */,
 				OBJ_50 /* MaterializeTests.swift */,
+				D836234924EA9888002353AC /* MergeManyTests.swift */,
 				C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */,
 				OBJ_51 /* OptionalTests.swift */,
 				OBJ_52 /* PartitionTests.swift */,
@@ -262,6 +278,7 @@
 				OBJ_59 /* ToggleTests.swift */,
 				OBJ_60 /* WithLatestFromTests.swift */,
 				OBJ_61 /* ZipManyTests.swift */,
+				832B984424ED2F0C00B28E67 /* Extensions */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -495,10 +512,12 @@
 				OBJ_122 /* AmbTests.swift in Sources */,
 				OBJ_123 /* AssignOwnershipTests.swift in Sources */,
 				OBJ_124 /* AssignToManyTests.swift in Sources */,
+				D836234A24EA9888002353AC /* MergeManyTests.swift in Sources */,
 				OBJ_125 /* CombineLatestManyTests.swift in Sources */,
 				OBJ_126 /* CreateTests.swift in Sources */,
 				OBJ_127 /* CurrentValueRelayTests.swift in Sources */,
 				C387777F24E6BF8F00FAD2D8 /* NwiseTests.swift in Sources */,
+				832B984624ED2F2200B28E67 /* XCTestCase+Fixtures.swift in Sources */,
 				OBJ_128 /* DematerializeTests.swift in Sources */,
 				OBJ_129 /* FlatMapLatestTests.swift in Sources */,
 				OBJ_130 /* MapManyTests.swift in Sources */,
@@ -536,6 +555,7 @@
 				OBJ_90 /* FlatMapLatest.swift in Sources */,
 				OBJ_91 /* MapMany.swift in Sources */,
 				OBJ_92 /* Materialize.swift in Sources */,
+				D836234824EA9446002353AC /* MergeMany.swift in Sources */,
 				OBJ_93 /* Partition.swift in Sources */,
 				OBJ_94 /* PrefixDuration.swift in Sources */,
 				OBJ_95 /* RemoveAllDuplicates.swift in Sources */,
