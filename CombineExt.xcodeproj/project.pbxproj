@@ -22,7 +22,11 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		832B984624ED2F2200B28E67 /* XCTestCase+Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832B984524ED2F2200B28E67 /* XCTestCase+Fixtures.swift */; };
+		832B983E24ED294E00B28E67 /* ScanInto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832B983D24ED294E00B28E67 /* ScanInto.swift */; };
+		832B984024ED298F00B28E67 /* ScanIntoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832B983F24ED298F00B28E67 /* ScanIntoTests.swift */; };
+		832B984224ED2AE700B28E67 /* XCTestCase+Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832B984124ED2AE700B28E67 /* XCTestCase+Fixtures.swift */; };
+		835B968224ED42E800B9F45C /* ReduceInto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B968124ED42E800B9F45C /* ReduceInto.swift */; };
+		835B968524ED434800B9F45C /* ReduceIntoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B968324ED430600B9F45C /* ReduceIntoTests.swift */; };
 		AA9C3E7A249858840002A111 /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = AA9C3E79249858840002A111 /* CombineSchedulers */; };
 		C387777C24E6BBE900FAD2D8 /* Nwise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387777B24E6BBE900FAD2D8 /* Nwise.swift */; };
 		C387777F24E6BF8F00FAD2D8 /* NwiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */; };
@@ -97,7 +101,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		832B984524ED2F2200B28E67 /* XCTestCase+Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Fixtures.swift"; sourceTree = "<group>"; };
+		832B983D24ED294E00B28E67 /* ScanInto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanInto.swift; sourceTree = "<group>"; };
+		832B983F24ED298F00B28E67 /* ScanIntoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanIntoTests.swift; sourceTree = "<group>"; };
+		832B984124ED2AE700B28E67 /* XCTestCase+Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Fixtures.swift"; sourceTree = "<group>"; };
+		835B968124ED42E800B9F45C /* ReduceInto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReduceInto.swift; sourceTree = "<group>"; };
+		835B968324ED430600B9F45C /* ReduceIntoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReduceIntoTests.swift; sourceTree = "<group>"; };
 		C387777B24E6BBE900FAD2D8 /* Nwise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nwise.swift; sourceTree = "<group>"; };
 		C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NwiseTests.swift; sourceTree = "<group>"; };
 		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -183,10 +191,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		832B984424ED2F0C00B28E67 /* Extensions */ = {
+		832B984324ED2AED00B28E67 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				832B984524ED2F2200B28E67 /* XCTestCase+Fixtures.swift */,
+				832B984124ED2AE700B28E67 /* XCTestCase+Fixtures.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -224,7 +232,9 @@
 				C387777B24E6BBE900FAD2D8 /* Nwise.swift */,
 				OBJ_26 /* Partition.swift */,
 				OBJ_27 /* PrefixDuration.swift */,
+				835B968124ED42E800B9F45C /* ReduceInto.swift */,
 				OBJ_28 /* RemoveAllDuplicates.swift */,
+				832B983D24ED294E00B28E67 /* ScanInto.swift */,
 				OBJ_29 /* SetOutputType.swift */,
 				OBJ_30 /* ShareReplay.swift */,
 				OBJ_31 /* Toggle.swift */,
@@ -271,14 +281,16 @@
 				OBJ_52 /* PartitionTests.swift */,
 				OBJ_53 /* PassthroughRelayTests.swift */,
 				OBJ_54 /* PrefixDurationTests.swift */,
+				835B968324ED430600B9F45C /* ReduceIntoTests.swift */,
 				OBJ_55 /* RemoveAllDuplicatesTests.swift */,
 				OBJ_56 /* ReplaySubjectTests.swift */,
+				832B983F24ED298F00B28E67 /* ScanIntoTests.swift */,
 				OBJ_57 /* SetOutputTypeTests.swift */,
 				OBJ_58 /* ShareReplayTests.swift */,
 				OBJ_59 /* ToggleTests.swift */,
 				OBJ_60 /* WithLatestFromTests.swift */,
 				OBJ_61 /* ZipManyTests.swift */,
-				832B984424ED2F0C00B28E67 /* Extensions */,
+				832B984324ED2AED00B28E67 /* Extensions */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -517,11 +529,13 @@
 				OBJ_126 /* CreateTests.swift in Sources */,
 				OBJ_127 /* CurrentValueRelayTests.swift in Sources */,
 				C387777F24E6BF8F00FAD2D8 /* NwiseTests.swift in Sources */,
-				832B984624ED2F2200B28E67 /* XCTestCase+Fixtures.swift in Sources */,
 				OBJ_128 /* DematerializeTests.swift in Sources */,
+				832B984224ED2AE700B28E67 /* XCTestCase+Fixtures.swift in Sources */,
 				OBJ_129 /* FlatMapLatestTests.swift in Sources */,
+				835B968524ED434800B9F45C /* ReduceIntoTests.swift in Sources */,
 				OBJ_130 /* MapManyTests.swift in Sources */,
 				OBJ_131 /* MaterializeTests.swift in Sources */,
+				832B984024ED298F00B28E67 /* ScanIntoTests.swift in Sources */,
 				OBJ_132 /* OptionalTests.swift in Sources */,
 				OBJ_133 /* PartitionTests.swift in Sources */,
 				OBJ_134 /* PassthroughRelayTests.swift in Sources */,
@@ -547,6 +561,7 @@
 				OBJ_82 /* Event.swift in Sources */,
 				OBJ_83 /* ObjectOwnership.swift in Sources */,
 				OBJ_84 /* Amb.swift in Sources */,
+				835B968224ED42E800B9F45C /* ReduceInto.swift in Sources */,
 				OBJ_85 /* AssignOwnership.swift in Sources */,
 				OBJ_86 /* AssignToMany.swift in Sources */,
 				OBJ_87 /* CombineLatestMany.swift in Sources */,
@@ -561,6 +576,7 @@
 				OBJ_95 /* RemoveAllDuplicates.swift in Sources */,
 				OBJ_96 /* SetOutputType.swift in Sources */,
 				OBJ_97 /* ShareReplay.swift in Sources */,
+				832B983E24ED294E00B28E67 /* ScanInto.swift in Sources */,
 				OBJ_98 /* Toggle.swift in Sources */,
 				OBJ_99 /* WithLatestFrom.swift in Sources */,
 				OBJ_100 /* ZipMany.swift in Sources */,

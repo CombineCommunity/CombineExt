@@ -31,6 +31,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [partition](#partition)
 * [zip(with:) and Collection.zip](#ZipMany)
 * [Collection.merge()](#MergeMany)
+* [Collection.merge()](#MergeMany)
 * [combineLatest(with:) and Collection.combineLatest](#CombineLatestMany)
 * [mapMany(_:)](#MapMany)
 * [setOutputType(to:)](#setOutputType)
@@ -39,6 +40,8 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [prefix(duration:tolerance:​on:options:)](#prefixduration)
 * [toggle()](#toggle)
 * [nwise(_:) and pairwise()](#nwise)
+* [scan(into:)](#ScanInto)
+* [reduce(into:)](#ReduceInto)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -621,6 +624,53 @@ subject.send(5)
 4 -> 5
 ```
 
+### scan(into:)
+
+Reduces the elements of the source publisher into an accumulated value and emits the result anytime the upstream emits a value
+
+```swift
+let subject = PassthroughSubject<Int, Never>()
+
+subscription = subject
+  .scan(into: 0) { $0 += $1 }
+  .sink(receiveValue: { print("\($0)") })
+
+subject.send(1)
+subject.send(2)
+subject.send(3)
+subject.send(4)
+subject.send(5)
+```
+
+```none
+1
+3
+6
+10
+15
+```
+
+### reduce(into:)
+
+Reduces the elements of the source publisher into an accumulated value and emits the result when the upstream finishes
+
+```swift
+let subject = PassthroughSubject<Int, Never>()
+
+subscription = subject
+  .reduce(into: 0) { $0 += $1 }
+  .sink(receiveValue: { print("\($0)") })
+
+subject.send(1)
+subject.send(2)
+subject.send(3)
+subject.send(4)
+subject.send(5)
+```
+
+```none
+15
+```
 
 ## Publishers
 

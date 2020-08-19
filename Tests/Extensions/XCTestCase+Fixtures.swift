@@ -15,8 +15,8 @@ extension XCTestCase {
         case generic
     }
     
-    var tenThousandInts: [Int] {
-        return Array(1...10000)
+    var oneThousandInts: [Int] {
+        return Array(1...1000)
     }
     
     var squareTransform: (Int) -> Int {
@@ -33,8 +33,8 @@ extension XCTestCase {
         }
     }
     
-    func asyncPublishers<Input, Output>(with input: [Input], maxDelayMilliseconds: Int = 100, transform: @escaping (Input) throws -> Output) -> [AnyPublisher<Output, TestError>] {
-        input.map { input in
+    func asyncPublishers<Input, Output>(with inputs: [Input], maxDelayMilliseconds: Int = 100, transform: @escaping (Input) throws -> Output) -> [AnyPublisher<Output, TestError>] {
+        inputs.map { input in
             Future<Output, TestError> { promise in
                 DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + .milliseconds(Int.random(in: 0 ... maxDelayMilliseconds))) {
                     do {
@@ -46,5 +46,10 @@ extension XCTestCase {
                 }
             }.eraseToAnyPublisher()
         }
+    }
+    
+    func asyncPublisher<Input, Output>(with inputs: [Input], maxDelayMilliseconds: Int = 100, transform: @escaping (Input) throws -> Output) -> AnyPublisher<Output, TestError> {
+        asyncPublishers(with: inputs, maxDelayMilliseconds: maxDelayMilliseconds, transform: transform)
+            .merge()
     }
 }

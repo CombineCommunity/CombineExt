@@ -220,7 +220,7 @@ final class MergeManyTests: XCTestCase {
     }
     
     func testArrayMergeAsync() {
-        let input = tenThousandInts
+        let input = oneThousandInts
         let transform = squareTransform
         var expectedOutput = Set(input.map(transform))
         let publishers = asyncPublishers(with: input, transform: transform)
@@ -246,7 +246,7 @@ final class MergeManyTests: XCTestCase {
     }
     
     func testArrayMergeAsyncFailure() {
-        let input = tenThousandInts
+        let input = oneThousandInts
         let publishers = asyncPublishers(with: input, transform: squareTransformFailingOnMod10)
         var expectedOutput = Set(input.map(squareTransform))
         let exp = expectation(description: "wait for completion")
