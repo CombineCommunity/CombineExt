@@ -22,8 +22,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		832B984624ED2F2200B28E67 /* XCTestCase+Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832B984524ED2F2200B28E67 /* XCTestCase+Fixtures.swift */; };
-		AA9C3E7A249858840002A111 /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = AA9C3E79249858840002A111 /* CombineSchedulers */; };
 		BF330EF624F1FFFE001281FC /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = BF330EF524F1FFFE001281FC /* CombineSchedulers */; };
 		BF330EF924F20032001281FC /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EF824F20032001281FC /* Timer.swift */; };
 		BF330EFB24F20080001281FC /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EFA24F20080001281FC /* Lock.swift */; };
@@ -100,7 +98,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		832B984524ED2F2200B28E67 /* XCTestCase+Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Fixtures.swift"; sourceTree = "<group>"; };
 		BF330EF824F20032001281FC /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		BF330EFA24F20080001281FC /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		C387777B24E6BBE900FAD2D8 /* Nwise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nwise.swift; sourceTree = "<group>"; };
@@ -188,14 +185,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		832B984424ED2F0C00B28E67 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				832B984524ED2F2200B28E67 /* XCTestCase+Fixtures.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		BF330EF424F1FFFE001281FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -300,7 +289,6 @@
 				OBJ_59 /* ToggleTests.swift */,
 				OBJ_60 /* WithLatestFromTests.swift */,
 				OBJ_61 /* ZipManyTests.swift */,
-				832B984424ED2F0C00B28E67 /* Extensions */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -542,7 +530,6 @@
 				OBJ_126 /* CreateTests.swift in Sources */,
 				OBJ_127 /* CurrentValueRelayTests.swift in Sources */,
 				C387777F24E6BF8F00FAD2D8 /* NwiseTests.swift in Sources */,
-				832B984624ED2F2200B28E67 /* XCTestCase+Fixtures.swift in Sources */,
 				OBJ_128 /* DematerializeTests.swift in Sources */,
 				OBJ_129 /* FlatMapLatestTests.swift in Sources */,
 				OBJ_130 /* MapManyTests.swift in Sources */,

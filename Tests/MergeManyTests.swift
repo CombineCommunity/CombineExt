@@ -218,57 +218,5 @@ final class MergeManyTests: XCTestCase {
         XCTAssertTrue(results.isEmpty)
         XCTAssertTrue(completed)
     }
-    
-    func testArrayMergeAsync() {
-        let input = tenThousandInts
-        let transform = squareTransform
-        var expectedOutput = Set(input.map(transform))
-        let publishers = asyncPublishers(with: input, transform: transform)
-        let exp = expectation(description: "wait for completion")
-        let semaphore = DispatchSemaphore(value: 1)
-        subscription = publishers
-            .merge()
-            .sink(receiveCompletion: { (result) in
-                switch result {
-                case .failure(let error):
-                    XCTFail("Publisher failed with error: \(error)")
-                case .finished:
-                    // Values were removed as they were found
-                    XCTAssert(expectedOutput.isEmpty, "Result is not the same as the expected")
-                }
-                exp.fulfill()
-            }) { (output) in
-                semaphore.wait()
-                expectedOutput.remove(output)
-                semaphore.signal()
-            }
-        waitForExpectations(timeout: 5)
-    }
-    
-    func testArrayMergeAsyncFailure() {
-        let input = tenThousandInts
-        let publishers = asyncPublishers(with: input, transform: squareTransformFailingOnMod10)
-        var expectedOutput = Set(input.map(squareTransform))
-        let exp = expectation(description: "wait for completion")
-        let semaphore = DispatchSemaphore(value: 1)
-
-        subscription = publishers
-            .merge()
-            .sink(receiveCompletion: { (result) in
-                switch result {
-                case .failure:
-                    XCTAssert(true)
-                    XCTAssert(!expectedOutput.isEmpty, "Shouldn't have returned all values")
-                case .finished:
-                    XCTFail("Publisher failed to fail")
-                }
-                exp.fulfill()
-            }) { (output) in
-                semaphore.wait()
-                expectedOutput.remove(output)
-                semaphore.signal()
-            }
-        waitForExpectations(timeout: 5)
-    }
 }
 #endif
