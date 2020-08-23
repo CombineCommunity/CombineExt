@@ -17,7 +17,7 @@ public extension Collection where Element: Publisher {
     /// The returned publisher will not finish until all of the merged publishers finish.
     ///
     /// - Returns: A type-erased publisher that emits all events from the publishers in the collection.
-    func merge() -> AnyPublisher<Self.Element.Output, Self.Element.Failure> {
+    func merge() -> AnyPublisher<Element.Output, Element.Failure> {
 		Publishers.MergeMany(self).eraseToAnyPublisher()
     }
 }
