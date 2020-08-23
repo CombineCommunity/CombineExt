@@ -30,6 +30,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [dematerialize](#dematerialize)
 * [partition](#partition)
 * [zip(with:) and Collection.zip](#ZipMany)
+* [Collection.merge()](#MergeMany)
 * [combineLatest(with:) and Collection.combineLatest](#CombineLatestMany)
 * [mapMany(_:)](#MapMany)
 * [setOutputType(to:)](#setOutputType)
@@ -372,6 +373,39 @@ You may also use `.zip()` directly on a collection of publishers with the same o
 
 ```none
 zipped: 10
+```
+
+------
+
+### MergeMany
+
+This repo includes an extension for Collection that allows you to call `.merge()` directly on a collection of publishers with the same output and failure types.
+
+This lets you arbitrarily merge many publishers and receive inner publisher outputs back from a single publisher.
+
+```swift
+let first = PassthroughSubject<Int, Never>()
+let second = PassthroughSubject<Int, Never>()
+let third = PassthroughSubject<Int, Never>()
+let fourth = PassthroughSubject<Int, Never>()
+
+subscription = [first, second, third, fourth]
+  .merge()
+  .sink(receiveValue: { print("output: \($0)") })
+
+first.send(1)
+second.send(2)
+third.send(3)
+fourth.send(4)
+```
+
+#### Output:
+
+```none
+output: 1
+output: 2
+output: 3
+output: 4
 ```
 
 ------
