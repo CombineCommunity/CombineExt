@@ -3,6 +3,7 @@
 //  CombineExtTests
 //
 //  Created by Joe Walsh on 8/17/20.
+//  Copyright © 2020 Combine Community. All rights reserved.
 //
 
 import Foundation
