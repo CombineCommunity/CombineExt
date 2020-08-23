@@ -12,6 +12,10 @@ import Combine
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Optional {
     /// A publisher that publishes an optional value to each subscriber exactly once, if the optional has a value.
+    @available(OSX, obsoleted: 11.0, message: "Optional.publisher now ships with Combine.")
+    @available(iOS, obsoleted: 14.0, message: "Optional.publisher now ships with Combine.")
+    @available(tvOS, obsoleted: 14.0, message: "Optional.publisher now ships with Combine.")
+    @available(watchOS, obsoleted: 7.0, message: "Optional.publisher now ships with Combine.")
     var publisher: Optional.Publisher {
         Optional.Publisher(self)
     }

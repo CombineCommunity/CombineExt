@@ -723,6 +723,8 @@ subject.send(5)
 
 ## Optional.publisher
 
+Note: this property has since [been introduced](https://developer.apple.com/documentation/swift/optional/3650088-publisher) in later versions of Apple’s platforms.
+
 `Optional.publisher` is a property version of [`Optional.Publisher.init`](https://developer.apple.com/documentation/swift/optional/publisher/3343960-init). It puts the type on equal footing with [`Result.publisher`](https://developer.apple.com/documentation/swift/result/3344716-publisher) and [`Sequence.publisher`](https://developer.apple.com/documentation/swift/sequence/3344717-publisher).
 
 So you can use:
@@ -730,7 +732,8 @@ So you can use:
 ```swift
 let number: Int? = 1
 number.publisher
-  /* … */
+
+/* … */
 ```
 
 Instead of:
@@ -738,7 +741,8 @@ Instead of:
 ```swift
 let number: Int? = 1
 Optional.Publisher(number)
-  /* … */
+
+/* … */
 ```
 
 ## License
