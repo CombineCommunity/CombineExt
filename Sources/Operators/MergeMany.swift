@@ -17,20 +17,8 @@ public extension Collection where Element: Publisher {
     /// The returned publisher will not finish until all of the merged publishers finish.
     ///
     /// - Returns: A type-erased publisher that emits all events from the publishers in the collection.
-    func merge() -> AnyPublisher<Self.Element.Output, Self.Element.Failure> {
-        switch count {
-        case 0:
-            return Empty().eraseToAnyPublisher()
-        case 1:
-            return self[startIndex].eraseToAnyPublisher()
-        default:
-            let secondIndex = index(after: startIndex)
-            let thirdIndex = index(after: secondIndex)
-            let initial = self[startIndex].merge(with: self[secondIndex])
-            return self[thirdIndex...].reduce(initial) { result, publisher -> Publishers.MergeMany<Self.Element> in
-                return result.merge(with: publisher)
-            }.eraseToAnyPublisher()
-        }
+    func merge() -> AnyPublisher<Element.Output, Element.Failure> {
+		Publishers.MergeMany(self).eraseToAnyPublisher()
     }
 }
 #endif

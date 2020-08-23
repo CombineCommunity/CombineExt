@@ -31,7 +31,6 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [partition](#partition)
 * [zip(with:) and Collection.zip](#ZipMany)
 * [Collection.merge()](#MergeMany)
-* [Collection.merge()](#MergeMany)
 * [combineLatest(with:) and Collection.combineLatest](#CombineLatestMany)
 * [mapMany(_:)](#MapMany)
 * [setOutputType(to:)](#setOutputType)
