@@ -24,6 +24,9 @@
 /* Begin PBXBuildFile section */
 		832B984624ED2F2200B28E67 /* XCTestCase+Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832B984524ED2F2200B28E67 /* XCTestCase+Fixtures.swift */; };
 		AA9C3E7A249858840002A111 /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = AA9C3E79249858840002A111 /* CombineSchedulers */; };
+		BF330EF624F1FFFE001281FC /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = BF330EF524F1FFFE001281FC /* CombineSchedulers */; };
+		BF330EF924F20032001281FC /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EF824F20032001281FC /* Timer.swift */; };
+		BF330EFB24F20080001281FC /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EFA24F20080001281FC /* Lock.swift */; };
 		C387777C24E6BBE900FAD2D8 /* Nwise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387777B24E6BBE900FAD2D8 /* Nwise.swift */; };
 		C387777F24E6BF8F00FAD2D8 /* NwiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */; };
 		D836234824EA9446002353AC /* MergeMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = D836234724EA9446002353AC /* MergeMany.swift */; };
@@ -98,6 +101,8 @@
 
 /* Begin PBXFileReference section */
 		832B984524ED2F2200B28E67 /* XCTestCase+Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Fixtures.swift"; sourceTree = "<group>"; };
+		BF330EF824F20032001281FC /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		BF330EFA24F20080001281FC /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		C387777B24E6BBE900FAD2D8 /* Nwise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nwise.swift; sourceTree = "<group>"; };
 		C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NwiseTests.swift; sourceTree = "<group>"; };
 		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -168,7 +173,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				AA9C3E7A249858840002A111 /* CombineSchedulers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				BF330EF624F1FFFE001281FC /* CombineSchedulers in Frameworks */,
 				OBJ_144 /* CombineExt.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -189,6 +194,22 @@
 				832B984524ED2F2200B28E67 /* XCTestCase+Fixtures.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		BF330EF424F1FFFE001281FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BF330EF724F2001F001281FC /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				BF330EF824F20032001281FC /* Timer.swift */,
+				BF330EFA24F20080001281FC /* Lock.swift */,
+			);
+			path = Internal;
 			sourceTree = "<group>";
 		};
 		OBJ_11 /* Convenience */ = {
@@ -211,6 +232,7 @@
 		OBJ_16 /* Operators */ = {
 			isa = PBXGroup;
 			children = (
+				BF330EF724F2001F001281FC /* Internal */,
 				OBJ_17 /* Amb.swift */,
 				OBJ_18 /* AssignOwnership.swift */,
 				OBJ_19 /* AssignToMany.swift */,
@@ -299,6 +321,7 @@
 				OBJ_71 /* Makefile */,
 				OBJ_72 /* CombineExt.podspec */,
 				OBJ_73 /* README.md */,
+				BF330EF424F1FFFE001281FC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -350,7 +373,6 @@
 			);
 			name = CombineExt;
 			packageProductDependencies = (
-				AA9C3E79249858840002A111 /* CombineSchedulers */,
 			);
 			productName = CombineExt;
 			productReference = "CombineExt::CombineExt::Product" /* CombineExt.framework */;
@@ -370,6 +392,9 @@
 				OBJ_145 /* PBXTargetDependency */,
 			);
 			name = CombineExtTests;
+			packageProductDependencies = (
+				BF330EF524F1FFFE001281FC /* CombineSchedulers */,
+			);
 			productName = CombineExtTests;
 			productReference = "CombineExt::CombineExtTests::Product" /* CombineExtTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -549,6 +574,7 @@
 				OBJ_84 /* Amb.swift in Sources */,
 				OBJ_85 /* AssignOwnership.swift in Sources */,
 				OBJ_86 /* AssignToMany.swift in Sources */,
+				BF330EFB24F20080001281FC /* Lock.swift in Sources */,
 				OBJ_87 /* CombineLatestMany.swift in Sources */,
 				OBJ_88 /* Create.swift in Sources */,
 				OBJ_89 /* Dematerialize.swift in Sources */,
@@ -564,6 +590,7 @@
 				OBJ_98 /* Toggle.swift in Sources */,
 				OBJ_99 /* WithLatestFrom.swift in Sources */,
 				OBJ_100 /* ZipMany.swift in Sources */,
+				BF330EF924F20032001281FC /* Timer.swift in Sources */,
 				OBJ_101 /* CurrentValueRelay.swift in Sources */,
 				OBJ_102 /* PassthroughRelay.swift in Sources */,
 				OBJ_103 /* Relay.swift in Sources */,
@@ -853,7 +880,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AA9C3E79249858840002A111 /* CombineSchedulers */ = {
+		BF330EF524F1FFFE001281FC /* CombineSchedulers */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AA9C3E78249858840002A111 /* XCRemoteSwiftPackageReference "combine-schedulers" */;
 			productName = CombineSchedulers;
