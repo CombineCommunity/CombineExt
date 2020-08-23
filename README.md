@@ -665,6 +665,7 @@ subject.send(2)
 subject.send(3)
 subject.send(4)
 subject.send(5)
+subject.send(completion: .finished)
 ```
 
 ```none

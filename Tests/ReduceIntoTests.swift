@@ -18,12 +18,15 @@ class ReduceIntoTests: XCTestCase {
 
         subscription = subject
           .reduce(into: 0) { $0 += $1 }
-          .sink(receiveValue: { XCTAssertEqual(15, $0, "Reduce into should only emit the resulting value once") })
+          .sink(receiveValue: {
+            XCTAssertEqual(15, $0, "Reduce into should only emit the resulting value once")
+          })
 
         subject.send(1)
         subject.send(2)
         subject.send(3)
         subject.send(4)
         subject.send(5)
+        subject.send(completion: .finished)
     }
 }
