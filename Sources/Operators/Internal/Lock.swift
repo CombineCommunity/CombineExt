@@ -1,3 +1,5 @@
+// swiftlint:disable all
+
 //===----------------------------------------------------------------------===//
 //
 // This source file is part of the Swift.org open source project
