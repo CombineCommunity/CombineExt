@@ -48,9 +48,6 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 ### Subjects
 * [ReplaySubject](#ReplaySubject)
 
-### Convenience
-* [Optional.publisher](#Optionalpublisher)
-
 > **Note**: This is still a relatively early version of CombineExt, with much more to be desired. I gladly accept PRs, ideas, opinions, or improvements. Thank you! :)
 
 ## Installation
@@ -751,28 +748,6 @@ subject.send(5)
 3
 4
 5
-```
-
-## Convenience
-
-## Optional.publisher
-
-`Optional.publisher` is a property version of [`Optional.Publisher.init`](https://developer.apple.com/documentation/swift/optional/publisher/3343960-init). It puts the type on equal footing with [`Result.publisher`](https://developer.apple.com/documentation/swift/result/3344716-publisher) and [`Sequence.publisher`](https://developer.apple.com/documentation/swift/sequence/3344717-publisher).
-
-So you can use:
-
-```swift
-let number: Int? = 1
-number.publisher
-  /* … */
-```
-
-Instead of:
-
-```swift
-let number: Int? = 1
-Optional.Publisher(number)
-  /* … */
 ```
 
 ## License
