@@ -46,6 +46,10 @@ public class CurrentValueRelay<Output>: Relay {
         publisher.subscribe(storage)
     }
 
+    public func subscribe<P: Relay>(_ publisher: P) -> AnyCancellable where Output == P.Output {
+        publisher.subscribe(storage)
+    }
+
     deinit {
         // Send a finished event upon dealloation
         subscriptions.forEach { $0.forceFinish() }
