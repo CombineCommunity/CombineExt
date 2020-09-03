@@ -31,7 +31,7 @@ jobs:
         run: make project
       - name: Run tests
         run: set -o pipefail && xcodebuild -project CombineExt.xcodeproj -scheme CombineExt-Package -enableCodeCoverage YES -sdk ${{ matrix.sdk }} -destination "${{ matrix.destination }}" test | xcpretty -c -r html --output logs/${{ matrix.platform }}.html
-      - uses: codecov/codecov-action@v1.0.5
+      - uses: codecov/codecov-action@v1.0.13
         with:
           token: 1519d58c-6fb9-483f-af6c-7f6f0b384345
           name: CombineExt
