@@ -39,6 +39,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [prefix(duration:tolerance:​on:options:)](#prefixduration)
 * [toggle()](#toggle)
 * [nwise(_:) and pairwise()](#nwise)
+* [ignoreOutput(setOutputType:)](#ignoreOutputsetOutputType)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -618,6 +619,15 @@ subject.send(5)
 4 -> 5
 ```
 
+### ignoreOutput(setOutputType:)
+
+Shorthand for both ignoring a publisher’s value events and re-writing its `Output` generic.
+
+```swift
+let onlyAFour = ["1", "2", "3"].publisher
+  .ignoreOutput(setOutputType: Int.self)
+  .append(4)
+```
 
 ## Publishers
 
