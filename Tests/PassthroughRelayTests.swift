@@ -91,5 +91,27 @@ class PassthroughRelayTests: XCTestCase {
         XCTAssertFalse(completed)
         XCTAssertEqual(values, ["1", "2", "3"])
     }
+
+    func testSubscribePublisher2() {
+        var completed = false
+
+        let input = PassthroughRelay<String>()
+        let output = PassthroughRelay<String>()
+
+        input
+            .subscribe(output)
+            .store(in: &subscriptions)
+        output
+            .sink(receiveCompletion: { _ in completed = true },
+                  receiveValue: { self.values.append($0) })
+            .store(in: &subscriptions)
+
+        input.accept("1")
+        input.accept("2")
+        input.accept("3")
+
+        XCTAssertFalse(completed)
+        XCTAssertEqual(values, ["1", "2", "3"])
+    }
 }
 #endif
