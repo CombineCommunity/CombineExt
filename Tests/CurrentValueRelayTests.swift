@@ -99,28 +99,6 @@ class CurrentValueRelayTests: XCTestCase {
         XCTAssertEqual(values, ["initial", "1", "2", "3"])
     }
 
-    func testSubscribeRelay_CurrentValueToPassthrough() {
-        var completed = false
-
-        let input = CurrentValueRelay<String>("initial")
-        let output = PassthroughRelay<String>()
-
-        input
-            .subscribe(output)
-            .store(in: &subscriptions)
-        output
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { self.values.append($0) })
-            .store(in: &subscriptions)
-
-        input.accept("1")
-        input.accept("2")
-        input.accept("3")
-
-        XCTAssertFalse(completed)
-        XCTAssertEqual(values, ["initial", "1", "2", "3"])
-    }
-
     func testSubscribeRelay_PassthroughToCurrentValue() {
         var completed = false
 
