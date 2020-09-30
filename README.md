@@ -33,6 +33,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [Collection.merge()](#MergeMany)
 * [combineLatest(with:) and Collection.combineLatest](#CombineLatestMany)
 * [mapMany(_:)](#MapMany)
+* [filterMany(_:)](#FilterMany)
 * [setOutputType(to:)](#setOutputType)
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
 * [share(replay:)](#sharereplay)
@@ -436,6 +437,27 @@ first.send(false)
 ```none
 combineLatest: [true, true, true, true]
 combineLatest: [false, true, true, true]
+```
+
+------
+
+### FilterMany
+Filters element of a publisher collection into a new publisher collection.
+```swift
+let intArrayPublisher = PassthroughSubject<[Int], Never>()
+
+intArrayPublisher
+  .filterMany { $0.isMultiple(of: 2) }
+  .sink(receiveValue: { print($0) })
+
+intArrayPublisher.send([10, 2, 4, 3, 8])
+```
+
+#### Output:
+
+```
+none
+[10, 2, 4, 8]
 ```
 
 ------
