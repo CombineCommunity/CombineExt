@@ -41,6 +41,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [toggle()](#toggle)
 * [nwise(_:) and pairwise()](#nwise)
 * [ignoreOutput(setOutputType:)](#ignoreOutputsetOutputType)
+* [ignoreFailure](#ignoreFailure)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -649,6 +650,37 @@ Shorthand for both ignoring a publisher’s value events and re-writing its `Out
 let onlyAFour = ["1", "2", "3"].publisher
   .ignoreOutput(setOutputType: Int.self)
   .append(4)
+```
+
+### ignoreFailure
+
+CombineExt provides a couple of overloads to ignore errors and optionally specify a new error type and whether to trigger completions in such cases.
+
+- `ignoreFailure(completeImmediately:)`
+- `ignoreFailure(setFailureType:completeImmediately:)`
+
+```swift
+enum AnError {
+  case someError 
+}
+
+let subject = PassthroughSubject<Int, AnError>()
+
+subscription = subject
+  .ignoreFailure() // The `completeImmediately` parameter defaults to `true`.
+  .sink(receiveValue: { print($0) }, receiveCompletion: { print($0) })
+
+subject.send(1)
+subject.send(2)
+subject.send(3)
+subject.send(completion: .failure(.someError))
+```
+
+```none
+1
+2
+3
+.finished
 ```
 
 ## Publishers
