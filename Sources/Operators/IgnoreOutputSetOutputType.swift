@@ -13,10 +13,10 @@ import Combine
 public extension Publisher {
     /// An `ignoreOutput` overload that allows for setting a new output type.
     ///
-    /// - parameter outputType: The new output type for downstream.
+    /// - parameter setOutputType: The new output type for downstream.
     ///
     /// - returns: A publisher that ignores upstream value events and sets its output generic to `NewOutput`.
-    func ignoreOutput<NewOutput>(setOutputType to: NewOutput.Type) -> Publishers.Map<Publishers.IgnoreOutput<Self>, NewOutput> {
+    func ignoreOutput<NewOutput>(setOutputType newOutputType: NewOutput.Type) -> Publishers.Map<Publishers.IgnoreOutput<Self>, NewOutput> {
         ignoreOutput().map { _ -> NewOutput in }
     }
 }
