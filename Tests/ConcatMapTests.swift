@@ -54,7 +54,7 @@ final class ConcatMapTests: XCTestCase {
         XCTAssertEqual(expectedValues, receivedValues)
     }
 
-    func test_completes_when_last_publisher_completes() {
+    func test_completes_when_upstream_completes() {
         var receivedCompletion: Subscribers.Completion<TestError>?
 
         let firstPublisher = P()
@@ -74,6 +74,8 @@ final class ConcatMapTests: XCTestCase {
         firstPublisher.send(completion: .finished)
         XCTAssertNil(receivedCompletion)
         secondPublisher.send(completion: .finished)
+        XCTAssertNil(receivedCompletion)
+        sut.send(completion: .finished)
         XCTAssertNotNil(receivedCompletion)
     }
 
