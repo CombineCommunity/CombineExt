@@ -26,10 +26,11 @@ final class ConcatMapTests: XCTestCase {
 
     func test_publishes_values_inOrder() {
         var receivedValues = [Int]()
-        let expectedValues = [1, 2, 3, 4]
+        let expectedValues = [1, 2, 4, 5, 6]
 
         let firstPublisher = P()
         let secondPublisher = P()
+        let thirdPublisher = P()
 
         let sut = PassthroughSubject<P, TestError>()
 
@@ -42,14 +43,19 @@ final class ConcatMapTests: XCTestCase {
 
         sut.send(firstPublisher)
         sut.send(secondPublisher)
+        sut.send(thirdPublisher)
 
         firstPublisher.send(1)
         firstPublisher.send(2)
+        // values sent onto the second publisher will be ignored as long as the first publisher hasn't completed
+        secondPublisher.send(3)
         firstPublisher.send(completion: .finished)
 
-        secondPublisher.send(3)
         secondPublisher.send(4)
+        secondPublisher.send(5)
         secondPublisher.send(completion: .finished)
+
+        thirdPublisher.send(6)
 
         XCTAssertEqual(expectedValues, receivedValues)
     }
