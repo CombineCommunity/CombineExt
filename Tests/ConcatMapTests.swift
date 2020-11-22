@@ -24,9 +24,9 @@ final class ConcatMapTests: XCTestCase {
         cancellables = []
     }
 
-    func test_publishes_values_inOrder() {
+    func test_publishes_values_in_order() {
         var receivedValues = [Int]()
-        let expectedValues = [1, 2, 4, 5, 6]
+        let expectedValues = [1, 2, 3]
 
         let firstPublisher = P()
         let secondPublisher = P()
@@ -43,19 +43,89 @@ final class ConcatMapTests: XCTestCase {
 
         sut.send(firstPublisher)
         sut.send(secondPublisher)
-        sut.send(thirdPublisher)
 
         firstPublisher.send(1)
-        firstPublisher.send(2)
-        // values sent onto the second publisher will be ignored as long as the first publisher hasn't completed
-        secondPublisher.send(3)
         firstPublisher.send(completion: .finished)
 
-        secondPublisher.send(4)
-        secondPublisher.send(5)
+        secondPublisher.send(2)
+        sut.send(thirdPublisher)
         secondPublisher.send(completion: .finished)
 
-        thirdPublisher.send(6)
+        thirdPublisher.send(3)
+
+        XCTAssertEqual(expectedValues, receivedValues)
+    }
+
+    func test_ignores_values_of_subsequent_while_previous_hasNot_completed() {
+        var receivedValues = [Int]()
+        let expectedValues = [1, 3]
+
+        let firstPublisher = P()
+        let secondPublisher = P()
+
+        let sut = PassthroughSubject<P, TestError>()
+
+        sut.concatMap { $0 }
+            .sink(
+                receiveCompletion: { _ in },
+                receiveValue: { value in receivedValues.append(value) }
+            )
+            .store(in: &cancellables)
+
+        sut.send(firstPublisher)
+        sut.send(secondPublisher)
+
+        firstPublisher.send(1)
+        secondPublisher.send(2)
+        firstPublisher.send(completion: .finished)
+
+        secondPublisher.send(3)
+        secondPublisher.send(completion: .finished)
+
+        XCTAssertEqual(expectedValues, receivedValues)
+    }
+
+    func test_publishes_values_of_subsequent_publisher_after_emptying_publisher_queue() {
+        var receivedValues = [Int]()
+        let expectedValues = [1, 2]
+
+        let firstPublisher = P()
+        let secondPublisher = P()
+
+        let sut = PassthroughSubject<P, TestError>()
+
+        sut.concatMap { $0 }
+            .sink(
+                receiveCompletion: { _ in },
+                receiveValue: { value in receivedValues.append(value) }
+            )
+            .store(in: &cancellables)
+
+        sut.send(firstPublisher)
+        firstPublisher.send(1)
+        firstPublisher.send(completion: .finished)
+
+        sut.send(secondPublisher)
+        secondPublisher.send(2)
+        secondPublisher.send(completion: .finished)
+
+        XCTAssertEqual(expectedValues, receivedValues)
+    }
+
+    func test_synchronous_completion() {
+        var receivedValues = [Int]()
+        let expectedValues = [1, 2]
+        let firstPublisher = Just<Int>(1)
+        let secondPublisher = Just<Int>(2)
+
+        let sut = PassthroughSubject<Just<Int>, Never>()
+
+        sut.concatMap { $0 }
+            .sink { value in receivedValues.append(value) }
+            .store(in: &cancellables)
+
+        sut.send(firstPublisher)
+        sut.send(secondPublisher)
 
         XCTAssertEqual(expectedValues, receivedValues)
     }

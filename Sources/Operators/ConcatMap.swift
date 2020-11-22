@@ -112,13 +112,12 @@ private extension Publishers.ConcatMap {
 
         override func receive(_ input: Upstream.Output) -> Subscribers.Demand {
             let mapped = transform(input)
-
             lock.lock()
+            defer { lock.unlock() }
+
             if activePublisher == nil {
-                lock.unlock()
                 setActivePublisher(mapped)
             } else {
-                lock.unlock()
                 bufferedPublishers.append(mapped)
             }
 
@@ -132,15 +131,15 @@ private extension Publishers.ConcatMap {
 
             publisher.sink(
                 receiveCompletion: { completion in
+                    self.lock.lock()
+                    defer { self.lock.unlock() }
                     switch completion {
                     case .finished:
-                        self.lock.lock()
                         guard let next = self.bufferedPublishers.first else {
-                            self.lock.unlock()
+                            self.activePublisher = nil
                             return
                         }
                         self.bufferedPublishers.removeFirst()
-                        self.lock.unlock()
                         self.setActivePublisher(next)
                     case .failure(let error):
                         self.receive(completion: .failure(error))
