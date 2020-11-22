@@ -28,7 +28,7 @@ public extension Publisher {
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publishers {
-    final class ConcatMap<NewPublisher, Upstream>: Publisher where NewPublisher: Publisher, Upstream: Publisher, NewPublisher.Failure == Upstream.Failure  {
+    struct ConcatMap<NewPublisher, Upstream>: Publisher where NewPublisher: Publisher, Upstream: Publisher, NewPublisher.Failure == Upstream.Failure  {
         public typealias Transform = (Upstream.Output) -> NewPublisher
         public typealias Output = NewPublisher.Output
         public typealias Failure = Upstream.Failure
@@ -88,8 +88,7 @@ private extension Publishers.ConcatMap {
 // MARK: - Sink
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.ConcatMap {
-    final class Sink<Downstream: Subscriber>: CombineExt.Sink<Upstream, Downstream>
-    where Downstream.Input == Output, Downstream.Failure == Failure {
+    final class Sink<Downstream: Subscriber>: CombineExt.Sink<Upstream, Downstream> where Downstream.Input == Output, Downstream.Failure == Failure {
         private let lock = NSRecursiveLock()
         private let transform: Transform
         private var activePublisher: NewPublisher?
