@@ -1,10 +1,10 @@
 # CombineExt
 
 <p align="center">
-<img src="https://github.com/CombineCommunity/CombineExt/raw/master/Resources/logo.png" width="45%">
+<img src="https://github.com/CombineCommunity/CombineExt/raw/main/Resources/logo.png" width="45%">
 <br /><br />
-<a href="https://actions-badge.atrox.dev/CombineCommunity/CombineExt/goto" target="_blank" alt="Build Status" title="Build Status"><img src="https://github.com/CombineCommunity/CombineExt/workflows/CombineExt/badge.svg?branch=master" alt="Build Status" title="Build Status"></a>
-<a href="https://codecov.io/gh/CombineCommunity/CombineExt" target="_blank" alt="Code Coverage for CombineExt on codecov" title="Code Coverage for CombineExt on codecov"><img src="https://codecov.io/gh/CombineCommunity/CombineExt/branch/master/graph/badge.svg" alt="Code Coverage for CombineExt on codecov" title="Code Coverage for CombineExt on codecov"/></a>
+<a href="https://actions-badge.atrox.dev/CombineCommunity/CombineExt/goto" target="_blank" alt="Build Status" title="Build Status"><img src="https://github.com/CombineCommunity/CombineExt/workflows/CombineExt/badge.svg?branch=main" alt="Build Status" title="Build Status"></a>
+<a href="https://codecov.io/gh/CombineCommunity/CombineExt" target="_blank" alt="Code Coverage for CombineExt on codecov" title="Code Coverage for CombineExt on codecov"><img src="https://codecov.io/gh/CombineCommunity/CombineExt/branch/main/graph/badge.svg" alt="Code Coverage for CombineExt on codecov" title="Code Coverage for CombineExt on codecov"/></a>
 <br />
 <img src="https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS 10.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-333333.svg" />
 <br />
@@ -33,12 +33,15 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [Collection.merge()](#MergeMany)
 * [combineLatest(with:) and Collection.combineLatest](#CombineLatestMany)
 * [mapMany(_:)](#MapMany)
+* [filterMany(_:)](#FilterMany)
 * [setOutputType(to:)](#setOutputType)
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
 * [share(replay:)](#sharereplay)
 * [prefix(duration:tolerance:​on:options:)](#prefixduration)
 * [toggle()](#toggle)
 * [nwise(_:) and pairwise()](#nwise)
+* [ignoreOutput(setOutputType:)](#ignoreOutputsetOutputType)
+* [ignoreFailure](#ignoreFailure)
 * [scan(into:)](#ScanInto)
 * [reduce(into:)](#ReduceInto)
 
@@ -49,9 +52,6 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 
 ### Subjects
 * [ReplaySubject](#ReplaySubject)
-
-### Convenience
-* [Optional.publisher](#Optionalpublisher)
 
 > **Note**: This is still a relatively early version of CombineExt, with much more to be desired. I gladly accept PRs, ideas, opinions, or improvements. Thank you! :)
 
@@ -445,6 +445,27 @@ combineLatest: [false, true, true, true]
 
 ------
 
+### FilterMany
+Filters element of a publisher collection into a new publisher collection.
+```swift
+let intArrayPublisher = PassthroughSubject<[Int], Never>()
+
+intArrayPublisher
+  .filterMany { $0.isMultiple(of: 2) }
+  .sink(receiveValue: { print($0) })
+
+intArrayPublisher.send([10, 2, 4, 3, 8])
+```
+
+#### Output:
+
+```
+none
+[10, 2, 4, 8]
+```
+
+------
+
 ### MapMany
 
 Projects each element of a publisher collection into a new publisher collection form.
@@ -623,54 +644,95 @@ subject.send(5)
 4 -> 5
 ```
 
-### scan(into:)
+### ignoreOutput(setOutputType:)
 
-Reduces the elements of the source publisher into an accumulated value and emits the result anytime the upstream emits a value
+Shorthand for both ignoring a publisher’s value events and re-writing its `Output` generic.
 
 ```swift
-let subject = PassthroughSubject<Int, Never>()
+let onlyAFour = ["1", "2", "3"].publisher
+  .ignoreOutput(setOutputType: Int.self)
+  .append(4)
+```
+
+### ignoreFailure
+
+CombineExt provides a couple of overloads to ignore errors and optionally specify a new error type and whether to trigger completions in such cases.
+
+- `ignoreFailure(completeImmediately:)`
+- `ignoreFailure(setFailureType:completeImmediately:)`
+
+```swift
+enum AnError {
+  case someError 
+}
+
+let subject = PassthroughSubject<Int, AnError>()
 
 subscription = subject
-  .scan(into: 0) { $0 += $1 }
-  .sink(receiveValue: { print("\($0)") })
+  .ignoreFailure() // The `completeImmediately` parameter defaults to `true`.
+  .sink(receiveValue: { print($0) }, receiveCompletion: { print($0) })
 
 subject.send(1)
 subject.send(2)
 subject.send(3)
-subject.send(4)
-subject.send(5)
+subject.send(completion: .failure(.someError))
 ```
 
 ```none
 1
+2
 3
-6
-10
-15
+.finished
 ```
 
-### reduce(into:)
+### scan(into:)
 
-Reduces the elements of the source publisher into an accumulated value and emits the result when the upstream finishes
+ Reduces the elements of the source publisher into an accumulated value and emits the result anytime the upstream emits a value
 
-```swift
-let subject = PassthroughSubject<Int, Never>()
+ ```swift
+ let subject = PassthroughSubject<Int, Never>()
 
-subscription = subject
-  .reduce(into: 0) { $0 += $1 }
-  .sink(receiveValue: { print("\($0)") })
+ subscription = subject
+   .scan(into: 0) { $0 += $1 }
+   .sink(receiveValue: { print("\($0)") })
 
-subject.send(1)
-subject.send(2)
-subject.send(3)
-subject.send(4)
-subject.send(5)
-subject.send(completion: .finished)
-```
+ subject.send(1)
+ subject.send(2)
+ subject.send(3)
+ subject.send(4)
+ subject.send(5)
+ ```
 
-```none
-15
-```
+ ```none
+ 1
+ 3
+ 6
+ 10
+ 15
+ ```
+
+ ### reduce(into:)
+
+ Reduces the elements of the source publisher into an accumulated value and emits the result when the upstream finishes
+
+ ```swift
+ let subject = PassthroughSubject<Int, Never>()
+
+ subscription = subject
+   .reduce(into: 0) { $0 += $1 }
+   .sink(receiveValue: { print("\($0)") })
+
+ subject.send(1)
+ subject.send(2)
+ subject.send(3)
+ subject.send(4)
+ subject.send(5)
+ subject.send(completion: .finished)
+ ```
+
+ ```none
+ 15
+ ```
 
 ## Publishers
 
@@ -801,28 +863,6 @@ subject.send(5)
 3
 4
 5
-```
-
-## Convenience
-
-## Optional.publisher
-
-`Optional.publisher` is a property version of [`Optional.Publisher.init`](https://developer.apple.com/documentation/swift/optional/publisher/3343960-init). It puts the type on equal footing with [`Result.publisher`](https://developer.apple.com/documentation/swift/result/3344716-publisher) and [`Sequence.publisher`](https://developer.apple.com/documentation/swift/sequence/3344717-publisher).
-
-So you can use:
-
-```swift
-let number: Int? = 1
-number.publisher
-  /* … */
-```
-
-Instead of:
-
-```swift
-let number: Int? = 1
-Optional.Publisher(number)
-  /* … */
 ```
 
 ## License

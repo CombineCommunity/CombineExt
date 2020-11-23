@@ -1,6 +1,6 @@
 name: CombineExt
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   xcode-tests:
@@ -25,13 +25,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Select Xcode 11.5
-        run: sudo xcode-select -s /Applications/Xcode_11.5.app
+      - name: Select Xcode 12 (beta)
+        run: sudo xcode-select -s /Applications/Xcode_12_beta.app
       - name: Generate project
         run: make project
       - name: Run tests
         run: set -o pipefail && xcodebuild -project CombineExt.xcodeproj -scheme CombineExt-Package -enableCodeCoverage YES -sdk ${{ matrix.sdk }} -destination "${{ matrix.destination }}" test | xcpretty -c -r html --output logs/${{ matrix.platform }}.html
-      - uses: codecov/codecov-action@v1.0.5
+      - uses: codecov/codecov-action@v1.0.13
         with:
           token: 1519d58c-6fb9-483f-af6c-7f6f0b384345
           name: CombineExt

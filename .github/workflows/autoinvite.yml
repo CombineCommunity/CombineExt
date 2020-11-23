@@ -1,7 +1,7 @@
 name: Inclusive Organization
 on:
   push:
-    branches: master
+    branches: main
 jobs:
   invite:
     runs-on: ubuntu-latest
