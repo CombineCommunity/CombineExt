@@ -38,11 +38,10 @@ public extension Publisher {
             return prefix(while: predicate)
                 .eraseToAnyPublisher()
         case .inclusive:
-            return flatMap { next -> AnyPublisher<PrefixInclusiveEvent<Output>, Failure> in
-                ([.whileValueOrIncluded(next)] + (!predicate(next) ? [.end] : []))
-                    .publisher
+            return flatMap { next in
+                Just(PrefixInclusiveEvent.whileValueOrIncluded(next))
+                    .append(!predicate(next) ? [.end] : [])
                     .setFailureType(to: Failure.self)
-                    .eraseToAnyPublisher()
             }
             .prefix(while: \.isWhileValueOrIncluded)
             .compactMap(\.value)
