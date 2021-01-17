@@ -28,6 +28,8 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
     private var completion: Subscribers.Completion<Failure>?
     private var isActive: Bool { completion == nil }
 
+    private let lock = NSRecursiveLock()
+
     /// Create a `ReplaySubject`, buffering up to `bufferSize` values and replaying them to new subscribers
     /// - Parameter bufferSize: The maximum number of value events to buffer and replay to all future subscribers.
     public init(bufferSize: Int) {
@@ -35,6 +37,9 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
     }
 
     public func send(_ value: Output) {
+        lock.lock()
+        defer { lock.unlock() }
+
         guard isActive else { return }
 
         buffer.append(value)
@@ -47,6 +52,9 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
     }
 
     public func send(completion: Subscribers.Completion<Failure>) {
+        lock.lock()
+        defer { lock.unlock() }
+
         guard isActive else { return }
 
         self.completion = completion
@@ -55,10 +63,16 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
     }
 
     public func send(subscription: Combine.Subscription) {
+        lock.lock()
+        defer { lock.unlock() }
+
         subscription.request(.unlimited)
     }
 
     public func receive<Subscriber: Combine.Subscriber>(subscriber: Subscriber) where Failure == Subscriber.Failure, Output == Subscriber.Input {
+        lock.lock()
+        defer { lock.unlock() }
+        
         let subscriberIdentifier = subscriber.combineIdentifier
 
         let subscription = Subscription(downstream: AnySubscriber(subscriber)) { [weak self] in
