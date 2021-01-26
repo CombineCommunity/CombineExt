@@ -23,7 +23,7 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
     private var buffer = [Output]()
 
     // Keeping track of all live subscriptions, so `send` events can be forwarded to them.
-    private var subscriptions = [Subscription<AnySubscriber<Output, Failure>>]()
+    private(set) var subscriptions = [Subscription<AnySubscriber<Output, Failure>>]()
 
     private var completion: Subscribers.Completion<Failure>?
     private var isActive: Bool { completion == nil }
