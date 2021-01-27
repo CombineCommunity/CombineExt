@@ -348,27 +348,46 @@ final class ReplaySubjectTests: XCTestCase {
         XCTAssertEqual([.finished, .finished], completions)
     }
 
-    func testRemovesSubscriptionAfterCancellation() {
+    func testRemovesSubscriptionsAfterCancellation() {
         let subject = ReplaySubject<Int, Never>(bufferSize: 1)
 
-        var subscription: Subscription?
-        let subscriber = AnySubscriber<Int, Never>(
-            receiveSubscription: { subscription = $0 }
+        var subscription1: Subscription?
+        let subscriber1 = AnySubscriber<Int, Never>(
+            receiveSubscription: { subscription1 = $0 }
+        )
+
+        var subscription2: Subscription?
+        let subscriber2 = AnySubscriber<Int, Never>(
+            receiveSubscription: { subscription2 = $0 }
         )
 
         XCTAssertTrue(subject.subscriptions.isEmpty)
 
         subject
-            .subscribe(subscriber)
+            .subscribe(subscriber1)
+        subject
+            .subscribe(subscriber2)
 
         XCTAssertEqual(
             subject
                 .subscriptions
                 .map(\.combineIdentifier),
-            [subscription?.combineIdentifier]
+            [
+                subscription1?.combineIdentifier,
+                subscription2?.combineIdentifier
+            ]
         )
 
-        subscription?.cancel()
+        subscription1?.cancel()
+
+        XCTAssertEqual(
+            subject
+                .subscriptions
+                .map(\.combineIdentifier),
+            [subscription2?.combineIdentifier]
+        )
+
+        subscription2?.cancel()
 
         XCTAssertTrue(subject.subscriptions.isEmpty)
     }
