@@ -23,7 +23,7 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
     private var buffer = [Output]()
 
     // Keeping track of all live subscriptions, so `send` events can be forwarded to them.
-    private var subscriptions = [Subscription<AnySubscriber<Output, Failure>>]()
+    private(set) var subscriptions = [Subscription<AnySubscriber<Output, Failure>>]()
 
     private var completion: Subscribers.Completion<Failure>?
     private var isActive: Bool { completion == nil }
@@ -37,56 +37,75 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
     }
 
     public func send(_ value: Output) {
-        lock.lock()
-        defer { lock.unlock() }
+        let subscriptions: [Subscription<AnySubscriber<Output, Failure>>]
 
-        guard isActive else { return }
+        do {
+          lock.lock()
+          defer { lock.unlock() }
 
-        buffer.append(value)
+          guard isActive else { return }
 
-        if buffer.count > bufferSize {
+          buffer.append(value)
+          if buffer.count > bufferSize {
             buffer.removeFirst()
+          }
+
+          subscriptions = self.subscriptions
         }
 
         subscriptions.forEach { $0.forwardValueToBuffer(value) }
     }
 
     public func send(completion: Subscribers.Completion<Failure>) {
-        lock.lock()
-        defer { lock.unlock() }
+        let subscriptions: [Subscription<AnySubscriber<Output, Failure>>]
 
-        guard isActive else { return }
+        do {
+            lock.lock()
+            defer { lock.unlock() }
 
-        self.completion = completion
+            guard isActive else { return }
+
+            self.completion = completion
+
+            subscriptions = self.subscriptions
+        }
 
         subscriptions.forEach { $0.forwardCompletionToBuffer(completion) }
     }
 
     public func send(subscription: Combine.Subscription) {
-        lock.lock()
-        defer { lock.unlock() }
-
         subscription.request(.unlimited)
     }
 
     public func receive<Subscriber: Combine.Subscriber>(subscriber: Subscriber) where Failure == Subscriber.Failure, Output == Subscriber.Input {
-        lock.lock()
-        defer { lock.unlock() }
-        
         let subscriberIdentifier = subscriber.combineIdentifier
 
         let subscription = Subscription(downstream: AnySubscriber(subscriber)) { [weak self] in
-            guard let self = self,
-                  let subscriptionIndex = self.subscriptions
-                                              .firstIndex(where: { $0.innerSubscriberIdentifier == subscriberIdentifier }) else { return }
-
-            self.subscriptions.remove(at: subscriptionIndex)
+            self?.completeSubscriber(withIdentifier: subscriberIdentifier)
         }
 
-        subscriptions.append(subscription)
+        let buffer: [Output]
+        let completion: Subscribers.Completion<Failure>?
+
+        do {
+            lock.lock()
+            defer { lock.unlock() }
+
+            subscriptions.append(subscription)
+
+            buffer = self.buffer
+            completion = self.completion
+        }
 
         subscriber.receive(subscription: subscription)
         subscription.replay(buffer, completion: completion)
+    }
+
+    private func completeSubscriber(withIdentifier subscriberIdentifier: CombineIdentifier) {
+        lock.lock()
+        defer { self.lock.unlock() }
+
+        self.subscriptions.removeAll { $0.innerSubscriberIdentifier == subscriberIdentifier }
     }
 }
 

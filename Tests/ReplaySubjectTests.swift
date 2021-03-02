@@ -7,7 +7,7 @@
 
 #if !os(watchOS)
 import Combine
-import CombineExt
+@testable import CombineExt
 import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -346,6 +346,50 @@ final class ReplaySubjectTests: XCTestCase {
 
         XCTAssertEqual(["a2", "b2"], results)
         XCTAssertEqual([.finished, .finished], completions)
+    }
+
+    func testRemovesSubscriptionsAfterCancellation() {
+        let subject = ReplaySubject<Int, Never>(bufferSize: 1)
+
+        var subscription1: Subscription?
+        let subscriber1 = AnySubscriber<Int, Never>(
+            receiveSubscription: { subscription1 = $0 }
+        )
+
+        var subscription2: Subscription?
+        let subscriber2 = AnySubscriber<Int, Never>(
+            receiveSubscription: { subscription2 = $0 }
+        )
+
+        XCTAssertTrue(subject.subscriptions.isEmpty)
+
+        subject
+            .subscribe(subscriber1)
+        subject
+            .subscribe(subscriber2)
+
+        XCTAssertEqual(
+            subject
+                .subscriptions
+                .map(\.combineIdentifier),
+            [
+                subscription1?.combineIdentifier,
+                subscription2?.combineIdentifier
+            ]
+        )
+
+        subscription1?.cancel()
+
+        XCTAssertEqual(
+            subject
+                .subscriptions
+                .map(\.combineIdentifier),
+            [subscription2?.combineIdentifier]
+        )
+
+        subscription2?.cancel()
+
+        XCTAssertTrue(subject.subscriptions.isEmpty)
     }
 }
 #endif
