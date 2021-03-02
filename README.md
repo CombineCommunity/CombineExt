@@ -42,7 +42,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [nwise(_:) and pairwise()](#nwise)
 * [ignoreOutput(setOutputType:)](#ignoreOutputsetOutputType)
 * [ignoreFailure](#ignoreFailure)
-* [batchedSubscribe(by:)](#batchedSubscribeby)
+* [flatMapBatches(of:)](#flatMapBatchesof)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -698,15 +698,15 @@ subject.send(completion: .failure(.someError))
 .finished
 ```
 
-### batchedSubscribe(by:)
+### flatMapBatches(of:)
 
-`Collection.batchedSubscribe(by:)` subscribes to the receiver’s contained publishers in batches and returns their outputs in batches, too (while maintaining order). Subsequent batches of publishers are only subscribed to when prior batches successfully complete — any one failure is forwarded downstream.
+`Collection.flatMapBatches(of:)` subscribes to the receiver’s contained publishers in batches and returns their outputs in batches, too (while maintaining order). Subsequent batches of publishers are only subscribed to when prior batches successfully complete — any one failure is forwarded downstream.
 
 ```swift
 let ints = (1...6).map(Just.init)
 
 subscription = ints
-  .batchedSubscribe(by: 2)
+  .flatMapBatches(of: 2)
   .sink(receiveCompletion: { print($0) }, receiveValue: { print($0) })
 ```
 

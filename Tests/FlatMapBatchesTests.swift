@@ -1,5 +1,5 @@
 //
-//  BatchedSubscribeTests.swift
+//  FlatMapBatchesTests.swift
 //  CombineExtTests
 //
 //  Created by Jasdev Singh on 23/01/2021.
@@ -12,7 +12,7 @@ import Combine
 import CombineExt
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-final class BatchedSubscribeTests: XCTestCase {
+final class FlatMapBatchesTests: XCTestCase {
     private var subscription: AnyCancellable!
 
     private enum BatchedSubscribeError: Error, Equatable {
@@ -26,7 +26,7 @@ final class BatchedSubscribeTests: XCTestCase {
         var completed = false
 
         subscription = ints
-            .batchedSubscribe(by: 2)
+            .flatMapBatches(of: 2)
             .sink(receiveCompletion: { _ in completed = true },
                   receiveValue: { results.append($0) })
 
@@ -41,7 +41,7 @@ final class BatchedSubscribeTests: XCTestCase {
         var completed = false
 
         subscription = ints
-            .batchedSubscribe(by: 2)
+            .flatMapBatches(of: 2)
             .sink(receiveCompletion: { _ in completed = true },
                   receiveValue: { results.append($0) })
 
@@ -61,7 +61,7 @@ final class BatchedSubscribeTests: XCTestCase {
         var completion: Subscribers.Completion<BatchedSubscribeError>?
 
         subscription = publishers
-            .batchedSubscribe(by: 2)
+            .flatMapBatches(of: 2)
             .sink(receiveCompletion: { completion = $0 },
                   receiveValue: { results.append($0) })
 
@@ -84,7 +84,7 @@ final class BatchedSubscribeTests: XCTestCase {
         var completed = false
 
         subscription = publishers
-            .batchedSubscribe(by: 2)
+            .flatMapBatches(of: 2)
             .sink(receiveCompletion: { _ in completed = true },
                   receiveValue: { results.append($0) })
 
@@ -99,7 +99,7 @@ final class BatchedSubscribeTests: XCTestCase {
         var completed = false
 
         subscription = publishers
-            .batchedSubscribe(by: 2)
+            .flatMapBatches(of: 2)
             .sink(receiveCompletion: { _ in completed = true },
                   receiveValue: { results.append($0) })
 
@@ -114,7 +114,7 @@ final class BatchedSubscribeTests: XCTestCase {
         var completed = false
 
         subscription = ints
-            .batchedSubscribe(by: 2)
+            .flatMapBatches(of: 2)
             .sink(receiveCompletion: { _ in completed = true },
                   receiveValue: { results.append($0) })
 
@@ -138,7 +138,7 @@ final class BatchedSubscribeTests: XCTestCase {
         var completed = false
 
         subscription = publishers
-            .batchedSubscribe(by: 2)
+            .flatMapBatches(of: 2)
             .sink(receiveCompletion: { _ in completed = true },
                   receiveValue: { results.append($0) })
 
