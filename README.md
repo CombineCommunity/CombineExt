@@ -42,6 +42,8 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [nwise(_:) and pairwise()](#nwise)
 * [ignoreOutput(setOutputType:)](#ignoreOutputsetOutputType)
 * [ignoreFailure](#ignoreFailure)
+* [scan(into:)](#ScanInto)
+* [reduce(into:)](#ReduceInto)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -682,6 +684,55 @@ subject.send(completion: .failure(.someError))
 3
 .finished
 ```
+
+### scan(into:)
+
+ Reduces the elements of the source publisher into an accumulated value and emits the result anytime the upstream emits a value
+
+ ```swift
+ let subject = PassthroughSubject<Int, Never>()
+
+ subscription = subject
+   .scan(into: 0) { $0 += $1 }
+   .sink(receiveValue: { print("\($0)") })
+
+ subject.send(1)
+ subject.send(2)
+ subject.send(3)
+ subject.send(4)
+ subject.send(5)
+ ```
+
+ ```none
+ 1
+ 3
+ 6
+ 10
+ 15
+ ```
+
+ ### reduce(into:)
+
+ Reduces the elements of the source publisher into an accumulated value and emits the result when the upstream finishes
+
+ ```swift
+ let subject = PassthroughSubject<Int, Never>()
+
+ subscription = subject
+   .reduce(into: 0) { $0 += $1 }
+   .sink(receiveValue: { print("\($0)") })
+
+ subject.send(1)
+ subject.send(2)
+ subject.send(3)
+ subject.send(4)
+ subject.send(5)
+ subject.send(completion: .finished)
+ ```
+
+ ```none
+ 15
+ ```
 
 ## Publishers
 
