@@ -43,6 +43,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [ignoreOutput(setOutputType:)](#ignoreOutputsetOutputType)
 * [ignoreFailure](#ignoreFailure)
 * [catchToResult](#catchToResult)
+* [flatMapBatches(of:)](#flatMapBatchesof)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -505,6 +506,8 @@ subscription = [1, 1, 2, 1, 3, 3, 4].publisher
   .sink(receiveValue: { print("removeAllDuplicates: \($0)") })
 ```
 
+#### Output:
+
 ```none
 removeAllDuplicates: 1
 removeAllDuplicates: 2
@@ -536,6 +539,8 @@ subscription2 = replayedPublisher
   .sink(receiveValue: { print("second subscriber: \($0)") })
 ```
 
+#### Output:
+
 ```none
 first subscriber: 1
 first subscriber: 2
@@ -566,6 +571,8 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
 }
 ```
 
+#### Output:
+
 ```none
 1
 2
@@ -587,6 +594,8 @@ subject.send(true)
 subject.send(false)
 subject.send(true)
 ```
+
+#### Output:
 
 ```none
 false
@@ -612,6 +621,8 @@ subject.send(4)
 subject.send(5)
 ```
 
+#### Output:
+
 ```none
 [1, 2, 3]
 [2, 3, 4]
@@ -635,6 +646,8 @@ subject.send(3)
 subject.send(4)
 subject.send(5)
 ```
+
+#### Output:
 
 ```none
 1 -> 2
@@ -677,6 +690,8 @@ subject.send(3)
 subject.send(completion: .failure(.someError))
 ```
 
+#### Output:
+
 ```none
 1
 2
@@ -718,6 +733,27 @@ completion: finished
 ```
 
 ------
+
+### flatMapBatches(of:)
+
+`Collection.flatMapBatches(of:)` subscribes to the receiver’s contained publishers in batches and returns their outputs in batches, too (while maintaining order). Subsequent batches of publishers are only subscribed to when prior batches successfully complete — any one failure is forwarded downstream.
+
+```swift
+let ints = (1...6).map(Just.init)
+
+subscription = ints
+  .flatMapBatches(of: 2)
+  .sink(receiveCompletion: { print($0) }, receiveValue: { print($0) })
+```
+
+#### Output:
+
+```none
+[1, 2]
+[3, 4]
+[5, 6]
+.finished
+```
 
 ## Publishers
 
