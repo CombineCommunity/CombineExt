@@ -21,7 +21,7 @@ final class CatchToResultTests: XCTestCase {
         case someError
     }
 
-    func testCatchToResult() {
+    func testCatchResultNoError() {
         let subject = PassthroughSubject<Int, Error>()
         let testInt = 5
         var completed = false
@@ -38,7 +38,9 @@ final class CatchToResultTests: XCTestCase {
         subject.send(completion: .finished)
         XCTAssertTrue(completed)
         XCTAssertEqual(results.count, 2)
-        let intsCorrect = results.compactMap({ try? $0.get() }).allSatisfy({ $0 == testInt })
+        let intsCorrect = results
+            .compactMap { try? $0.get() }
+            .allSatisfy { $0 == testInt }
         XCTAssertTrue(intsCorrect)
     }
 
@@ -50,7 +52,7 @@ final class CatchToResultTests: XCTestCase {
         var result: Result<Int, Error>? = nil
 
         subscription = subject
-            .tryMap({ _ -> Int in throw(CatchToResultError.someError) })
+            .tryMap { _ -> Int in throw CatchToResultError.someError }
             .catchToResult()
             .eraseToAnyPublisher()
             .sink(receiveCompletion: { _ in completed = true },
@@ -101,7 +103,7 @@ final class CatchToResultTests: XCTestCase {
         do {
             _ = try result!.get()
             gotSuccess = true
-        } catch (let e) {
+        } catch let e {
             XCTAssert(e is DecodingError)
             gotFailure = true
         }
@@ -139,7 +141,7 @@ final class CatchToResultTests: XCTestCase {
         do {
             _ = try result!.get()
             gotSuccess = true
-        } catch (let e) {
+        } catch let e {
             XCTAssert(e is EncodingError)
             gotFailure = true
         }
