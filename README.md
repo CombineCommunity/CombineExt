@@ -42,6 +42,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [nwise(_:) and pairwise()](#nwise)
 * [ignoreOutput(setOutputType:)](#ignoreOutputsetOutputType)
 * [ignoreFailure](#ignoreFailure)
+* [catchToResult](#catchToResult)
 
 ### Publishers
 * [AnyPublisher.create](#AnypublisherCreate)
@@ -682,6 +683,41 @@ subject.send(completion: .failure(.someError))
 3
 .finished
 ```
+------
+
+### catchToResult
+
+Transforms a publisher of type `AnyPublisher<Output, Failure>` to `AnyPublisher<Result<Output, Failure>, Never>`
+
+```swift
+enum AnError: Error {
+    case someError
+}
+
+let subject = PassthroughSubject<Int, AnError>()
+
+let subscription = subject
+    .catchToResult()
+    .sink(receiveCompletion: { print("completion: \($0)") },
+          receiveValue: { print("value: \($0)") })
+
+subject.send(1)
+subject.send(2)
+subject.send(3)
+subject.send(completion: .failure(.someError))
+```
+
+#### Output
+
+```none
+value: success(1)
+value: success(2)
+value: success(3)
+value: failure(AnError.someError)
+completion: finished
+```
+
+------
 
 ## Publishers
 
