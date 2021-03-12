@@ -11,8 +11,7 @@ import XCTest
 import Combine
 import CombineExt
 
-@available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
-
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class LiftErrorFromResultTests: XCTestCase {
     var subscription: AnyCancellable!
 
