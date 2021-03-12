@@ -719,6 +719,37 @@ subscription = ints
 .finished
 ```
 
+### liftErrorFromResult
+
+Transforms a publisher of type `AnyPublisher<Result<T, E>, Never>` to `AnyPublisher<T, E>`
+
+```swift
+enum AnError: Error {
+    case someError
+}
+
+let subject = PassthroughSubject<Result<Int, AnError>, Never>()
+
+let subscription = subject
+    .liftErrorFromResult()
+    .sink(receiveCompletion: { print("completion: \($0)") },
+          receiveValue: { print("value: \($0)") })
+
+subject.send(.success(1))
+subject.send(.success(2))
+subject.send(.success(3))
+subject.send(.failure(.someError))
+```
+
+#### Output
+
+```none
+value: 1
+value: 2
+value: 3
+completion: failure(AnError.someError)
+```
+
 ## Publishers
 
 This section outlines some of the custom Combine publishers CombineExt provides
