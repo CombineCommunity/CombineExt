@@ -22,8 +22,8 @@ public extension Publisher where Self.Failure == Never {
                 return Just(some)
                     .setFailureType(to: E.self)
                     .eraseToAnyPublisher()
-            case .failure(let e):
-                return Fail(error: e)
+            case .failure(let error):
+                return Fail(error: error)
                     .eraseToAnyPublisher()
             }
         }.eraseToAnyPublisher()
