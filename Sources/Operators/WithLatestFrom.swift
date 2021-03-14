@@ -21,9 +21,9 @@ public extension Publisher {
   ///
   ///  - returns: A publisher containing the result of combining each value of the self
   ///             with the latest value from the second publisher, if any, using the
-  ///             specified result selector function.
+  ///             specified result selector function, republishing only non-`nil` values.
   func withLatestFrom<Other: Publisher, Result>(_ other: Other,
-                                                resultSelector: @escaping (Output, Other.Output) -> Result)
+                                                resultSelector: @escaping (Output, Other.Output) -> Result?)
     -> Publishers.WithLatestFrom<Self, Other, Result> {
       return .init(upstream: self, second: other, resultSelector: resultSelector)
   }
@@ -38,10 +38,10 @@ public extension Publisher {
   ///
   ///  - returns: A publisher containing the result of combining each value of the self
   ///             with the latest value from the second and third publisher, if any, using the
-  ///             specified result selector function.
+  ///             specified result selector function, republishing only non-`nil` values.
   func withLatestFrom<Other: Publisher, Other1: Publisher, Result>(_ other: Other,
                                                                    _ other1: Other1,
-                                                                   resultSelector: @escaping (Output, (Other.Output, Other1.Output)) -> Result)
+                                                                   resultSelector: @escaping (Output, (Other.Output, Other1.Output)) -> Result?)
     -> Publishers.WithLatestFrom<Self, AnyPublisher<(Other.Output, Other1.Output), Self.Failure>, Result>
     where Other.Failure == Failure, Other1.Failure == Failure {
       let combined = other.combineLatest(other1)
@@ -60,11 +60,11 @@ public extension Publisher {
   ///
   ///  - returns: A publisher containing the result of combining each value of the self
   ///             with the latest value from the second, third and fourth publisher, if any, using the
-  ///             specified result selector function.
+  ///             specified result selector function, republishing only non-`nil` values.
   func withLatestFrom<Other: Publisher, Other1: Publisher, Other2: Publisher, Result>(_ other: Other,
                                                                                       _ other1: Other1,
                                                                                       _ other2: Other2,
-                                                                                      resultSelector: @escaping (Output, (Other.Output, Other1.Output, Other2.Output)) -> Result)
+                                                                                      resultSelector: @escaping (Output, (Other.Output, Other1.Output, Other2.Output)) -> Result?)
     -> Publishers.WithLatestFrom<Self, AnyPublisher<(Other.Output, Other1.Output, Other2.Output), Self.Failure>, Result>
     where Other.Failure == Failure, Other1.Failure == Failure, Other2.Failure == Failure {
       let combined = other.combineLatest(other1, other2)
@@ -80,6 +80,17 @@ public extension Publisher {
   ///  - returns: A publisher containing the latest value from the second publisher, if any.
   func withLatestFrom<Other: Publisher>(_ other: Other)
     -> Publishers.WithLatestFrom<Self, Other, Other.Output> {
+      return .init(upstream: self, second: other) { $1 }
+  }
+    
+  ///  Upon an emission from self, emit the latest non-`nil` value from the
+  ///  second publisher, if any exists.
+  ///
+  ///  - parameter other: A second publisher source.
+  ///
+  ///  - returns: A publisher containing the latest value from the second publisher, if any.
+  func withLatestFrom<Other: Publisher, Result>(_ other: Other)
+  -> Publishers.WithLatestFrom<Self, Other, Result> where Other.Output == Result? {
       return .init(upstream: self, second: other) { $1 }
   }
 
@@ -121,7 +132,7 @@ public extension Publishers {
                         Other: Publisher,
                         Output>: Publisher where Upstream.Failure == Other.Failure {
     public typealias Failure = Upstream.Failure
-    public typealias ResultSelector = (Upstream.Output, Other.Output) -> Output
+    public typealias ResultSelector = (Upstream.Output, Other.Output) -> Output?
 
     private let upstream: Upstream
     private let second: Other

@@ -137,6 +137,81 @@ class WithLatestFromTests: XCTestCase {
         XCTAssertTrue(completed)
         subscription.cancel()
     }
+    
+    func testOptionalResultSelector() {
+        let subject1 = PassthroughSubject<Int?, Never>()
+        let subject2 = PassthroughSubject<String, Never>()
+        var results = [String]()
+        var completed = false
+        
+        subscription = subject1
+            .withLatestFrom(subject2) { v1, v2 in v1.map { _ in v2 } }
+            .sink(receiveCompletion: { _ in completed  = true },
+                  receiveValue: { results.append($0) })
+        
+        subject1.send(1)
+        subject1.send(2)
+        subject1.send(3)
+        subject2.send("bar")
+        subject1.send(4)
+        subject1.send(nil)
+        subject2.send("foo")
+        subject1.send(6)
+        subject2.send("qux")
+        subject1.send(nil)
+        subject1.send(8)
+        subject1.send(9)
+        
+        XCTAssertEqual(results, ["bar",
+                                 "foo",
+                                 "qux",
+                                 "qux"])
+        
+        XCTAssertFalse(completed)
+        subject2.send(completion: .finished)
+        XCTAssertFalse(completed)
+        subject1.send(completion: .finished)
+        XCTAssertTrue(completed)
+        subscription.cancel()
+    }
+    
+    func testOptionalNoResultSelector() {
+        let subject1 = PassthroughSubject<Int, Never>()
+        let subject2 = PassthroughSubject<String?, Never>()
+        var results = [String]()
+        var completed = false
+        
+        subscription = subject1
+            .withLatestFrom(subject2)
+            .sink(receiveCompletion: { _ in completed  = true },
+                  receiveValue: { results.append($0) })
+        
+        subject1.send(1)
+        subject1.send(2)
+        subject1.send(3)
+        subject2.send("bar")
+        subject1.send(4)
+        subject1.send(5)
+        subject2.send(nil)
+        subject1.send(6)
+        subject2.send("qux")
+        subject1.send(7)
+        subject1.send(8)
+        subject1.send(9)
+        
+        XCTAssertEqual(results, ["bar",
+                                 "bar",
+                                 "qux",
+                                 "qux",
+                                 "qux"])
+        
+        XCTAssertFalse(completed)
+        subject2.send(completion: .finished)
+        XCTAssertFalse(completed)
+        subject1.send(completion: .finished)
+        XCTAssertTrue(completed)
+        subscription.cancel()
+    }
 
     func testWithLatestFrom2WithResultSelector() {
         let subject1 = PassthroughSubject<Int, Never>()
