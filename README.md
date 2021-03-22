@@ -42,7 +42,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [nwise(_:) and pairwise()](#nwise)
 * [ignoreOutput(setOutputType:)](#ignoreOutputsetOutputType)
 * [ignoreFailure](#ignoreFailure)
-* [catchToResult](#catchToResult)
+* [mapToResult](#mapToResult)
 * [flatMapBatches(of:)](#flatMapBatchesof)
 
 ### Publishers
@@ -700,7 +700,7 @@ subject.send(completion: .failure(.someError))
 ```
 ------
 
-### catchToResult
+### mapToResult
 
 Transforms a publisher of type `AnyPublisher<Output, Failure>` to `AnyPublisher<Result<Output, Failure>, Never>`
 
@@ -712,7 +712,7 @@ enum AnError: Error {
 let subject = PassthroughSubject<Int, AnError>()
 
 let subscription = subject
-    .catchToResult()
+    .mapToResult()
     .sink(receiveCompletion: { print("completion: \($0)") },
           receiveValue: { print("value: \($0)") })
 

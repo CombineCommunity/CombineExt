@@ -1,5 +1,5 @@
 //
-//  CatchToResult.swift
+//  MapToResultTests.swift
 //  CombineExt
 //
 //  Created by Yurii Zadoianchuk on 05/03/2021.
@@ -14,21 +14,21 @@ import Combine
 import CombineExt
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-final class CatchToResultTests: XCTestCase {
+final class MapToResultTests: XCTestCase {
     private var subscription: AnyCancellable!
 
-    enum CatchToResultError: Error {
+    enum MapToResultError: Error {
         case someError
     }
 
-    func testCatchResultNoError() {
+    func testMapResultNoError() {
         let subject = PassthroughSubject<Int, Error>()
         let testInt = 5
         var completed = false
         var results: [Result<Int, Error>] = []
 
         subscription = subject
-            .catchToResult()
+            .mapToResult()
             .sink(receiveCompletion: { _ in completed = true },
                   receiveValue: { results.append($0) })
 
@@ -44,7 +44,7 @@ final class CatchToResultTests: XCTestCase {
         XCTAssertTrue(intsCorrect)
     }
 
-    func testCatchCustomError() {
+    func testMapCustomError() {
         let subject = PassthroughSubject<Int, Error>()
         var completed = false
         var gotFailure = false
@@ -52,8 +52,8 @@ final class CatchToResultTests: XCTestCase {
         var result: Result<Int, Error>? = nil
 
         subscription = subject
-            .tryMap { _ -> Int in throw CatchToResultError.someError }
-            .catchToResult()
+            .tryMap { _ -> Int in throw MapToResultError.someError }
+            .mapToResult()
             .eraseToAnyPublisher()
             .sink(receiveCompletion: { _ in completed = true },
                   receiveValue: { result = $0 })
@@ -92,7 +92,7 @@ final class CatchToResultTests: XCTestCase {
 
         subscription = subject
             .decode(type: ToDecode.self, decoder: JSONDecoder())
-            .catchToResult()
+            .mapToResult()
             .eraseToAnyPublisher()
             .sink(receiveCompletion: { _ in completed = true },
                   receiveValue: { result = $0 })
@@ -113,7 +113,7 @@ final class CatchToResultTests: XCTestCase {
         XCTAssertTrue(completed)
     }
 
-    func testCatchEncodeError() {
+    func testMapEncodeError() {
         struct ToEncode: Encodable {
             let foo: Int
 
@@ -130,7 +130,7 @@ final class CatchToResultTests: XCTestCase {
 
         subscription = subject
             .encode(encoder: JSONEncoder())
-            .catchToResult()
+            .mapToResult()
             .eraseToAnyPublisher()
             .sink(receiveCompletion: { _ in completed = true },
                   receiveValue: { result = $0 })

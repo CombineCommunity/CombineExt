@@ -1,5 +1,5 @@
 //
-//  CatchToResult.swift
+//  MapToResult.swift
 //  CombineExt
 //
 //  Created by Yurii Zadoianchuk on 05/03/2021.
@@ -15,7 +15,7 @@ public extension Publisher {
     /// to a new publisher that wraps Output and Failure in Result,
     /// and has Never for Failure type
     /// - Returns: A type-erased publiser of type <Result<Output, Failure>, Never>
-    func catchToResult() -> AnyPublisher<Result<Output, Failure>, Never> {
+    func mapToResult() -> AnyPublisher<Result<Output, Failure>, Never> {
         map(Result.success)
             .catch { Just(.failure($0)) }
             .eraseToAnyPublisher()
