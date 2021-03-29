@@ -137,6 +137,7 @@ extension ReplaySubject {
 
         func forwardCompletionToBuffer(_ completion: Subscribers.Completion<Failure>) {
             demandBuffer?.complete(completion: completion)
+            cancel()
         }
 
         func request(_ demand: Subscribers.Demand) {
