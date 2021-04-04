@@ -213,5 +213,33 @@ final class ShareReplayTests: XCTestCase {
         XCTAssertTrue(results.isEmpty)
         XCTAssertEqual(completions, [.failure(.someError)])
     }
+    
+    func testSharingDoesNotRetainClassBasedPublisher() {
+        var results = [Int]()
+        var completions = [Subscribers.Completion<Never>]()
+        
+        var source: PassthroughSubject? = PassthroughSubject<Int, Never>()
+        weak var weakSource = source
+        
+        var stream = source?.share(replay: 1)
+
+        stream?
+            .sink(
+                receiveCompletion: { completions.append($0) },
+                receiveValue: { results.append($0) }
+            )
+            .store(in: &subscriptions)
+        
+        source?.send(1)
+        source?.send(completion: .finished)
+        
+        subscriptions.forEach({ $0.cancel() })
+        stream = nil
+        source = nil
+        
+        XCTAssertEqual(results, [1])
+        XCTAssertEqual(completions, [.finished])
+        XCTAssertNil(weakSource)
+    }
 }
 #endif
