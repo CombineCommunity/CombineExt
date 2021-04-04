@@ -386,5 +386,56 @@ class WithLatestFromTests: XCTestCase {
       subject1.send(completion: .finished)
       XCTAssertTrue(completed)
   }
+
+  func testWithLatestFromCompletion() {
+      let subject1 = PassthroughSubject<Int, Never>()
+      let subject2 = PassthroughSubject<String, Never>()
+      var results = [String]()
+      var completed = false
+
+      subscription = subject1
+          .withLatestFrom(subject2)
+          .sink(receiveCompletion: { _ in completed  = true },
+                receiveValue: { results.append($0) })
+
+      subject1.send(completion: .finished)
+      XCTAssertTrue(completed)
+      XCTAssertTrue(results.isEmpty)
+  }
+
+  func testWithLatestFrom2Completion() {
+      let subject1 = PassthroughSubject<Int, Never>()
+      let subject2 = PassthroughSubject<String, Never>()
+      let subject3 = PassthroughSubject<String, Never>()
+      var results = [(String, String)]()
+      var completed = false
+
+      subscription = subject1
+          .withLatestFrom(subject2, subject3)
+          .sink(receiveCompletion: { _ in completed  = true },
+                receiveValue: { results.append($0) })
+
+      subject1.send(completion: .finished)
+      XCTAssertTrue(completed)
+      XCTAssertTrue(results.isEmpty)
+  }
+
+  func testWithLatestFrom3Completion() {
+      let subject1 = PassthroughSubject<Int, Never>()
+      let subject2 = PassthroughSubject<String, Never>()
+      let subject3 = PassthroughSubject<String, Never>()
+      let subject4 = PassthroughSubject<String, Never>()
+      var results = [(String, String, String)]()
+      var completed = false
+
+      subscription = subject1
+          .withLatestFrom(subject2, subject3, subject4)
+          .sink(receiveCompletion: { _ in completed  = true },
+                receiveValue: { results.append($0) })
+
+      subject1.send(completion: .finished)
+      XCTAssertTrue(completed)
+      XCTAssertTrue(results.isEmpty)
+  }
 }
 #endif
