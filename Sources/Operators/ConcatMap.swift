@@ -8,7 +8,6 @@
 
 #if canImport(Combine)
 import Combine
-import class Foundation.NSRecursiveLock
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publisher {
@@ -49,8 +48,8 @@ public extension Publishers {
             subscriber.receive(
                 subscription: Subscription(
                     upstream: upstream,
-                    transform: transform,
-                    downstream: subscriber
+                    downstream: subscriber,
+                    transform: transform
                 )
             )
         }
@@ -60,18 +59,21 @@ public extension Publishers {
 // MARK: - Subscription
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.ConcatMap {
-    final class Subscription<Downstream: Subscriber>: Combine.Subscription where Downstream.Input == Output, Downstream.Failure == Failure {
-        private var sink: Sink<Downstream>?
+    final class Subscription<Downstream: Subscriber>: Combine.Subscription where
+        Downstream.Input == NewPublisher.Output,
+        Downstream.Failure == Failure
+    {
+        private var sink: OuterSink<Downstream>?
 
         init(
             upstream: Upstream,
-            transform: @escaping Transform,
-            downstream: Downstream
+            downstream: Downstream,
+            transform: @escaping Transform
         ) {
-            self.sink = Sink(
+            self.sink = OuterSink(
                 upstream: upstream,
                 downstream: downstream,
-                transform: { transform($0) }
+                transform: transform
             )
         }
 
@@ -88,68 +90,138 @@ private extension Publishers.ConcatMap {
 // MARK: - Sink
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.ConcatMap {
-    final class Sink<Downstream: Subscriber>: CombineExt.Sink<Upstream, Downstream> where Downstream.Input == Output, Downstream.Failure == Failure {
+    final class OuterSink<Downstream: Subscriber>: Subscriber where
+        Downstream.Input == NewPublisher.Output,
+        Downstream.Failure == Upstream.Failure
+    {
         private let lock = NSRecursiveLock()
+
+        private let downstream: Downstream
         private let transform: Transform
-        private var activePublisher: NewPublisher?
-        private var bufferedPublishers: [NewPublisher]
-        private var cancellables: Set<AnyCancellable>
+
+        private var upstreamSubscription: Combine.Subscription?
+        private var innerSink: InnerSink<Downstream>?
+
+        private var bufferedDemand: Subscribers.Demand = .none
 
         init(
             upstream: Upstream,
             downstream: Downstream,
             transform: @escaping Transform
         ) {
+            self.downstream = downstream
             self.transform = transform
-            self.bufferedPublishers = []
-            self.cancellables = []
-            super.init(
-                upstream: upstream,
-                downstream: downstream,
-                transformFailure: { $0 }
-            )
+            upstream.subscribe(self)
         }
 
-        override func receive(_ input: Upstream.Output) -> Subscribers.Demand {
-            let mapped = transform(input)
-            lock.lock()
-            defer { lock.unlock() }
-
-            if activePublisher == nil {
-                setActivePublisher(mapped)
+        func demand(_ demand: Subscribers.Demand) {
+            lock.lock(); defer { lock.unlock() }
+            if let innerSink = innerSink {
+                innerSink.demand(demand)
             } else {
-                bufferedPublishers.append(mapped)
+                bufferedDemand = demand
+            }
+
+            upstreamSubscription?.requestIfNeeded(.unlimited)
+        }
+
+        func receive(_ input: Upstream.Output) -> Subscribers.Demand {
+            lock.lock(); defer { lock.unlock() }
+            let transformedPublisher = transform(input)
+
+            if let innerSink = innerSink {
+                innerSink.enqueue(publisher: transformedPublisher)
+            } else {
+                innerSink = InnerSink(
+                    outerSink: self,
+                    upstream: transformedPublisher,
+                    downstream: downstream
+                )
+
+                innerSink?.demand(bufferedDemand)
             }
 
             return .unlimited
         }
 
-        private func setActivePublisher(_ publisher: NewPublisher) {
-            lock.lock()
-            defer { lock.unlock() }
-            activePublisher = publisher
+        func receive(subscription: Combine.Subscription) {
+            lock.lock(); defer { lock.unlock() }
+            upstreamSubscription = subscription
+        }
 
-            publisher.sink(
-                receiveCompletion: { completion in
-                    self.lock.lock()
-                    defer { self.lock.unlock() }
-                    switch completion {
-                    case .finished:
-                        guard let next = self.bufferedPublishers.first else {
-                            self.activePublisher = nil
-                            return
-                        }
-                        self.bufferedPublishers.removeFirst()
-                        self.setActivePublisher(next)
-                    case .failure(let error):
-                        self.receive(completion: .failure(error))
-                    }
-                },
-                receiveValue: { value in
-                    _ = self.buffer.buffer(value: value)
-                }
+        func receive(completion: Subscribers.Completion<Upstream.Failure>) {
+            lock.lock(); defer { lock.unlock() }
+            innerSink = nil
+            downstream.receive(completion: completion)
+            cancelUpstream()
+        }
+
+        func cancelUpstream() {
+            lock.lock(); defer { lock.unlock() }
+            upstreamSubscription.kill()
+        }
+
+        deinit { cancelUpstream() }
+    }
+
+    final class InnerSink<Downstream: Subscriber>: CombineExt.Sink<NewPublisher, Downstream> where
+        Downstream.Input == NewPublisher.Output,
+        Downstream.Failure == Upstream.Failure
+    {
+        private let outerSink: OuterSink<Downstream>
+        private let lock: NSRecursiveLock = NSRecursiveLock()
+
+        private var hasActiveSubscription: Bool
+        private var publisherQueue: [NewPublisher]
+
+        init(
+            outerSink: OuterSink<Downstream>,
+            upstream: NewPublisher,
+            downstream: Downstream
+        ) {
+            self.outerSink = outerSink
+            self.hasActiveSubscription = false
+            self.publisherQueue = []
+            
+            super.init(
+                upstream: upstream,
+                downstream: downstream
             )
-            .store(in: &cancellables)
+        }
+
+        func enqueue(publisher: NewPublisher) {
+            lock.lock(); defer { lock.unlock() }
+            if hasActiveSubscription {
+                publisherQueue.append(publisher)
+            } else {
+                publisher.subscribe(self)
+            }
+        }
+
+        override func receive(_ input: NewPublisher.Output) -> Subscribers.Demand {
+            return buffer.buffer(value: input)
+        }
+
+        override func receive(subscription: Combine.Subscription) {
+            lock.lock(); defer { lock.unlock() }
+            hasActiveSubscription = true
+
+            super.receive(subscription: subscription)
+            subscription.requestIfNeeded(buffer.remainingDemand)
+        }
+
+        override func receive(completion: Subscribers.Completion<Upstream.Failure>) {
+            lock.lock(); defer { lock.unlock() }
+            hasActiveSubscription = false
+            
+            switch completion {
+            case .finished:
+                if !publisherQueue.isEmpty {
+                    publisherQueue.removeFirst().subscribe(self)
+                }
+            case .failure:
+                outerSink.receive(completion: completion)
+            }
         }
     }
 }
