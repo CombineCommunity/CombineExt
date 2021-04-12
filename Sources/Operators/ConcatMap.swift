@@ -111,6 +111,7 @@ private extension Publishers.ConcatMap {
         ) {
             self.downstream = downstream
             self.transform = transform
+
             upstream.subscribe(self)
         }
 
@@ -168,7 +169,7 @@ private extension Publishers.ConcatMap {
         Downstream.Input == NewPublisher.Output,
         Downstream.Failure == Upstream.Failure
     {
-        private let outerSink: OuterSink<Downstream>
+        private weak var outerSink: OuterSink<Downstream>?
         private let lock: NSRecursiveLock = NSRecursiveLock()
 
         private var hasActiveSubscription: Bool
@@ -199,7 +200,7 @@ private extension Publishers.ConcatMap {
         }
 
         override func receive(_ input: NewPublisher.Output) -> Subscribers.Demand {
-            return buffer.buffer(value: input)
+            buffer.buffer(value: input)
         }
 
         override func receive(subscription: Combine.Subscription) {
@@ -219,8 +220,9 @@ private extension Publishers.ConcatMap {
                 if !publisherQueue.isEmpty {
                     publisherQueue.removeFirst().subscribe(self)
                 }
-            case .failure:
-                outerSink.receive(completion: completion)
+            case let .failure(error):
+                buffer.complete(completion: .failure(error))
+                outerSink?.receive(completion: completion)
             }
         }
     }
@@ -229,7 +231,7 @@ private extension Publishers.ConcatMap {
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Publishers.ConcatMap.Subscription: CustomStringConvertible {
     var description: String {
-        return "ConcatMap.Subscription<\(Downstream.Input.self), \(Downstream.Failure.self)>"
+        "ConcatMap.Subscription<\(Downstream.Input.self), \(Downstream.Failure.self)>"
     }
 }
 #endif
