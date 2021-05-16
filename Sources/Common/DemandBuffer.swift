@@ -44,6 +44,11 @@ class DemandBuffer<S: Subscriber> {
         precondition(self.completion == nil,
                      "How could a completed publisher sent values?! Beats me 🤷‍♂️")
 
+        lock.lock()
+        defer {
+            lock.unlock()
+        }
+
         switch demandState.requested {
         case .unlimited:
             return subscriber.receive(value)
