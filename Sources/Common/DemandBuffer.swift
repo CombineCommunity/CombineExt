@@ -43,6 +43,8 @@ class DemandBuffer<S: Subscriber> {
     func buffer(value: S.Input) -> Subscribers.Demand {
         precondition(self.completion == nil,
                      "How could a completed publisher sent values?! Beats me 🤷‍♂️")
+        lock.lock()
+        defer { lock.unlock() }
 
         switch demandState.requested {
         case .unlimited:
