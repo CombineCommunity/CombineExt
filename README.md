@@ -765,7 +765,7 @@ A publisher which accepts a closure with a subscriber argument, to which you can
 
 This lets you easily create custom publishers to wrap any non-publisher asynchronous work, while still respecting the downstream consumer's backpressure demand.
 
-You should return a `Cancelable`-conforming object from the closure in which you can define any cleanup actions to execute when the pubilsher completes or the subscription to the publisher is canceled.
+You should return a `Cancellable`-conforming object from the closure in which you can define any cleanup actions to execute when the pubilsher completes or the subscription to the publisher is canceled.
 
 ```swift
 AnyPublisher<String, MyError>.create { subscriber in
