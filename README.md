@@ -38,7 +38,8 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
 * [share(replay:)](#sharereplay)
 * [prefix(duration:tolerance:​on:options:)](#prefixduration)
-* [toggle()](#toggle)
+* [prefix(while:behavior:​)](#prefixwhilebehavior)
+* [toggle()](#toggle)   
 * [nwise(_:) and pairwise()](#nwise)
 * [ignoreOutput(setOutputType:)](#ignoreOutputsetOutputType)
 * [ignoreFailure](#ignoreFailure)
@@ -553,7 +554,7 @@ second subscriber: 4
 
 ### prefix(duration:)
 
-An overload on `Publisher.prefix` that that republishes values for a provided `duration` (in seconds), and then completes.
+An overload on `Publisher.prefix` that republishes values for a provided `duration` (in seconds), and then completes.
 
 ```swift
 let subject = PassthroughSubject<Int, Never>()
@@ -577,6 +578,37 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
 1
 2
 3
+```
+
+### prefix(while:behavior:)
+
+An overload on `Publisher.prefix(while:)` that allows for inclusion of the first element that doesn’t pass the `while` predicate.
+
+```swift
+let subject = PassthroughSubject<Int, Never>()
+
+subscription = subject
+  .prefix(
+    while: { $0 % 2 == 0 },
+    behavior: .inclusive
+  )
+  .sink(
+    receivecompletion: { print($0) },
+    receiveValue: { print($0) }
+  )
+  
+subject.send(0)
+subject.send(2)
+subject.send(4)
+subject.send(5)
+```
+
+```none
+0
+2
+4
+5
+finished
 ```
 
 ### toggle()
