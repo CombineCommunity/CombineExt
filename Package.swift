@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 
 import PackageDescription
 
@@ -15,7 +15,12 @@ let package = Package(
     ],
     targets: [
         .target(name: "CombineExt", dependencies: [], path: "Sources"),
-        .testTarget(name: "CombineExtTests", dependencies: ["CombineExt", "CombineSchedulers"], path: "Tests"),
+        .testTarget(name: "CombineExtTests",
+                    dependencies: [
+                        "CombineExt",
+                        .product(name: "CombineSchedulers", package: "combine-schedulers")
+                    ],
+                    path: "Tests"),
     ],
     swiftLanguageVersions: [.v5]
 )
