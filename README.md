@@ -33,6 +33,7 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 * [Collection.merge()](#MergeMany)
 * [combineLatest(with:) and Collection.combineLatest](#CombineLatestMany)
 * [mapMany(_:)](#MapMany)
+* [filterNil](#FilterNil)
 * [filterMany(_:)](#FilterMany)
 * [setOutputType(to:)](#setOutputType)
 * [removeAllDuplicates and removeAllDuplicates(by:) ](#removeAllDuplicates)
@@ -444,6 +445,25 @@ combineLatest: [false, true, true, true]
 ```
 
 ------
+
+### FilterNil
+Filters nil elements from a publisher
+```swift
+let sometimesNilPublisher = PassthroughSubject<Int?, Never>()
+
+sometimesNilPublisher
+    .filterNil()
+    .sink(receiveValue: { print($0) })
+
+sometimesNilPublisher.send([nil, 1, 2, nil, nil, 8, nil])
+```
+
+#### Output:
+```
+1
+2
+8
+```
 
 ### FilterMany
 Filters element of a publisher collection into a new publisher collection.
