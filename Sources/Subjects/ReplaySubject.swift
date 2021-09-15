@@ -8,6 +8,7 @@
 
 #if canImport(Combine)
 import Combine
+import Foundation
 
 /// A `ReplaySubject` is a subject that can buffer one or more values. It stores value events, up to its `bufferSize` in a
 /// first-in-first-out manner and then replays it to
