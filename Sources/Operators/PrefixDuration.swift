@@ -6,7 +6,7 @@
 //  Copyright © 2020 Combine Community. All rights reserved.
 //
 
-#if canImport(Combine)
+#if !(os(iOS) && (arch(i386) || arch(arm))) && canImport(Combine)
 import Combine
 import Foundation
 
