@@ -1,6 +1,6 @@
 //
-//  RxSwiftExt.swift
-//  
+//  RetryWithBehaviour.swift
+//  CombineExt
 //
 //  Created by Hugo Saynac on 30/09/2021.
 //  Inspired by Anton Efimenko on 17/07/16 on the RxSwiftExt project
@@ -15,7 +15,6 @@ import Combine
  */
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public enum RepeatBehavior<Context> where Context: Scheduler {
-
     /**
      Will be immediately repeated specified number of times.
      - **maxCount:** Maximum number of times to repeat the sequence.
@@ -57,14 +56,14 @@ extension RepeatBehavior {
         case .immediate(let max):
             // if Immediate, return 0.0 as delay
             return (maxCount: max, delay: .zero)
-        case .delayed(let max, let time):
+        case let .delayed(max, time):
             // return specified delay
             return (maxCount: max, delay: .milliseconds(Int(time * 1000)))
-        case .exponentialDelayed(let max, let initial, let multiplier):
+        case let .exponentialDelayed(max, initial, multiplier):
             // if it's first attempt, simply use initial delay, otherwise calculate delay
             let delay = currentRepetition == 1 ? initial : initial * pow(1 + multiplier, Double(currentRepetition - 1))
             return (maxCount: max, delay: .milliseconds(Int(delay * 1000)))
-        case .customTimerDelayed(let max, let delayCalculator):
+        case let .customTimerDelayed(max, delayCalculator):
             // calculate delay using provided calculator
             return (maxCount: max, delay: delayCalculator(currentRepetition))
         }
@@ -105,9 +104,8 @@ extension Publisher {
 
         // calculate conditions for bahavior
         let conditions = behavior.calculateConditions(currentAttempt)
-        
-        return self.catch { error -> AnyPublisher<Output, Failure> in
 
+        return self.catch { error -> AnyPublisher<Output, Failure> in
             // return error if exceeds maximum amount of retries
             guard conditions.maxCount > currentAttempt else {
                 return Fail(error: error).eraseToAnyPublisher()
