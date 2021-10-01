@@ -230,36 +230,39 @@ final class RetryWithBehaviourTests: XCTestCase {
         }.eraseToAnyPublisher()
     }
 }
+
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private func testCompletion(shouldFail: Bool,
                             file: StaticString = #filePath,
                             line: UInt = #line) -> (Subscribers.Completion<RetryWithBehaviourTests.AnError>) -> Void {
-        return { completion in
-            switch completion {
-            case .failure:
-                if shouldFail { break }
-                else { XCTFail("publisher failed unexpectedly", file: file, line: line) }
-            case .finished:
-                if shouldFail { XCTFail("publisher did not fail as expected", file: file, line: line) }
-                else { break }
-            }
+    return { completion in
+        switch completion {
+        case .failure:
+            if shouldFail { break }
+            else { XCTFail("publisher failed unexpectedly", file: file, line: line) }
+        case .finished:
+            if shouldFail { XCTFail("publisher did not fail as expected", file: file, line: line) }
+            else { break }
         }
     }
+}
 
-    private func testValue(shouldReceive: Int?, file: StaticString = #filePath, line: UInt = #line) -> (Int) -> Void {
-        return { receivedValue in
-            guard let shouldReceive = shouldReceive else {
-                XCTFail("publisher received an unexpected value", file: file, line: line)
-                return
-            }
-            XCTAssertEqual(
-                shouldReceive,
-                receivedValue,
-                "publisher didn't receive the expected number of retries",
-                file: file,
-                line: line
-            )
-
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+private func testValue(shouldReceive: Int?, file: StaticString = #filePath, line: UInt = #line) -> (Int) -> Void {
+    return { receivedValue in
+        guard let shouldReceive = shouldReceive else {
+            XCTFail("publisher received an unexpected value", file: file, line: line)
+            return
         }
+        XCTAssertEqual(
+            shouldReceive,
+            receivedValue,
+            "publisher didn't receive the expected number of retries",
+            file: file,
+            line: line
+        )
+
     }
+}
 
 #endif

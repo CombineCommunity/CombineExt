@@ -9,7 +9,6 @@
 import Foundation
 #if canImport(Combine)
 import Combine
-import SwiftUI
 
 /**
  Specifies how a publisher will be repeated in case of an error.
