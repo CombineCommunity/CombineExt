@@ -172,5 +172,28 @@ class MaterializeTests: XCTestCase {
         XCTAssertEqual(errors, [.someError])
         XCTAssertTrue(completed)
     }
+    
+    /// Test that when a stream is cancelled, the cancel is propagated upstream
+    func testCancelled() {
+        let subject = PassthroughSubject<String, MyError>()
+        var valueCount = 0
+        var cancelCount = 0
+        
+        subscription = subject
+            .handleEvents(receiveCancel: {
+                cancelCount += 1
+            })
+            .materialize()
+            .failures()
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { _ in valueCount += 1 }
+            )
+        
+        subscription?.cancel()
+        subject.send("Hello")
+        
+        XCTAssertEqual(valueCount, 0, "0 values should be emitted after cancel")
+        XCTAssertEqual(cancelCount, 1, "Cancel is reported upstream")
+    }
 }
 #endif
