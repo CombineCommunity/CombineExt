@@ -92,6 +92,7 @@ private extension Publishers.Materialize {
         }
 
         func cancel() {
+            sink?.cancelUpstream()
             sink = nil
         }
     }
