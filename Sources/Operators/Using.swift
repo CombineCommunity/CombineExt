@@ -17,7 +17,10 @@ public extension Publishers {
     /// A new resource will be created for each subscription. When the
     /// subscription closes or completes, the resourse's `cancel()` will be
     /// called then it will be deinited.
-    struct Using<Resource, Pub, Output, Failure>: Publisher where Resource: Cancellable, Pub: Publisher, Pub.Output == Output, Pub.Failure == Failure {
+    struct Using<Resource, Pub>: Publisher where Resource: Cancellable, Pub: Publisher {
+        public typealias Output = Pub.Output
+        public typealias Failure = Pub.Failure
+
         private let createResource: () -> Resource
         private let createPublisher: (Resource) -> Pub
 
@@ -35,7 +38,7 @@ public extension Publishers {
             createPublisher = publisherFactory
         }
 
-        public func receive<S>(subscriber: S) where S: Subscriber, Self.Failure == S.Failure, Self.Output == S.Input {
+        public func receive<S>(subscriber: S) where S: Subscriber, Failure == S.Failure, Output == S.Input {
             let resource = createResource()
             let publisher = createPublisher(resource)
             publisher
