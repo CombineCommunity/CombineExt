@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		12204E952791742600274116 /* Single.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12204E942791742600274116 /* Single.swift */; };
 		1970A8AA25246FBD00799AB6 /* FilterMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1970A8A925246FBD00799AB6 /* FilterMany.swift */; };
 		1970A8B42524730500799AB6 /* FilterManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1970A8B32524730400799AB6 /* FilterManyTests.swift */; };
 		BF330EF624F1FFFE001281FC /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = BF330EF524F1FFFE001281FC /* CombineSchedulers */; };
@@ -106,6 +107,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		12204E942791742600274116 /* Single.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Single.swift; sourceTree = "<group>"; };
 		1970A8A925246FBD00799AB6 /* FilterMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMany.swift; sourceTree = "<group>"; };
 		1970A8B32524730400799AB6 /* FilterManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterManyTests.swift; sourceTree = "<group>"; };
 		BF330EF824F20032001281FC /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 			children = (
 				OBJ_9 /* DemandBuffer.swift */,
 				OBJ_10 /* Sink.swift */,
+				12204E942791742600274116 /* Single.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -605,6 +608,7 @@
 				OBJ_94 /* PrefixDuration.swift in Sources */,
 				OBJ_95 /* RemoveAllDuplicates.swift in Sources */,
 				OBJ_96 /* SetOutputType.swift in Sources */,
+				12204E952791742600274116 /* Single.swift in Sources */,
 				OBJ_97 /* ShareReplay.swift in Sources */,
 				OBJ_98 /* Toggle.swift in Sources */,
 				OBJ_99 /* WithLatestFrom.swift in Sources */,
