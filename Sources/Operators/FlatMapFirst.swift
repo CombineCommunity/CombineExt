@@ -32,8 +32,7 @@ public extension Publisher {
             isRunning = newValue
         }
 
-        return self
-            .filter { _ in !isRunning }
+        return filter { _ in !isRunning }
             .flatMap { output in
                 transform(output)
                     .handleEvents(
