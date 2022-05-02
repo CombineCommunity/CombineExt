@@ -26,6 +26,8 @@
 		1970A8B42524730500799AB6 /* FilterManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1970A8B32524730400799AB6 /* FilterManyTests.swift */; };
 		712E36CA2711B95400A2AAFE /* Using.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E36C92711B95400A2AAFE /* Using.swift */; };
 		712E36CC2711BEFC00A2AAFE /* UsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E36CB2711BEFC00A2AAFE /* UsingTests.swift */; };
+		712E36C82711B79000A2AAFE /* RetryWhen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E36C72711B79000A2AAFE /* RetryWhen.swift */; };
+		7182326F26DAAF230026BAD3 /* RetryWhenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */; };
 		BF330EF624F1FFFE001281FC /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = BF330EF524F1FFFE001281FC /* CombineSchedulers */; };
 		BF330EF924F20032001281FC /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EF824F20032001281FC /* Timer.swift */; };
 		BF330EFB24F20080001281FC /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EFA24F20080001281FC /* Lock.swift */; };
@@ -112,6 +114,8 @@
 		1970A8B32524730400799AB6 /* FilterManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterManyTests.swift; sourceTree = "<group>"; };
 		712E36C92711B95400A2AAFE /* Using.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Using.swift; sourceTree = "<group>"; };
 		712E36CB2711BEFC00A2AAFE /* UsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsingTests.swift; sourceTree = "<group>"; };
+		712E36C72711B79000A2AAFE /* RetryWhen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryWhen.swift; sourceTree = "<group>"; };
+		7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryWhenTests.swift; sourceTree = "<group>"; };
 		BF330EF824F20032001281FC /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		BF330EFA24F20080001281FC /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		BF3D3B5C253B83F300D830ED /* IgnoreFailure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreFailure.swift; sourceTree = "<group>"; };
@@ -256,6 +260,7 @@
 				OBJ_26 /* Partition.swift */,
 				OBJ_27 /* PrefixDuration.swift */,
 				OBJ_28 /* RemoveAllDuplicates.swift */,
+				712E36C72711B79000A2AAFE /* RetryWhen.swift */,
 				OBJ_29 /* SetOutputType.swift */,
 				BF43CC1425008B4F005AFA28 /* IgnoreOutputSetOutputType.swift */,
 				BF3D3B5C253B83F300D830ED /* IgnoreFailure.swift */,
@@ -313,6 +318,7 @@
 				OBJ_54 /* PrefixDurationTests.swift */,
 				OBJ_55 /* RemoveAllDuplicatesTests.swift */,
 				OBJ_56 /* ReplaySubjectTests.swift */,
+				7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */,
 				OBJ_57 /* SetOutputTypeTests.swift */,
 				OBJ_58 /* ShareReplayTests.swift */,
 				OBJ_59 /* ToggleTests.swift */,
@@ -567,6 +573,7 @@
 				OBJ_129 /* FlatMapLatestTests.swift in Sources */,
 				OBJ_130 /* MapManyTests.swift in Sources */,
 				OBJ_131 /* MaterializeTests.swift in Sources */,
+				7182326F26DAAF230026BAD3 /* RetryWhenTests.swift in Sources */,
 				OBJ_132 /* OptionalTests.swift in Sources */,
 				OBJ_133 /* PartitionTests.swift in Sources */,
 				OBJ_134 /* PassthroughRelayTests.swift in Sources */,
@@ -605,6 +612,7 @@
 				OBJ_89 /* Dematerialize.swift in Sources */,
 				OBJ_90 /* FlatMapLatest.swift in Sources */,
 				OBJ_91 /* MapMany.swift in Sources */,
+				712E36C82711B79000A2AAFE /* RetryWhen.swift in Sources */,
 				1970A8AA25246FBD00799AB6 /* FilterMany.swift in Sources */,
 				OBJ_92 /* Materialize.swift in Sources */,
 				D836234824EA9446002353AC /* MergeMany.swift in Sources */,
