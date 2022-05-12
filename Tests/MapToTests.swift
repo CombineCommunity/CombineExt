@@ -29,5 +29,4 @@ final class MapToTests: XCTestCase {
         XCTAssertEqual(result, 2)
     }
 }
-
 #endif
