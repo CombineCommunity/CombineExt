@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = "CombineExt"
-    s.version      = "1.5.1"
+    s.version      = "1.6.0"
     s.summary      = "Combine operators and helpers not provided by Apple, and inspired by other Reactive Frameworks"
     s.description  = <<-DESC
       A collection of operators for Combine adding capabilities and utilities not provided by Apple,
