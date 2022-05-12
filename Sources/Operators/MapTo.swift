@@ -19,5 +19,4 @@ public extension Publisher {
         map { _ in value }
     }
 }
-
 #endif
