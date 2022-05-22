@@ -28,5 +28,28 @@ final class MapToTests: XCTestCase {
         subject.send(1)
         XCTAssertEqual(result, 2)
     }
+
+    /// Checks if regular map functions complies and works as expected.
+    func testMapNameCollision() {
+        let fooSubject = PassthroughSubject<Int, Never>()
+        let barSubject = PassthroughSubject<Int, Never>()
+
+        var result: String? = nil
+
+        let combinedPublisher = Publishers.CombineLatest(fooSubject, barSubject)
+            .map { fooItem, barItem in
+                return fooItem * barItem
+            }
+
+        subscription = combinedPublisher
+            .map {
+                "\($0)"
+            }
+            .sink(receiveValue: { result = $0 })
+
+        fooSubject.send(5)
+        barSubject.send(6)
+        XCTAssertEqual(result, "30")
+    }
 }
 #endif
