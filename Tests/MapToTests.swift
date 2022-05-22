@@ -22,7 +22,7 @@ final class MapToTests: XCTestCase {
         var result: Int? = nil
 
         subscription = subject
-            .map(to: 2)
+            .mapToValue(2)
             .sink(receiveValue: { result = $0 })
 
         subject.send(1)
