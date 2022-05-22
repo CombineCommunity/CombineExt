@@ -89,7 +89,7 @@ final class MapToTests: XCTestCase {
 
         let combinedPublisher = Publishers.CombineLatest(fooSubject, barSubject)
             .map { fooItem, barItem in
-                return fooItem * barItem
+                fooItem * barItem
             }
 
         subscription = combinedPublisher
