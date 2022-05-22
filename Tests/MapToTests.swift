@@ -29,6 +29,57 @@ final class MapToTests: XCTestCase {
         XCTAssertEqual(result, 2)
     }
 
+    func testMapToWithMultipleElements() {
+        let expectation = XCTestExpectation()
+        expectation.expectedFulfillmentCount = 3
+
+        let subject = PassthroughSubject<Int, Never>()
+
+        subscription = subject
+            .mapToValue("hello")
+            .sink { element in
+                XCTAssertEqual(element, "hello")
+                expectation.fulfill()
+            }
+
+        subject.send(1)
+        subject.send(2)
+        subject.send(1)
+
+        wait(for: [expectation], timeout: 3)
+    }
+
+    func testMapToVoidType() {
+        let expectation = XCTestExpectation()
+        let subject = PassthroughSubject<Int, Never>()
+
+        subscription = subject
+            .mapToValue(Void())
+            .sink { element in
+                XCTAssertTrue(type(of: element) == Void.self)
+
+                expectation.fulfill()
+            }
+
+        subject.send(1)
+
+        wait(for: [expectation], timeout: 3)
+    }
+
+    func testMapToOptionalType() {
+        let subject = PassthroughSubject<Int, Never>()
+        let value: String? = nil
+
+        var result: String? = nil
+
+        subscription = subject
+            .mapToValue(value)
+            .sink(receiveValue: { result = $0 })
+
+        subject.send(1)
+        XCTAssertEqual(result, nil)
+    }
+
     /// Checks if regular map functions complies and works as expected.
     func testMapNameCollision() {
         let fooSubject = PassthroughSubject<Int, Never>()
