@@ -1,5 +1,5 @@
 //
-//  MapTo.swift
+//  MapToValue.swift
 //  CombineExt
 //
 //  Created by Dan Halliday on 08/05/2022.

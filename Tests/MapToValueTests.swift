@@ -1,5 +1,5 @@
 //
-//  MapToTests.swift
+//  MapToValueTests.swift
 //  CombineExt
 //
 //  Created by Dan Halliday on 08/05/2022.
@@ -14,7 +14,7 @@ import Combine
 import CombineExt
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-final class MapToTests: XCTestCase {
+final class MapToValueTests: XCTestCase {
     private var subscription: AnyCancellable!
 
     func testMapToConstantValue() {
