@@ -20,22 +20,12 @@ public extension Publisher {
     /// - returns: A type-erased publisher with value events from each of the inner publishers zipped together in an array.
     func zip<Others: Collection>(with others: Others)
         -> AnyPublisher<[Output], Failure>
-        where Others.Element: Publisher, Others.Element.Output == Output, Others.Element.Failure == Failure {
-        let seed = map { [$0] }.eraseToAnyPublisher()
-
-        return others
-            .reduce(seed) { zipped, next in
-                zipped
-                    .zip(next)
-                    .map { $0.0 + [$0.1] }
-                    .eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
+    where Others.Element == Self, Others.Element.Output == Output, Others.Element.Failure == Failure {
+            ([self] + others).zip()
     }
 
     /// A variadic overload on `Publisher.zip(with:)`.
-    func zip<Other: Publisher>(with others: Other...)
-        -> AnyPublisher<[Output], Failure> where Other.Output == Output, Other.Failure == Failure {
+    func zip(with others: Self...) -> AnyPublisher<[Output], Failure> {
         zip(with: others)
     }
 }
@@ -49,17 +39,33 @@ public extension Collection where Element: Publisher {
     ///
     /// - returns: A type-erased publisher with value events from each of the inner publishers zipped together in an array.
     func zip() -> AnyPublisher<[Element.Output], Element.Failure> {
-        switch count {
-        case 0:
-            return Empty().eraseToAnyPublisher()
-        case 1:
-            return self[startIndex].zip(with: [Element]())
-        default:
-            let first = self[startIndex]
-            let others = self[index(after: startIndex)...]
+        if isEmpty { return Empty().eraseToAnyPublisher() }
 
-            return first.zip(with: others)
+        // Given an array of publishers, return an array of the result of zip'ing each successive foursome of
+        // input publishers (or fewer, for the remainder of count%4).
+        func makeZippedQuads(input: [AnyPublisher<[Element.Output], Element.Failure>]) -> [AnyPublisher<[Element.Output], Element.Failure>] {
+            sequence(state: input.makeIterator(), next: { it in it.next().map { ($0, it.next(), it.next(), it.next()) } })
+            .map { quad in
+                guard let second = quad.1 else { return quad.0 }
+                guard let third = quad.2 else { return quad.0.zip(second)
+                        .map { $0.0 + $0.1 }
+                        .eraseToAnyPublisher()
+                }
+                guard let fourth = quad.3 else { return quad.0.zip(second, third)
+                        .map { $0.0 + $0.1 + $0.2 }
+                        .eraseToAnyPublisher()
+                }
+                return quad.0.zip(second, third, fourth)
+                    .map { $0.0 + $0.1 + $0.2 + $0.3 }
+                    .eraseToAnyPublisher()
+            }
         }
+
+        var wrapped = map { $0.map { [$0] }.eraseToAnyPublisher() }
+        while wrapped.count > 1 {
+            wrapped = makeZippedQuads(input: wrapped)
+        }
+        return wrapped[0].eraseToAnyPublisher()
     }
 }
 #endif

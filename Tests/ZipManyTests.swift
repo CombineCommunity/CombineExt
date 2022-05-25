@@ -209,5 +209,17 @@ final class ZipManyTests: XCTestCase {
         XCTAssertTrue(results.isEmpty)
         XCTAssertTrue(completed)
     }
+
+    func testZipAtScale() {
+        let numPublishers = Int(1e5 + 1) // +1 to minimize the odds that numPublishers%4==0 matters.
+
+        let publishers = Array(repeating: 1, count: numPublishers)
+            .map { _ in Just(2) }
+        var results = [[Int]]()
+        subscription = publishers.zip()
+            .sink(receiveValue: { results.append($0) })
+        let wantAllTwos = Array(repeating: 2, count: numPublishers)
+        XCTAssertEqual(results, [wantAllTwos])
+    }
 }
 #endif
