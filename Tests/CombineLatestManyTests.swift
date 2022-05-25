@@ -195,5 +195,20 @@ final class CombineLatestManyTests: XCTestCase {
 
         XCTAssertEqual(results, [[1, 2, 3, 4, 5], [1, 6, 3, 4, 5]])
     }
+
+    func testCombineLatestAtScale() {
+        // Using a combineLatest implementation that combines first/the-rest triggers a stack overflow using 1e5
+        // publishers, but the divide-and-conquer implementation gets through 1e7 just fine (though the test takes
+        // 28s to complete on an M1 Pro).
+        let numPublishers = Int(1e5 + 1) // +1 to minimize the odds that numPublishers%4==0 matters.
+
+        let publishers = Array(repeating: 1, count: numPublishers)
+            .map { _ in Just(2) }
+        var results = [[Int]]()
+        subscription = publishers.combineLatest()
+            .sink(receiveValue: { results.append($0) })
+        let wantAllTwos = Array(repeating: 2, count: numPublishers)
+        XCTAssertEqual(results, [wantAllTwos])
+    }
 }
 #endif
