@@ -18,19 +18,22 @@ public extension Publisher {
     ///
     /// - returns: A type-erased publisher with value events from `self` and each of the inner publishers `combineLatest`’d
     /// together in an array.
-    func combineLatest<Others: Collection>(with others: Others) -> AnyPublisher<[Output], Failure>
-        where Others.Element == Self, Others.Element.Output == Output, Others.Element.Failure == Failure {
-            ([self] + others).combineLatest()
+    func combineLatest<Others: Collection>(with others: Others)
+        -> AnyPublisher<[Output], Failure>
+        where Others.Element: Publisher, Others.Element.Output == Output, Others.Element.Failure == Failure {
+        ([self.eraseToAnyPublisher()] + others.map { $0.eraseToAnyPublisher() }).combineLatest()
     }
 
     /// Projects `self` and a `Collection` of `Publisher`s onto a type-erased publisher that chains `combineLatest` calls on
     /// the inner publishers. This is a variadic overload on Combine’s variants that top out at arity three.
-	///
+    ///
     /// - parameter others: A `Collection`-worth of other publishers with matching output and failure types to combine with.
     ///
     /// - returns: A type-erased publisher with value events from `self` and each of the inner publishers `combineLatest`’d
     /// together in an array.
-    func combineLatest(with others: Self...) -> AnyPublisher<[Output], Failure> {
+    func combineLatest<Other: Publisher>(with others: Other...)
+        -> AnyPublisher<[Output], Failure>
+        where Other.Output == Output, Other.Failure == Failure {
         combineLatest(with: others)
     }
 }

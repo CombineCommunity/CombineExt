@@ -20,12 +20,13 @@ public extension Publisher {
     /// - returns: A type-erased publisher with value events from each of the inner publishers zipped together in an array.
     func zip<Others: Collection>(with others: Others)
         -> AnyPublisher<[Output], Failure>
-    where Others.Element == Self, Others.Element.Output == Output, Others.Element.Failure == Failure {
-            ([self] + others).zip()
+        where Others.Element: Publisher, Others.Element.Output == Output, Others.Element.Failure == Failure {
+        ([self.eraseToAnyPublisher()] + others.map { $0.eraseToAnyPublisher() }).zip()
     }
 
     /// A variadic overload on `Publisher.zip(with:)`.
-    func zip(with others: Self...) -> AnyPublisher<[Output], Failure> {
+    func zip<Other: Publisher>(with others: Other...)
+        -> AnyPublisher<[Output], Failure> where Other.Output == Output, Other.Failure == Failure {
         zip(with: others)
     }
 }
