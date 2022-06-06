@@ -40,8 +40,6 @@ public extension Collection where Element: Publisher {
     ///
     /// - returns: A type-erased publisher with value events from each of the inner publishers zipped together in an array.
     func zip() -> AnyPublisher<[Element.Output], Element.Failure> {
-        if isEmpty { return Empty().eraseToAnyPublisher() }
-
         var wrapped = map { $0.map { [$0] }.eraseToAnyPublisher() }
         while wrapped.count > 1 {
             wrapped = makeZippedQuads(input: wrapped)

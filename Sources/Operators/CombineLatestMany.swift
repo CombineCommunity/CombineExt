@@ -46,13 +46,10 @@ public extension Collection where Element: Publisher {
     /// - returns: A type-erased publisher with value events from each of the inner publishers `combineLatest`’d
     /// together in an array.
     func combineLatest() -> AnyPublisher<[Element.Output], Element.Failure> {
-        if isEmpty { return Empty().eraseToAnyPublisher() }
-
         var wrapped = map { $0.map { [$0] }.eraseToAnyPublisher() }
         while wrapped.count > 1 {
             wrapped = makeCombinedQuads(input: wrapped)
         }
-
         return wrapped.first?.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
     }
 }
