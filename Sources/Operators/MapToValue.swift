@@ -23,7 +23,7 @@ public extension Publisher {
     ///
     /// - Returns: A new publisher wrapping the upstream and replacing each element with Void.
     func mapToVoid() -> Publishers.Map<Self, Void> {
-        mapToValue(())
+        map { _ in () }
     }
 }
 #endif
