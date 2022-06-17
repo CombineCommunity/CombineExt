@@ -22,7 +22,7 @@ class FlatMapLatestTests: XCTestCase {
         var values = 0
         var cancellations = 0
         var completed = false
-        let scheduler = DispatchQueue.testScheduler
+        let scheduler = DispatchQueue.test
         
         func publish() -> AnyPublisher<String, Never> {
             Publishers.Timer(every: 0.5, scheduler: scheduler)

@@ -17,7 +17,7 @@ final class PrefixDurationTests: XCTestCase {
     private var cancellable: AnyCancellable!
 
     func testValueEventInWindow() {
-        let scheduler = DispatchQueue.testScheduler
+        let scheduler = DispatchQueue.test
 
         let subject = PassthroughSubject<Int, Never>()
 
@@ -45,7 +45,7 @@ final class PrefixDurationTests: XCTestCase {
 
     func testMultipleEventsInAndOutOfWindow() {
         let subject = PassthroughSubject<Int, Never>()
-        let scheduler = DispatchQueue.testScheduler
+        let scheduler = DispatchQueue.test
 
         var results = [Int]()
         var completions = [Subscribers.Completion<Never>]()
@@ -79,7 +79,7 @@ final class PrefixDurationTests: XCTestCase {
 
     func testNoValueEventsInWindow() {
         let subject = PassthroughSubject<Int, Never>()
-        let scheduler = DispatchQueue.testScheduler
+        let scheduler = DispatchQueue.test
 
         var results = [Int]()
         var completions = [Subscribers.Completion<Never>]()
@@ -100,7 +100,7 @@ final class PrefixDurationTests: XCTestCase {
 
     func testFinishedInWindow() {
         let subject = PassthroughSubject<Int, Never>()
-        let scheduler = DispatchQueue.testScheduler
+        let scheduler = DispatchQueue.test
 
         var results = [Subscribers.Completion<Never>]()
 
@@ -124,7 +124,7 @@ final class PrefixDurationTests: XCTestCase {
 
     func testErrorInWindow() {
         let subject = PassthroughSubject<Int, AnError>()
-        let scheduler = DispatchQueue.testScheduler
+        let scheduler = DispatchQueue.test
 
         var results = [Subscribers.Completion<AnError>]()
 
@@ -144,7 +144,7 @@ final class PrefixDurationTests: XCTestCase {
 
     func testErrorEventOutsideWindowDoesntAffectFinishEvent() {
         let subject = PassthroughSubject<Int, AnError>()
-        let scheduler = DispatchQueue.testScheduler
+        let scheduler = DispatchQueue.test
 
         var results = [Subscribers.Completion<AnError>]()
 
