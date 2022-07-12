@@ -120,5 +120,106 @@ class CurrentValueRelayTests: XCTestCase {
         XCTAssertFalse(completed)
         XCTAssertEqual(values, ["initial", "1", "2", "3"])
     }
+    
+    // There was a race condition which caused the value of a relay
+    // to leak. Details of the race condition are in this PR:
+    //
+    // https://github.com/CombineCommunity/CombineExt/pull/136
+    //
+    // The easiest way to reproduce the race condition is
+    // to initialize `cancellables` before `relay`.
+    // These two tests confirm the value of the relay is
+    // released regardless of when cancellables is created.
+    final class StoredObject {
+        static var storedObjectReleased = false
+        
+        let value = 10
+        
+        init() {
+            Self.storedObjectReleased = false
+        }
+
+        deinit {
+            Self.storedObjectReleased = true
+        }
+    }
+
+    func testFinishesOnDeinitWhenRelayIsAfterCancellables() {
+        final class ContainerClass {
+            static var receivedCompletion = false
+            static var receivedCancel = false
+
+            // Cancellables comes before the relay.
+            var cancellables = Set<AnyCancellable>()
+            let relay = CurrentValueRelay(StoredObject())
+            
+            init() {
+                relay
+                    .handleEvents(receiveCancel: {
+                        Self.receivedCancel = true
+                    })
+                    .sink(
+                        receiveCompletion: { _ in
+                            Self.receivedCompletion = true
+                        },
+                        receiveValue: { _ in }
+                    )
+                    .store(in: &cancellables)
+            }
+        }
+        
+        var container: ContainerClass? = ContainerClass()
+        
+        XCTAssertFalse(ContainerClass.receivedCompletion)
+        XCTAssertFalse(StoredObject.storedObjectReleased)
+        container = nil
+        XCTAssertTrue(StoredObject.storedObjectReleased)
+        XCTAssertNil(container)
+        
+        // In this case the cancellables is deinited before the CurrentValueRelay.
+        // Deiniting cancellables calls cancel for all subscriptions. Completion
+        // will never be called.
+        XCTAssertFalse(ContainerClass.receivedCompletion)
+        XCTAssertTrue(ContainerClass.receivedCancel)
+    }
+
+    func testFinishesOnDeinitWhenRelayIsBeforeCancellables() {
+        final class ContainerClass {
+            static var receivedCompletion = false
+            static var receivedCancel = false
+
+            // Cancellables comes after the relay.
+            let relay = CurrentValueRelay(StoredObject())
+            var cancellables = Set<AnyCancellable>()
+
+            init() {
+                relay
+                    .handleEvents(receiveCancel: {
+                        Self.receivedCancel = true
+                    })
+                    .sink(
+                        receiveCompletion: { _ in
+                            Self.receivedCompletion = true
+                        },
+                        receiveValue: { _ in }
+                    )
+                    .store(in: &cancellables)
+            }
+        }
+        
+        var container: ContainerClass? = ContainerClass()
+        
+        XCTAssertFalse(ContainerClass.receivedCompletion)
+        XCTAssertFalse(StoredObject.storedObjectReleased)
+        container = nil
+        XCTAssertTrue(StoredObject.storedObjectReleased)
+        XCTAssertNil(container)
+        
+        // In this case the cancellables is deinited after the CurrentValueRelay,
+        // so completion will be called. Since the relay was completed, cancel will
+        // not be called.
+        XCTAssertTrue(ContainerClass.receivedCompletion)
+        XCTAssertFalse(ContainerClass.receivedCancel)
+    }
 }
 #endif
