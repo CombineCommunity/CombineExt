@@ -26,7 +26,6 @@
 		1970A8B42524730500799AB6 /* FilterManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1970A8B32524730400799AB6 /* FilterManyTests.swift */; };
 		712E36C82711B79000A2AAFE /* RetryWhen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E36C72711B79000A2AAFE /* RetryWhen.swift */; };
 		7182326F26DAAF230026BAD3 /* RetryWhenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */; };
-		BF330EF624F1FFFE001281FC /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = BF330EF524F1FFFE001281FC /* CombineSchedulers */; };
 		BF330EF924F20032001281FC /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EF824F20032001281FC /* Timer.swift */; };
 		BF330EFB24F20080001281FC /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EFA24F20080001281FC /* Lock.swift */; };
 		BF3D3B5D253B83F300D830ED /* IgnoreFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D3B5C253B83F300D830ED /* IgnoreFailure.swift */; };
@@ -45,6 +44,7 @@
 		EA0D86D4287D19DC0085356E /* EnumeratedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0D86D1287D19DC0085356E /* EnumeratedTests.swift */; };
 		EA0D86D5287D19DC0085356E /* MapToResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0D86D2287D19DC0085356E /* MapToResultTests.swift */; };
 		EA0D86D6287D19DC0085356E /* MapToValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0D86D3287D19DC0085356E /* MapToValueTests.swift */; };
+		EAEAAC72287FB3C900288379 /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = EAEAAC71287FB3C900288379 /* CombineSchedulers */; };
 		OBJ_100 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ZipMany.swift */; };
 		OBJ_101 /* CurrentValueRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* CurrentValueRelay.swift */; };
 		OBJ_102 /* PassthroughRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* PassthroughRelay.swift */; };
@@ -207,7 +207,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				BF330EF624F1FFFE001281FC /* CombineSchedulers in Frameworks */,
+				EAEAAC72287FB3C900288379 /* CombineSchedulers in Frameworks */,
 				OBJ_144 /* CombineExt.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -425,7 +425,7 @@
 			);
 			name = CombineExtTests;
 			packageProductDependencies = (
-				BF330EF524F1FFFE001281FC /* CombineSchedulers */,
+				EAEAAC71287FB3C900288379 /* CombineSchedulers */,
 			);
 			productName = CombineExtTests;
 			productReference = "CombineExt::CombineExtTests::Product" /* CombineExtTests.xctest */;
@@ -464,7 +464,7 @@
 			);
 			mainGroup = OBJ_5;
 			packageReferences = (
-				AA9C3E78249858840002A111 /* XCRemoteSwiftPackageReference "combine-schedulers" */,
+				EAEAAC70287FB3C900288379 /* XCRemoteSwiftPackageReference "combine-schedulers" */,
 			);
 			productRefGroup = OBJ_62 /* Products */;
 			projectDirPath = "";
@@ -813,7 +813,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = CombineExt.xcodeproj/CombineExt_Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
@@ -844,7 +844,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = CombineExt.xcodeproj/CombineExt_Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
@@ -916,7 +916,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AA9C3E78249858840002A111 /* XCRemoteSwiftPackageReference "combine-schedulers" */ = {
+		EAEAAC70287FB3C900288379 /* XCRemoteSwiftPackageReference "combine-schedulers" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/combine-schedulers";
 			requirement = {
@@ -927,9 +927,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BF330EF524F1FFFE001281FC /* CombineSchedulers */ = {
+		EAEAAC71287FB3C900288379 /* CombineSchedulers */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AA9C3E78249858840002A111 /* XCRemoteSwiftPackageReference "combine-schedulers" */;
+			package = EAEAAC70287FB3C900288379 /* XCRemoteSwiftPackageReference "combine-schedulers" */;
 			productName = CombineSchedulers;
 		};
 /* End XCSwiftPackageProductDependency section */
