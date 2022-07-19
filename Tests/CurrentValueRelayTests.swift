@@ -128,8 +128,13 @@ class CurrentValueRelayTests: XCTestCase {
     //
     // The easiest way to reproduce the race condition is
     // to initialize `cancellables` before `relay`.
-    // These two tests confirm the value of the relay is
+    // The first two tests confirm the value of the relay is
     // released regardless of when cancellables is created.
+    //
+    // The last two tests checks the scenario where a relay is
+    // chained with a withLatestFrom operator. This leads
+    // to two objects being leaked if cancellables is declared
+    // before the relays.
     final class StoredObject {
         static var storedObjectReleased = false
         
@@ -144,7 +149,21 @@ class CurrentValueRelayTests: XCTestCase {
         }
     }
 
-    func testFinishesOnDeinitWhenRelayIsAfterCancellables() {
+    final class StoredObject2 {
+        static var storedObjectReleased = false
+        
+        let value = 20
+        
+        init() {
+            Self.storedObjectReleased = false
+        }
+        
+        deinit {
+            Self.storedObjectReleased = true
+        }
+    }
+    
+    func testStoredObjectIsDeallocatedWhenRelayIsDeallocatedAndDeclaredAfterCancellables() {
         final class ContainerClass {
             static var receivedCompletion = false
             static var receivedCancel = false
@@ -183,7 +202,7 @@ class CurrentValueRelayTests: XCTestCase {
         XCTAssertTrue(ContainerClass.receivedCancel)
     }
 
-    func testFinishesOnDeinitWhenRelayIsBeforeCancellables() {
+    func testStoredObjectIsDeallocatedWhenRelayIsDeallocatedAndDeclaredBeforeCancellables() {
         final class ContainerClass {
             static var receivedCompletion = false
             static var receivedCancel = false
@@ -220,6 +239,90 @@ class CurrentValueRelayTests: XCTestCase {
         // not be called.
         XCTAssertTrue(ContainerClass.receivedCompletion)
         XCTAssertFalse(ContainerClass.receivedCancel)
+    }
+    
+    func testBothStoredObjectsAreDeallocatedWhenRelayAndWithLatestFromOperatorAreDeallocatedAndDeclaredBeforeCancellables() {
+        final class ContainerClass {
+            static var receivedCompletion = false
+            static var receivedCancel = false
+            
+            // Cancellables comes after the relay. In this case, there
+            // is no leak.
+            let relay = CurrentValueRelay(StoredObject())
+            let relay2 = CurrentValueRelay(StoredObject2())
+            var cancellables: Set<AnyCancellable>? = Set<AnyCancellable>()
+            
+            init() {
+                relay
+                    .withLatestFrom(relay2)
+                    .handleEvents(receiveCancel: {
+                        Self.receivedCancel = true
+                    })
+                    .sink(
+                        receiveCompletion: { _ in
+                            Self.receivedCompletion = true
+                        },
+                        receiveValue: { _ in }
+                    )
+                    .store(in: &cancellables!)
+            }
+        }
+        
+        var container: ContainerClass? = ContainerClass()
+        
+        XCTAssertFalse(ContainerClass.receivedCompletion)
+        XCTAssertFalse(StoredObject.storedObjectReleased)
+        XCTAssertFalse(StoredObject2.storedObjectReleased)
+        // When the leak was fixed, the stream started crashing because cancel
+        // was called twice on relay. A fix for the crash was added,
+        // so setting the container to nil which deallocates cancellables
+        // should not cause a crash.
+        container = nil
+        XCTAssertTrue(StoredObject.storedObjectReleased)
+        XCTAssertTrue(StoredObject2.storedObjectReleased)
+        XCTAssertNil(container)
+    }
+    
+    func testBothStoredObjectsAreDeallocatedWhenRelayAndWithLatestFromOperatorAreDeallocatedAndDeclaredAfterCancellables() {
+        final class ContainerClass {
+            static var receivedCompletion = false
+            static var receivedCancel = false
+            
+            // Cancellables comes before the relay. In this case, the objects
+            // for both relays leak.
+            var cancellables: Set<AnyCancellable>? = Set<AnyCancellable>()
+            let relay = CurrentValueRelay(StoredObject())
+            let relay2 = CurrentValueRelay(StoredObject2())
+            
+            init() {
+                relay
+                    .withLatestFrom(relay2)
+                    .handleEvents(receiveCancel: {
+                        Self.receivedCancel = true
+                    })
+                    .sink(
+                        receiveCompletion: { _ in
+                            Self.receivedCompletion = true
+                        },
+                        receiveValue: { _ in }
+                    )
+                    .store(in: &cancellables!)
+            }
+        }
+        
+        var container: ContainerClass? = ContainerClass()
+        
+        XCTAssertFalse(ContainerClass.receivedCompletion)
+        XCTAssertFalse(StoredObject.storedObjectReleased)
+        XCTAssertFalse(StoredObject2.storedObjectReleased)
+        // When the leak was fixed, the stream started crashing because cancel
+        // was called twice on relay. A fix for the crash was added,
+        // so setting the container to nil which deallocates cancellables
+        // should not cause a crash.
+        container = nil
+        XCTAssertTrue(StoredObject.storedObjectReleased)
+        XCTAssertTrue(StoredObject2.storedObjectReleased)
+        XCTAssertNil(container)
     }
 }
 #endif
