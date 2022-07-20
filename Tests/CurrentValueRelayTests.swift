@@ -129,11 +129,11 @@ class CurrentValueRelayTests: XCTestCase {
     // The easiest way to reproduce the race condition is
     // to initialize `cancellables` before `relay`.
     // The first two tests confirm the value of the relay is
-    // released regardless of when cancellables is created.
+    // released regardless of when cancellables is initialized.
     //
-    // The last two tests checks the scenario where a relay is
+    // The last two tests check the scenario where a relay is
     // chained with a withLatestFrom operator. This leads
-    // to two objects being leaked if cancellables is declared
+    // to two objects being leaked if cancellables is initialized
     // before the relays.
     final class StoredObject {
         static var storedObjectReleased = false
@@ -195,9 +195,9 @@ class CurrentValueRelayTests: XCTestCase {
         XCTAssertTrue(StoredObject.storedObjectReleased)
         XCTAssertNil(container)
         
-        // In this case the cancellables is deinited before the CurrentValueRelay.
-        // Deiniting cancellables calls cancel for all subscriptions. Completion
-        // will never be called.
+        // In this case the cancellables is deallocated before the relay.
+        // The deinit method of AnyCancellable calls cancel for all subscriptions.
+        // Completion will never be called for a canceled subscription.
         XCTAssertFalse(ContainerClass.receivedCompletion)
         XCTAssertTrue(ContainerClass.receivedCancel)
     }
@@ -276,7 +276,7 @@ class CurrentValueRelayTests: XCTestCase {
         // When the leak was fixed, the stream started crashing because cancel
         // was called twice on relay. A fix for the crash was added,
         // so setting the container to nil which deallocates cancellables
-        // should not cause a crash.
+        // confirms there is no crash.
         container = nil
         XCTAssertTrue(StoredObject.storedObjectReleased)
         XCTAssertTrue(StoredObject2.storedObjectReleased)
@@ -318,7 +318,7 @@ class CurrentValueRelayTests: XCTestCase {
         // When the leak was fixed, the stream started crashing because cancel
         // was called twice on relay. A fix for the crash was added,
         // so setting the container to nil which deallocates cancellables
-        // should not cause a crash.
+        // confirms there is no crash.
         container = nil
         XCTAssertTrue(StoredObject.storedObjectReleased)
         XCTAssertTrue(StoredObject2.storedObjectReleased)

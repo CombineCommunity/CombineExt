@@ -44,9 +44,9 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
         self.transformFailure = transformFailure
         
         // A subscription can only be cancelled once. The `upstreamIsCancelled` value
-        // is used to suppress a second call to cancel when a Sink is `deinit`'ed,
-        // when a sink receives completion, and when any custom operator call
-        // `cancelUpstream()` manually.
+        // is used to suppress a second call to cancel when the Sink is deallocated,
+        // when a sink receives completion, and when a custom operator like `withLatestFrom`
+        // calls `cancelUpstream()` manually.
         upstream.handleEvents(receiveCancel: { [weak self] in
             self?.upstreamIsCancelled = true
         }).subscribe(self)
