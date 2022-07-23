@@ -102,5 +102,54 @@ final class MapToValueTests: XCTestCase {
         barSubject.send(6)
         XCTAssertEqual(result, "30")
     }
+
+    func testMapToVoidWithMultipleEvents() {
+        let expectation = XCTestExpectation()
+        expectation.expectedFulfillmentCount = 3
+
+        let subject = PassthroughSubject<String, Never>()
+        subscription = subject
+            .mapToVoid()
+            .sink { element in
+                XCTAssertTrue(type(of: element) == Void.self)
+                expectation.fulfill()
+            }
+
+        subject.send("test 1")
+        subject.send("test 2")
+        subject.send("test 3")
+
+        wait(for: [expectation], timeout: 3)
+    }
+
+    func testMapToVoidWithError() {
+        let expectation = XCTestExpectation()
+        expectation.expectedFulfillmentCount = 3
+
+        enum TestError: Error {
+            case example
+        }
+
+        let subject = PassthroughSubject<String, Error>()
+        subscription = subject
+            .mapToVoid()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    XCTFail()
+                default:
+                    break
+                }
+            }, receiveValue: {
+                expectation.fulfill()
+            })
+
+        subject.send("test 1")
+        subject.send("test 2")
+        subject.send("test 3")
+        subject.send(completion: .failure(TestError.example))
+
+        wait(for: [expectation], timeout: 3)
+    }
 }
 #endif
