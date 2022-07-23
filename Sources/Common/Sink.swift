@@ -47,9 +47,13 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
         // is used to suppress a second call to cancel when the Sink is deallocated,
         // when a sink receives completion, and when a custom operator like `withLatestFrom`
         // calls `cancelUpstream()` manually.
-        upstream.handleEvents(receiveCancel: { [weak self] in
-            self?.upstreamIsCancelled = true
-        }).subscribe(self)
+        upstream
+            .handleEvents(
+                receiveCancel: { [weak self] in
+                    self?.upstreamIsCancelled = true
+                }
+            )
+            .subscribe(self)
     }
 
     func demand(_ demand: Subscribers.Demand) {
