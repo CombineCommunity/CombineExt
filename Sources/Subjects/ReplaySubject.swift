@@ -89,21 +89,15 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
             self?.completeSubscriber(withIdentifier: subscriberIdentifier)
         }
 
-        let buffer: [Output]
-        let completion: Subscribers.Completion<Failure>?
-
         do {
             lock.lock()
             defer { lock.unlock() }
 
+            subscription.replay(buffer, completion: completion)
             subscriptions.append(subscription)
-
-            buffer = self.buffer
-            completion = self.completion
         }
 
         subscriber.receive(subscription: subscription)
-        subscription.replay(buffer, completion: completion)
     }
 
     private func completeSubscriber(withIdentifier subscriberIdentifier: CombineIdentifier) {

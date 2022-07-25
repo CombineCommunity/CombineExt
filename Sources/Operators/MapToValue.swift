@@ -18,5 +18,12 @@ public extension Publisher {
     func mapToValue<Value>(_ value: Value) -> Publishers.Map<Self, Value> {
         map { _ in value }
     }
+
+    /// Replace each upstream value with Void.
+    ///
+    /// - Returns: A new publisher wrapping the upstream and replacing each element with Void.
+    func mapToVoid() -> Publishers.Map<Self, Void> {
+        map { _ in () }
+    }
 }
 #endif

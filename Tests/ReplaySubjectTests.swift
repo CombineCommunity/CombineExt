@@ -391,5 +391,38 @@ final class ReplaySubjectTests: XCTestCase {
 
         XCTAssertTrue(subject.subscriptions.isEmpty)
     }
+
+    func testReplayOrderThreadSafety() async {
+        continueAfterFailure = false
+        // Loop to ensure any race condition is caught.
+        for _ in 0..<5000 {
+            let replaySubject = ReplaySubject<Int, Never>(bufferSize: 3)
+            replaySubject.send(1)
+            replaySubject.send(2)
+
+            // Use tasks to create a new subscription on one thread
+            // while sending the third value on another thread.
+            // The new subscription should always receive [1, 2, 3]
+            await withTaskGroup(of: Void.self) { taskGroup in
+                taskGroup.addTask {
+                    let output: [Int] = await withCheckedContinuation { continuation in
+                        var cancellable: AnyCancellable?
+                        cancellable = replaySubject.collect(3).first().sink(receiveValue: { value in
+                            continuation.resume(returning: value)
+                            withExtendedLifetime(cancellable) { cancellable = nil }
+                        })
+                    }
+
+                    await MainActor.run {
+                        XCTAssertEqual(output, [1, 2, 3])
+                    }
+                }
+
+                taskGroup.addTask {
+                    replaySubject.send(3)
+                }
+            }
+        }
+    }
 }
 #endif
