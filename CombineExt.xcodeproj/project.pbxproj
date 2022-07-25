@@ -24,11 +24,8 @@
 /* Begin PBXBuildFile section */
 		1970A8AA25246FBD00799AB6 /* FilterMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1970A8A925246FBD00799AB6 /* FilterMany.swift */; };
 		1970A8B42524730500799AB6 /* FilterManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1970A8B32524730400799AB6 /* FilterManyTests.swift */; };
-		3793CBD428286BB20060441B /* MapTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3793CBD328286BB20060441B /* MapTo.swift */; };
-		3793CBD728286C090060441B /* MapToTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3793CBD528286BE90060441B /* MapToTests.swift */; };
 		712E36C82711B79000A2AAFE /* RetryWhen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E36C72711B79000A2AAFE /* RetryWhen.swift */; };
 		7182326F26DAAF230026BAD3 /* RetryWhenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */; };
-		BF330EF624F1FFFE001281FC /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = BF330EF524F1FFFE001281FC /* CombineSchedulers */; };
 		BF330EF924F20032001281FC /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EF824F20032001281FC /* Timer.swift */; };
 		BF330EFB24F20080001281FC /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EFA24F20080001281FC /* Lock.swift */; };
 		BF3D3B5D253B83F300D830ED /* IgnoreFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D3B5C253B83F300D830ED /* IgnoreFailure.swift */; };
@@ -43,6 +40,13 @@
 		C387777F24E6BF8F00FAD2D8 /* NwiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */; };
 		D836234824EA9446002353AC /* MergeMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = D836234724EA9446002353AC /* MergeMany.swift */; };
 		D836234A24EA9888002353AC /* MergeManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D836234924EA9888002353AC /* MergeManyTests.swift */; };
+		EA0D86CE287D19CC0085356E /* MapToValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0D86CB287D19CC0085356E /* MapToValue.swift */; };
+		EA0D86CF287D19CC0085356E /* MapToResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0D86CC287D19CC0085356E /* MapToResult.swift */; };
+		EA0D86D0287D19CC0085356E /* Enumerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0D86CD287D19CC0085356E /* Enumerated.swift */; };
+		EA0D86D4287D19DC0085356E /* EnumeratedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0D86D1287D19DC0085356E /* EnumeratedTests.swift */; };
+		EA0D86D5287D19DC0085356E /* MapToResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0D86D2287D19DC0085356E /* MapToResultTests.swift */; };
+		EA0D86D6287D19DC0085356E /* MapToValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0D86D3287D19DC0085356E /* MapToValueTests.swift */; };
+		EAEAAC72287FB3C900288379 /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = EAEAAC71287FB3C900288379 /* CombineSchedulers */; };
 		OBJ_100 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ZipMany.swift */; };
 		OBJ_101 /* CurrentValueRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* CurrentValueRelay.swift */; };
 		OBJ_102 /* PassthroughRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* PassthroughRelay.swift */; };
@@ -114,8 +118,6 @@
 /* Begin PBXFileReference section */
 		1970A8A925246FBD00799AB6 /* FilterMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMany.swift; sourceTree = "<group>"; };
 		1970A8B32524730400799AB6 /* FilterManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterManyTests.swift; sourceTree = "<group>"; };
-		3793CBD328286BB20060441B /* MapTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTo.swift; sourceTree = "<group>"; };
-		3793CBD528286BE90060441B /* MapToTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapToTests.swift; sourceTree = "<group>"; };
 		712E36C72711B79000A2AAFE /* RetryWhen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryWhen.swift; sourceTree = "<group>"; };
 		7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryWhenTests.swift; sourceTree = "<group>"; };
 		BF330EF824F20032001281FC /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
@@ -134,6 +136,12 @@
 		"CombineExt::CombineExtTests::Product" /* CombineExtTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = CombineExtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D836234724EA9446002353AC /* MergeMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeMany.swift; sourceTree = "<group>"; };
 		D836234924EA9888002353AC /* MergeManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeManyTests.swift; sourceTree = "<group>"; };
+		EA0D86CB287D19CC0085356E /* MapToValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapToValue.swift; sourceTree = "<group>"; };
+		EA0D86CC287D19CC0085356E /* MapToResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapToResult.swift; sourceTree = "<group>"; };
+		EA0D86CD287D19CC0085356E /* Enumerated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enumerated.swift; sourceTree = "<group>"; };
+		EA0D86D1287D19DC0085356E /* EnumeratedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumeratedTests.swift; sourceTree = "<group>"; };
+		EA0D86D2287D19DC0085356E /* MapToResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapToResultTests.swift; sourceTree = "<group>"; };
+		EA0D86D3287D19DC0085356E /* MapToValueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapToValueTests.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Sink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sink.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
 		OBJ_14 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -182,11 +190,9 @@
 		OBJ_60 /* WithLatestFromTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithLatestFromTests.swift; sourceTree = "<group>"; };
 		OBJ_61 /* ZipManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipManyTests.swift; sourceTree = "<group>"; };
 		OBJ_65 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = SOURCE_ROOT; };
-		OBJ_66 /* Carthage */ = {isa = PBXFileReference; lastKnownFileType = text; path = Carthage; sourceTree = SOURCE_ROOT; };
 		OBJ_67 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scripts; sourceTree = SOURCE_ROOT; };
 		OBJ_68 /* codecov.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = codecov.yml; sourceTree = "<group>"; };
 		OBJ_69 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		OBJ_70 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		OBJ_71 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		OBJ_72 /* CombineExt.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = CombineExt.podspec; sourceTree = "<group>"; };
 		OBJ_73 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -205,7 +211,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				BF330EF624F1FFFE001281FC /* CombineSchedulers in Frameworks */,
+				EAEAAC72287FB3C900288379 /* CombineSchedulers in Frameworks */,
 				OBJ_144 /* CombineExt.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -256,11 +262,17 @@
 				OBJ_20 /* CombineLatestMany.swift */,
 				OBJ_21 /* Create.swift */,
 				OBJ_22 /* Dematerialize.swift */,
+				EA0D86CD287D19CC0085356E /* Enumerated.swift */,
+				1970A8A925246FBD00799AB6 /* FilterMany.swift */,
+				BFADDC8025BCE4C200465E9B /* FlatMapBatches.swift */,
 				OBJ_23 /* FlatMapLatest.swift */,
+				BF3D3B5C253B83F300D830ED /* IgnoreFailure.swift */,
+				BF43CC1425008B4F005AFA28 /* IgnoreOutputSetOutputType.swift */,
 				OBJ_24 /* MapMany.swift */,
-				D836234724EA9446002353AC /* MergeMany.swift */,
-				3793CBD328286BB20060441B /* MapTo.swift */,
+				EA0D86CC287D19CC0085356E /* MapToResult.swift */,
+				EA0D86CB287D19CC0085356E /* MapToValue.swift */,
 				OBJ_25 /* Materialize.swift */,
+				D836234724EA9446002353AC /* MergeMany.swift */,
 				C387777B24E6BBE900FAD2D8 /* Nwise.swift */,
 				OBJ_26 /* Partition.swift */,
 				OBJ_27 /* PrefixDuration.swift */,
@@ -268,14 +280,10 @@
 				OBJ_28 /* RemoveAllDuplicates.swift */,
 				712E36C72711B79000A2AAFE /* RetryWhen.swift */,
 				OBJ_29 /* SetOutputType.swift */,
-				BF43CC1425008B4F005AFA28 /* IgnoreOutputSetOutputType.swift */,
-				BF3D3B5C253B83F300D830ED /* IgnoreFailure.swift */,
 				OBJ_30 /* ShareReplay.swift */,
 				OBJ_31 /* Toggle.swift */,
 				OBJ_32 /* WithLatestFrom.swift */,
 				OBJ_33 /* ZipMany.swift */,
-				1970A8A925246FBD00799AB6 /* FilterMany.swift */,
-				BFADDC8025BCE4C200465E9B /* FlatMapBatches.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -308,10 +316,15 @@
 				OBJ_45 /* CreateTests.swift */,
 				OBJ_46 /* CurrentValueRelayTests.swift */,
 				OBJ_47 /* DematerializeTests.swift */,
-				OBJ_48 /* FlatMapLatestTests.swift */,
-				OBJ_49 /* MapManyTests.swift */,
-				3793CBD528286BE90060441B /* MapToTests.swift */,
+				EA0D86D1287D19DC0085356E /* EnumeratedTests.swift */,
 				1970A8B32524730400799AB6 /* FilterManyTests.swift */,
+				BFADDC8A25BCE91E00465E9B /* FlatMapBatchesTests.swift */,
+				OBJ_48 /* FlatMapLatestTests.swift */,
+				BF3D3B66253B88E500D830ED /* IgnoreFailureTests.swift */,
+				BF43CC1625008C45005AFA28 /* IgnoreOutputSetOutputTypeTests.swift */,
+				OBJ_49 /* MapManyTests.swift */,
+				EA0D86D2287D19DC0085356E /* MapToResultTests.swift */,
+				EA0D86D3287D19DC0085356E /* MapToValueTests.swift */,
 				OBJ_50 /* MaterializeTests.swift */,
 				D836234924EA9888002353AC /* MergeManyTests.swift */,
 				C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */,
@@ -324,13 +337,10 @@
 				OBJ_56 /* ReplaySubjectTests.swift */,
 				7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */,
 				OBJ_57 /* SetOutputTypeTests.swift */,
-				BF43CC1625008C45005AFA28 /* IgnoreOutputSetOutputTypeTests.swift */,
-				BF3D3B66253B88E500D830ED /* IgnoreFailureTests.swift */,
 				OBJ_58 /* ShareReplayTests.swift */,
 				OBJ_59 /* ToggleTests.swift */,
 				OBJ_60 /* WithLatestFromTests.swift */,
 				OBJ_61 /* ZipManyTests.swift */,
-				BFADDC8A25BCE91E00465E9B /* FlatMapBatchesTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -343,11 +353,9 @@
 				OBJ_40 /* Tests */,
 				OBJ_62 /* Products */,
 				OBJ_65 /* Resources */,
-				OBJ_66 /* Carthage */,
 				OBJ_67 /* scripts */,
 				OBJ_68 /* codecov.yml */,
 				OBJ_69 /* LICENSE */,
-				OBJ_70 /* CHANGELOG.md */,
 				OBJ_71 /* Makefile */,
 				OBJ_72 /* CombineExt.podspec */,
 				OBJ_73 /* README.md */,
@@ -423,7 +431,7 @@
 			);
 			name = CombineExtTests;
 			packageProductDependencies = (
-				BF330EF524F1FFFE001281FC /* CombineSchedulers */,
+				EAEAAC71287FB3C900288379 /* CombineSchedulers */,
 			);
 			productName = CombineExtTests;
 			productReference = "CombineExt::CombineExtTests::Product" /* CombineExtTests.xctest */;
@@ -462,7 +470,7 @@
 			);
 			mainGroup = OBJ_5;
 			packageReferences = (
-				AA9C3E78249858840002A111 /* XCRemoteSwiftPackageReference "combine-schedulers" */,
+				EAEAAC70287FB3C900288379 /* XCRemoteSwiftPackageReference "combine-schedulers" */,
 			);
 			productRefGroup = OBJ_62 /* Products */;
 			projectDirPath = "";
@@ -564,6 +572,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				EA0D86D4287D19DC0085356E /* EnumeratedTests.swift in Sources */,
 				OBJ_122 /* AmbTests.swift in Sources */,
 				OBJ_123 /* AssignOwnershipTests.swift in Sources */,
 				OBJ_124 /* AssignToManyTests.swift in Sources */,
@@ -586,9 +595,10 @@
 				OBJ_135 /* PrefixDurationTests.swift in Sources */,
 				OBJ_136 /* RemoveAllDuplicatesTests.swift in Sources */,
 				OBJ_137 /* ReplaySubjectTests.swift in Sources */,
-				3793CBD728286C090060441B /* MapToTests.swift in Sources */,
 				OBJ_138 /* SetOutputTypeTests.swift in Sources */,
+				EA0D86D6287D19DC0085356E /* MapToValueTests.swift in Sources */,
 				OBJ_139 /* ShareReplayTests.swift in Sources */,
+				EA0D86D5287D19DC0085356E /* MapToResultTests.swift in Sources */,
 				BFADDC8B25BCE91E00465E9B /* FlatMapBatchesTests.swift in Sources */,
 				OBJ_140 /* ToggleTests.swift in Sources */,
 				OBJ_141 /* WithLatestFromTests.swift in Sources */,
@@ -604,9 +614,9 @@
 				OBJ_79 /* DemandBuffer.swift in Sources */,
 				OBJ_80 /* Sink.swift in Sources */,
 				OBJ_81 /* Optional.swift in Sources */,
-				3793CBD428286BB20060441B /* MapTo.swift in Sources */,
 				C387777C24E6BBE900FAD2D8 /* Nwise.swift in Sources */,
 				OBJ_82 /* Event.swift in Sources */,
+				EA0D86CE287D19CC0085356E /* MapToValue.swift in Sources */,
 				OBJ_83 /* ObjectOwnership.swift in Sources */,
 				OBJ_84 /* Amb.swift in Sources */,
 				OBJ_85 /* AssignOwnership.swift in Sources */,
@@ -620,6 +630,7 @@
 				OBJ_90 /* FlatMapLatest.swift in Sources */,
 				OBJ_91 /* MapMany.swift in Sources */,
 				712E36C82711B79000A2AAFE /* RetryWhen.swift in Sources */,
+				EA0D86CF287D19CC0085356E /* MapToResult.swift in Sources */,
 				1970A8AA25246FBD00799AB6 /* FilterMany.swift in Sources */,
 				OBJ_92 /* Materialize.swift in Sources */,
 				D836234824EA9446002353AC /* MergeMany.swift in Sources */,
@@ -636,6 +647,7 @@
 				BF330EF924F20032001281FC /* Timer.swift in Sources */,
 				OBJ_101 /* CurrentValueRelay.swift in Sources */,
 				OBJ_102 /* PassthroughRelay.swift in Sources */,
+				EA0D86D0287D19CC0085356E /* Enumerated.swift in Sources */,
 				OBJ_103 /* Relay.swift in Sources */,
 				OBJ_104 /* ReplaySubject.swift in Sources */,
 			);
@@ -700,7 +712,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = CombineExt.xcodeproj/CombineExtTests_Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@loader_path/../Frameworks",
@@ -729,7 +741,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = CombineExt.xcodeproj/CombineExtTests_Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@loader_path/../Frameworks",
@@ -912,20 +924,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AA9C3E78249858840002A111 /* XCRemoteSwiftPackageReference "combine-schedulers" */ = {
+		EAEAAC70287FB3C900288379 /* XCRemoteSwiftPackageReference "combine-schedulers" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/combine-schedulers";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.5.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BF330EF524F1FFFE001281FC /* CombineSchedulers */ = {
+		EAEAAC71287FB3C900288379 /* CombineSchedulers */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AA9C3E78249858840002A111 /* XCRemoteSwiftPackageReference "combine-schedulers" */;
+			package = EAEAAC70287FB3C900288379 /* XCRemoteSwiftPackageReference "combine-schedulers" */;
 			productName = CombineSchedulers;
 		};
 /* End XCSwiftPackageProductDependency section */
