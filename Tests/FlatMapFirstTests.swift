@@ -24,7 +24,7 @@ class FlatMapFirstTests: XCTestCase {
 
     struct TestError: Error, Equatable {}
 
-    func test_flatMapFirst_single_upstream_single_flatMap() {
+    func testSingleUpstreamSingleFlatMap() {
         let testScheduler = DispatchQueue.test
 
         var innerPublisherSubscriptionCount = 0
@@ -59,7 +59,7 @@ class FlatMapFirstTests: XCTestCase {
         XCTAssertTrue(isUpstreamCompleted)
     }
 
-    func test_flatMapFirst_error_upstream_skipping_flatMap() {
+    func testErrorUpstreamSkippingFlatMap() {
         let testScheduler = DispatchQueue.test
 
         var innerPublisherSubscriptionCount = 0
@@ -89,7 +89,7 @@ class FlatMapFirstTests: XCTestCase {
         XCTAssertTrue(isUpstreamCompleted)
     }
 
-    func test_flatmap_first() {
+    func testStandardProcessingOfFlatMapFirst() {
         let testScheduler = DispatchQueue.test
 
         var innerPublisherSubscriptionCount = 0
