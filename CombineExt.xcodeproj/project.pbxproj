@@ -26,6 +26,9 @@
 		1970A8B42524730500799AB6 /* FilterManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1970A8B32524730400799AB6 /* FilterManyTests.swift */; };
 		712E36C82711B79000A2AAFE /* RetryWhen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E36C72711B79000A2AAFE /* RetryWhen.swift */; };
 		7182326F26DAAF230026BAD3 /* RetryWhenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */; };
+		63FEBC9327E9FCDB00E934AD /* FlatMapFirst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FEBC9227E9FCDB00E934AD /* FlatMapFirst.swift */; };
+		63FEBC9527E9FE9000E934AD /* FlatMapFirstTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FEBC9427E9FE9000E934AD /* FlatMapFirstTests.swift */; };
+		BF330EF624F1FFFE001281FC /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = BF330EF524F1FFFE001281FC /* CombineSchedulers */; };
 		BF330EF924F20032001281FC /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EF824F20032001281FC /* Timer.swift */; };
 		BF330EFB24F20080001281FC /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EFA24F20080001281FC /* Lock.swift */; };
 		BF3D3B5D253B83F300D830ED /* IgnoreFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D3B5C253B83F300D830ED /* IgnoreFailure.swift */; };
@@ -120,6 +123,8 @@
 		1970A8B32524730400799AB6 /* FilterManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterManyTests.swift; sourceTree = "<group>"; };
 		712E36C72711B79000A2AAFE /* RetryWhen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryWhen.swift; sourceTree = "<group>"; };
 		7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryWhenTests.swift; sourceTree = "<group>"; };
+		63FEBC9227E9FCDB00E934AD /* FlatMapFirst.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = FlatMapFirst.swift; sourceTree = "<group>"; tabWidth = 2; };
+		63FEBC9427E9FE9000E934AD /* FlatMapFirstTests.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = FlatMapFirstTests.swift; sourceTree = "<group>"; };
 		BF330EF824F20032001281FC /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		BF330EFA24F20080001281FC /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		BF3D3B5C253B83F300D830ED /* IgnoreFailure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreFailure.swift; sourceTree = "<group>"; };
@@ -284,6 +289,9 @@
 				OBJ_31 /* Toggle.swift */,
 				OBJ_32 /* WithLatestFrom.swift */,
 				OBJ_33 /* ZipMany.swift */,
+				1970A8A925246FBD00799AB6 /* FilterMany.swift */,
+				BFADDC8025BCE4C200465E9B /* FlatMapBatches.swift */,
+				63FEBC9227E9FCDB00E934AD /* FlatMapFirst.swift */,
 			);
 			path = Operators;
 			sourceTree = "<group>";
@@ -341,6 +349,8 @@
 				OBJ_59 /* ToggleTests.swift */,
 				OBJ_60 /* WithLatestFromTests.swift */,
 				OBJ_61 /* ZipManyTests.swift */,
+				BFADDC8A25BCE91E00465E9B /* FlatMapBatchesTests.swift */,
+				63FEBC9427E9FE9000E934AD /* FlatMapFirstTests.swift */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -599,6 +609,7 @@
 				EA0D86D6287D19DC0085356E /* MapToValueTests.swift in Sources */,
 				OBJ_139 /* ShareReplayTests.swift in Sources */,
 				EA0D86D5287D19DC0085356E /* MapToResultTests.swift in Sources */,
+				63FEBC9527E9FE9000E934AD /* FlatMapFirstTests.swift in Sources */,
 				BFADDC8B25BCE91E00465E9B /* FlatMapBatchesTests.swift in Sources */,
 				OBJ_140 /* ToggleTests.swift in Sources */,
 				OBJ_141 /* WithLatestFromTests.swift in Sources */,
@@ -637,6 +648,7 @@
 				BF43CC1525008B4F005AFA28 /* IgnoreOutputSetOutputType.swift in Sources */,
 				OBJ_93 /* Partition.swift in Sources */,
 				OBJ_94 /* PrefixDuration.swift in Sources */,
+				63FEBC9327E9FCDB00E934AD /* FlatMapFirst.swift in Sources */,
 				OBJ_95 /* RemoveAllDuplicates.swift in Sources */,
 				OBJ_96 /* SetOutputType.swift in Sources */,
 				OBJ_97 /* ShareReplay.swift in Sources */,
