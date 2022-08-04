@@ -234,6 +234,8 @@ private extension Publishers.WithLatestFrom {
         sink = nil
         otherSubscription?.cancel()
     }
+      
+    deinit { cancel() }
   }
 }
 #endif
