@@ -125,6 +125,29 @@ class WithLatestFromTests: XCTestCase {
         XCTAssertNil(weakSubject2)
     }
     
+    func testWithResultSelectorDoesNotRetainClassBasedPublisherWithoutSendCompletion() {
+        var upstream: AnyPublisher? = Just("1")
+            .setFailureType(to: Never.self)
+            .eraseToAnyPublisher()
+        var other: PassthroughSubject<String, Never>? = PassthroughSubject<String, Never>()
+        weak var weakOther: PassthroughSubject<String, Never>? = other
+        
+        var results = [String]()
+        
+        subscription = upstream?
+            .withLatestFrom(other!) { "\($0)\($1)" }
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { results.append($0) })
+        
+        other?.send("foo")
+        XCTAssertEqual(results, ["1foo"])
+        
+        subscription = nil
+        upstream = nil
+        other = nil
+        XCTAssertNil(weakOther)
+    }
+    
     func testNoResultSelector() {
         let subject1 = PassthroughSubject<Int, Never>()
         let subject2 = PassthroughSubject<String, Never>()
