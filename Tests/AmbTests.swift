@@ -47,6 +47,37 @@ class AmbTests: XCTestCase {
         XCTAssertEqual(completion, .finished)
     }
 
+    func testAmbCancelPreSubscription() {
+        enum CancelError: Swift.Error {
+          case cancelled
+        }
+        var ambPublisher: AnyCancellable?
+
+        var firstCompletion: Subscribers.Completion<CancelError>?
+        let subject1 = PassthroughSubject<Int, CancelError>()
+        let subject1Publisher = subject1
+            .handleEvents(receiveCancel: {
+                firstCompletion = .failure(CancelError.cancelled)
+            })
+            .eraseToAnyPublisher()
+
+        var secondCompletion: Subscribers.Completion<CancelError>?
+        let subject2 = PassthroughSubject<Int, CancelError>()
+        let subject2Publisher = subject2
+            .handleEvents(receiveCancel: {
+                secondCompletion = .failure(CancelError.cancelled)
+            })
+            .eraseToAnyPublisher()
+
+        ambPublisher = Publishers.Amb(first: subject1Publisher, second: subject2Publisher)
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { _ in })
+        ambPublisher?.cancel()
+
+        XCTAssertEqual(firstCompletion, .failure(CancelError.cancelled))
+        XCTAssertEqual(secondCompletion, .failure(CancelError.cancelled))
+    }
+
     func testAmbLimitedPreDemand() {
         let subject1 = PassthroughSubject<Int, Never>()
         let subject2 = PassthroughSubject<Int, Never>()

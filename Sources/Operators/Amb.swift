@@ -144,7 +144,9 @@ private extension Publishers.Amb {
         }
 
         func cancel() {
+            firstSink?.cancelUpstream()
             firstSink = nil
+            secondSink?.cancelUpstream()
             secondSink = nil
         }
     }
