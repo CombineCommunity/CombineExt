@@ -48,34 +48,62 @@ class AmbTests: XCTestCase {
     }
 
     func testAmbCancelPreSubscription() {
-        enum CancelError: Swift.Error {
-          case cancelled
-        }
-        var ambPublisher: AnyCancellable?
+        let ambPublisher: AnyCancellable?
 
-        var firstCompletion: Subscribers.Completion<CancelError>?
-        let subject1 = PassthroughSubject<Int, CancelError>()
+        let subject1Cancelled = expectation(description: "first publisher cancelled")
+        let subject1 = PassthroughSubject<Int, Error>()
         let subject1Publisher = subject1
             .handleEvents(receiveCancel: {
-                firstCompletion = .failure(CancelError.cancelled)
+                subject1Cancelled.fulfill()
             })
             .eraseToAnyPublisher()
 
-        var secondCompletion: Subscribers.Completion<CancelError>?
-        let subject2 = PassthroughSubject<Int, CancelError>()
+        let subject2Cancelled = expectation(description: "second publisher cancelled")
+        let subject2 = PassthroughSubject<Int, Error>()
         let subject2Publisher = subject2
             .handleEvents(receiveCancel: {
-                secondCompletion = .failure(CancelError.cancelled)
+                subject2Cancelled.fulfill()
             })
             .eraseToAnyPublisher()
 
         ambPublisher = Publishers.Amb(first: subject1Publisher, second: subject2Publisher)
             .sink(receiveCompletion: { _ in },
                   receiveValue: { _ in })
+
+        // cancelling amb should cancel the inner publishers
         ambPublisher?.cancel()
 
-        XCTAssertEqual(firstCompletion, .failure(CancelError.cancelled))
-        XCTAssertEqual(secondCompletion, .failure(CancelError.cancelled))
+        waitForExpectations(timeout: 0.01)
+    }
+
+    func testAmbCancelPostSubscription() {
+        let subject1 = PassthroughSubject<Int, Error>()
+        var subject1cancelCounter = 0
+        let subject1Publisher = subject1
+            .handleEvents(receiveCancel: {
+                subject1cancelCounter += 1
+            })
+            .eraseToAnyPublisher()
+
+        let subject2 = PassthroughSubject<Int, Error>()
+        var subject2cancelCounter = 0
+        let subject2Publisher = subject2
+            .handleEvents(receiveCancel: {
+                subject2cancelCounter += 1
+            })
+            .eraseToAnyPublisher()
+
+        Publishers.Amb(first: subject1Publisher, second: subject2Publisher)
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { _ in })
+            .store(in: &subscriptions)
+
+        // subject1 wins the race, so 2 has to be cancelled
+        subject1.send(1)
+
+        // At dealloc both publishes are cancelled, so we cannot use expectations here and count the cancel events instead
+        XCTAssertEqual(subject1cancelCounter, 0)
+        XCTAssertEqual(subject2cancelCounter, 1)
     }
 
     func testAmbLimitedPreDemand() {

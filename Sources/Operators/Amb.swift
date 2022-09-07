@@ -103,8 +103,10 @@ private extension Publishers.Amb {
                 guard let decision = decision else { return }
                 switch decision {
                 case .first:
+                    secondSink?.cancelUpstream()
                     secondSink = nil
                 case .second:
+                    firstSink?.cancelUpstream()
                     firstSink = nil
                 }
 
