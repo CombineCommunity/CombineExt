@@ -11,7 +11,7 @@ let package = Package(
         .library(name: "CombineExt", targets: ["CombineExt"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/pointfreeco/combine-schedulers", from: "0.5.3"),
+        .package(url: "https://github.com/pointfreeco/combine-schedulers", from: "0.8.0"),
     ],
     targets: [
         .target(name: "CombineExt", dependencies: [], path: "Sources"),

@@ -24,21 +24,20 @@
 /* Begin PBXBuildFile section */
 		1970A8AA25246FBD00799AB6 /* FilterMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1970A8A925246FBD00799AB6 /* FilterMany.swift */; };
 		1970A8B42524730500799AB6 /* FilterManyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1970A8B32524730400799AB6 /* FilterManyTests.swift */; };
-		712E36C82711B79000A2AAFE /* RetryWhen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E36C72711B79000A2AAFE /* RetryWhen.swift */; };
-		7182326F26DAAF230026BAD3 /* RetryWhenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */; };
 		63FEBC9327E9FCDB00E934AD /* FlatMapFirst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FEBC9227E9FCDB00E934AD /* FlatMapFirst.swift */; };
 		63FEBC9527E9FE9000E934AD /* FlatMapFirstTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FEBC9427E9FE9000E934AD /* FlatMapFirstTests.swift */; };
-		BF330EF624F1FFFE001281FC /* CombineSchedulers in Frameworks */ = {isa = PBXBuildFile; productRef = BF330EF524F1FFFE001281FC /* CombineSchedulers */; };
+		712E36C82711B79000A2AAFE /* RetryWhen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712E36C72711B79000A2AAFE /* RetryWhen.swift */; };
+		7182326F26DAAF230026BAD3 /* RetryWhenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */; };
 		BF330EF924F20032001281FC /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EF824F20032001281FC /* Timer.swift */; };
 		BF330EFB24F20080001281FC /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF330EFA24F20080001281FC /* Lock.swift */; };
 		BF3D3B5D253B83F300D830ED /* IgnoreFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D3B5C253B83F300D830ED /* IgnoreFailure.swift */; };
 		BF3D3B67253B88E500D830ED /* IgnoreFailureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D3B66253B88E500D830ED /* IgnoreFailureTests.swift */; };
 		BF43CC1525008B4F005AFA28 /* IgnoreOutputSetOutputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF43CC1425008B4F005AFA28 /* IgnoreOutputSetOutputType.swift */; };
 		BF43CC1725008C45005AFA28 /* IgnoreOutputSetOutputTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF43CC1625008C45005AFA28 /* IgnoreOutputSetOutputTypeTests.swift */; };
-		BFADDC8125BCE4C200465E9B /* FlatMapBatches.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFADDC8025BCE4C200465E9B /* FlatMapBatches.swift */; };
-		BFADDC8B25BCE91E00465E9B /* FlatMapBatchesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFADDC8A25BCE91E00465E9B /* FlatMapBatchesTests.swift */; };
 		BF45214E259C0C610065E60E /* PrefixWhileBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45214D259C0C610065E60E /* PrefixWhileBehavior.swift */; };
 		BF452158259C110C0065E60E /* PrefixWhileBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF452157259C110C0065E60E /* PrefixWhileBehaviorTests.swift */; };
+		BFADDC8125BCE4C200465E9B /* FlatMapBatches.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFADDC8025BCE4C200465E9B /* FlatMapBatches.swift */; };
+		BFADDC8B25BCE91E00465E9B /* FlatMapBatchesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFADDC8A25BCE91E00465E9B /* FlatMapBatchesTests.swift */; };
 		C387777C24E6BBE900FAD2D8 /* Nwise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387777B24E6BBE900FAD2D8 /* Nwise.swift */; };
 		C387777F24E6BF8F00FAD2D8 /* NwiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */; };
 		D836234824EA9446002353AC /* MergeMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = D836234724EA9446002353AC /* MergeMany.swift */; };
@@ -121,20 +120,20 @@
 /* Begin PBXFileReference section */
 		1970A8A925246FBD00799AB6 /* FilterMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMany.swift; sourceTree = "<group>"; };
 		1970A8B32524730400799AB6 /* FilterManyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterManyTests.swift; sourceTree = "<group>"; };
-		712E36C72711B79000A2AAFE /* RetryWhen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryWhen.swift; sourceTree = "<group>"; };
-		7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryWhenTests.swift; sourceTree = "<group>"; };
 		63FEBC9227E9FCDB00E934AD /* FlatMapFirst.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = FlatMapFirst.swift; sourceTree = "<group>"; tabWidth = 2; };
 		63FEBC9427E9FE9000E934AD /* FlatMapFirstTests.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = FlatMapFirstTests.swift; sourceTree = "<group>"; };
+		712E36C72711B79000A2AAFE /* RetryWhen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetryWhen.swift; sourceTree = "<group>"; };
+		7182326E26DAAF230026BAD3 /* RetryWhenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryWhenTests.swift; sourceTree = "<group>"; };
 		BF330EF824F20032001281FC /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		BF330EFA24F20080001281FC /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		BF3D3B5C253B83F300D830ED /* IgnoreFailure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreFailure.swift; sourceTree = "<group>"; };
 		BF3D3B66253B88E500D830ED /* IgnoreFailureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreFailureTests.swift; sourceTree = "<group>"; };
 		BF43CC1425008B4F005AFA28 /* IgnoreOutputSetOutputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreOutputSetOutputType.swift; sourceTree = "<group>"; };
 		BF43CC1625008C45005AFA28 /* IgnoreOutputSetOutputTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreOutputSetOutputTypeTests.swift; sourceTree = "<group>"; };
-		BFADDC8025BCE4C200465E9B /* FlatMapBatches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatMapBatches.swift; sourceTree = "<group>"; };
-		BFADDC8A25BCE91E00465E9B /* FlatMapBatchesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatMapBatchesTests.swift; sourceTree = "<group>"; };
 		BF45214D259C0C610065E60E /* PrefixWhileBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefixWhileBehavior.swift; sourceTree = "<group>"; };
 		BF452157259C110C0065E60E /* PrefixWhileBehaviorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefixWhileBehaviorTests.swift; sourceTree = "<group>"; };
+		BFADDC8025BCE4C200465E9B /* FlatMapBatches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatMapBatches.swift; sourceTree = "<group>"; };
+		BFADDC8A25BCE91E00465E9B /* FlatMapBatchesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatMapBatchesTests.swift; sourceTree = "<group>"; };
 		C387777B24E6BBE900FAD2D8 /* Nwise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nwise.swift; sourceTree = "<group>"; };
 		C387777D24E6BF6C00FAD2D8 /* NwiseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NwiseTests.swift; sourceTree = "<group>"; };
 		"CombineExt::CombineExt::Product" /* CombineExt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CombineExt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -268,8 +267,6 @@
 				OBJ_21 /* Create.swift */,
 				OBJ_22 /* Dematerialize.swift */,
 				EA0D86CD287D19CC0085356E /* Enumerated.swift */,
-				1970A8A925246FBD00799AB6 /* FilterMany.swift */,
-				BFADDC8025BCE4C200465E9B /* FlatMapBatches.swift */,
 				OBJ_23 /* FlatMapLatest.swift */,
 				BF3D3B5C253B83F300D830ED /* IgnoreFailure.swift */,
 				BF43CC1425008B4F005AFA28 /* IgnoreOutputSetOutputType.swift */,
@@ -326,7 +323,6 @@
 				OBJ_47 /* DematerializeTests.swift */,
 				EA0D86D1287D19DC0085356E /* EnumeratedTests.swift */,
 				1970A8B32524730400799AB6 /* FilterManyTests.swift */,
-				BFADDC8A25BCE91E00465E9B /* FlatMapBatchesTests.swift */,
 				OBJ_48 /* FlatMapLatestTests.swift */,
 				BF3D3B66253B88E500D830ED /* IgnoreFailureTests.swift */,
 				BF43CC1625008C45005AFA28 /* IgnoreOutputSetOutputTypeTests.swift */,
@@ -730,7 +726,7 @@
 					"@loader_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
@@ -759,7 +755,7 @@
 					"@loader_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
