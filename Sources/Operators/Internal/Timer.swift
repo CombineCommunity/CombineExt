@@ -14,7 +14,6 @@
 
 // Only support 64bit
 #if !(os(iOS) && (arch(i386) || arch(arm))) && canImport(Combine)
-  @_exported import Foundation  // Clang module
   import Combine
   import Foundation
 
