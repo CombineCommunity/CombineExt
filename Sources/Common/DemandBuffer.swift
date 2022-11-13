@@ -33,7 +33,17 @@ class DemandBuffer<S: Subscriber> {
     init(subscriber: S) {
         self.subscriber = subscriber
     }
-
+    
+    /// Signal to the buffer that the upstream has changed
+    /// - Returns: A demand that has already been requested from the previous upstream, but has not yet been processed
+    func attachToNewUpstream() -> Subscribers.Demand {
+        lock.lock()
+        defer { lock.unlock() }
+        
+        demandState.sent = demandState.requested
+        return demandState.requested - demandState.processed
+    }
+    
     /// Buffer an upstream value to later be forwarded to
     /// the downstream subscriber, once it demands it
     ///
