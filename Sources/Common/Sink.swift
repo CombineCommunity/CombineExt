@@ -62,7 +62,13 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
     }
 
     func receive(subscription: Subscription) {
-        upstreamSubscription = subscription
+        defer { upstreamSubscription = subscription }
+        
+        if let upstreamSubscription {
+            upstreamSubscription.cancel()
+            let newDemand = buffer.attachToNewUpstream()
+            subscription.requestIfNeeded(newDemand)
+        }
     }
 
     func receive(_ input: Upstream.Output) -> Subscribers.Demand {
