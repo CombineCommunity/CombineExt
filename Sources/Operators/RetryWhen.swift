@@ -89,6 +89,9 @@ extension Publishers.RetryWhen {
         }
 
         func cancel() {
+            cancellable?.cancel()
+            cancellable = nil
+            sink?.cancelUpstream()
             sink = nil
         }
     }
