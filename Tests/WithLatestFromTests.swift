@@ -604,5 +604,84 @@ class WithLatestFromTests: XCTestCase {
         XCTAssertNil(weakSubject3)
         XCTAssertNil(weakSubject4)
     }
+
+    func testSampleWith() {
+        let samplee = PassthroughSubject<Int, Never>()
+        let sampler = PassthroughSubject<String, Never>()
+        var results = [String]()
+        var completed = false
+
+        subscription = samplee
+            .sample(with: sampler) { "\($0)\($1)" }
+            .sink(receiveCompletion: { _ in completed  = true },
+                  receiveValue: { results.append($0) }
+            )
+
+        sampler.send("kek")
+        samplee.send(1)
+        samplee.send(2)
+        samplee.send(3)
+        sampler.send("bar")
+        samplee.send(4)
+        samplee.send(5)
+        sampler.send("foo")
+        samplee.send(6)
+        sampler.send("qux")
+        samplee.send(7)
+        samplee.send(8)
+        samplee.send(9)
+
+        XCTAssertEqual(results, [
+            "bar3",
+            "foo5",
+            "qux6",
+        ])
+
+        XCTAssertFalse(completed)
+        samplee.send(completion: .finished)
+        XCTAssertFalse(completed)
+        sampler.send(completion: .finished)
+        XCTAssertTrue(completed)
+    }
+
+    func testSampleOn() {
+        let samplee = PassthroughSubject<Int, Never>()
+        let sampler = PassthroughSubject<String, Never>()
+        var results = [Int]()
+        var completed = false
+
+        subscription = samplee
+            .sample(on: sampler)
+            .sink(receiveCompletion: { _ in completed  = true },
+                  receiveValue: { results.append($0) }
+            )
+
+        sampler.send("kek")
+        samplee.send(1)
+        samplee.send(2)
+        samplee.send(3)
+        sampler.send("bar")
+        samplee.send(4)
+        samplee.send(5)
+        sampler.send("foo")
+        samplee.send(6)
+        sampler.send("qux")
+        samplee.send(7)
+        samplee.send(8)
+        samplee.send(9)
+
+        XCTAssertEqual(results, [
+            3,
+            5,
+            6,
+        ])
+
+        XCTAssertFalse(completed)
+        samplee.send(completion: .finished)
+        XCTAssertFalse(completed)
+        sampler.send(completion: .finished)
+        XCTAssertTrue(completed)
+        subscription.cancel()
+    }
 }
 #endif
