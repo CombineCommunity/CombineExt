@@ -112,6 +112,38 @@ public extension Publisher {
     where Other.Failure == Failure, Other1.Failure == Failure, Other2.Failure == Failure {
      withLatestFrom(other, other1, other2) { $1 }
   }
+
+  /// Merge two publishers into a single publisher that emits the latest value from `self`
+  /// along with the latest value from `sampler` only when `sampler` emits.
+  ///
+  /// Emits from `sampler` will be ignored until `self` has emitted a value at least once.
+  ///
+  /// - Parameters:
+  ///   - sampler: A second publisher source.
+  ///   - resultSelector: Function invoked for each sampling with sampler and sampled value.
+  ///
+  /// - Returns: A publisher containing the result of combining the latest value of `self`
+  ///            with the latest value from `sampler` only when `sampler`
+  ///            emits a value, using the specified result selector function.
+  func sample<Sampler: Publisher, Result>(
+      with sampler: Sampler,
+      resultSelector: @escaping (Sampler.Output, Output) -> Result
+  ) -> Publishers.WithLatestFrom<Sampler, Self, Result> {
+      .init(upstream: sampler, second: self, resultSelector: resultSelector)
+  }
+
+  /// Merge two publishers into a single publisher that emits the latest value from `self` whenever `sampler` emits.
+  ///
+  /// Emits from `sampler` will be ignored until `self` has emitted a value at least once.
+  ///
+  /// - Parameter sampler: A second publisher source.
+  ///
+  /// - Returns: A publisher that will emit the latest value of `self` whenever `sampler` emits.
+  func sample<Sampler: Publisher>(
+      on sampler: Sampler
+  ) -> Publishers.WithLatestFrom<Sampler, Self, Self.Output> {
+      sample(with: sampler) { _, sampledValue in sampledValue }
+  }
 }
 
 // MARK: - Publisher
