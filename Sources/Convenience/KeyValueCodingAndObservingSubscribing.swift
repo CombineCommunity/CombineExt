@@ -16,12 +16,12 @@ protocol KeyValueCodingAndObservingSubscribing: AnyObject where Self : Objective
 extension KeyValueCodingAndObservingSubscribing {
 
     /// A method to subscribe a KeyValuePath to a Publisher.
-    func subscribe<P: Publisher, Value>(at keyPath: ReferenceWritableKeyPath<Self, Value>, to publisher: P) -> AnyCancellable where P.Output == Value, P.Failure == Never {
-        subscribe(at: keyPath, to: publisher, on: RunLoop.main)
+    func subscribe<P: Publisher, Value>(_ keyPath: ReferenceWritableKeyPath<Self, Value>, to publisher: P) -> AnyCancellable where P.Output == Value, P.Failure == Never {
+        subscribe(keyPath, to: publisher, on: RunLoop.main)
     }
 
     /// A method to subscribe a KeyValuePath to a Publisher.
-    func subscribe<P: Publisher, S: Scheduler, Value>(at keyPath: ReferenceWritableKeyPath<Self, Value>, to publisher: P, on scheduler: S) -> AnyCancellable where P.Output == Value, P.Failure == Never {
+    func subscribe<P: Publisher, S: Scheduler, Value>(_ keyPath: ReferenceWritableKeyPath<Self, Value>, to publisher: P, on scheduler: S) -> AnyCancellable where P.Output == Value, P.Failure == Never {
         
         publisher
             .receive(on: scheduler)
