@@ -219,7 +219,7 @@ final class ShareReplayTests: XCTestCase {
         var completions = [Subscribers.Completion<Never>]()
 
         var source: PassthroughSubject? = PassthroughSubject<Int, Never>()
-        weak let weakSource = source
+        weak var weakSource = source
 
         var stream = source?.share(replay: 1)
 

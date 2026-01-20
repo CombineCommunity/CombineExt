@@ -104,8 +104,8 @@ class WithLatestFromTests: XCTestCase {
     func testWithResultSelectorDoesNotRetainClassBasedPublisher() {
         var subject1: PassthroughSubject<Int, Never>? = PassthroughSubject<Int, Never>()
         var subject2: PassthroughSubject<String, Never>? = PassthroughSubject<String, Never>()
-        weak let weakSubject1: PassthroughSubject<Int, Never>? = subject1
-        weak let weakSubject2: PassthroughSubject<String, Never>? = subject2
+        weak var weakSubject1: PassthroughSubject<Int, Never>? = subject1
+        weak var weakSubject2: PassthroughSubject<String, Never>? = subject2
 
         var results = [String]()
 
@@ -134,7 +134,7 @@ class WithLatestFromTests: XCTestCase {
             .setFailureType(to: Never.self)
             .eraseToAnyPublisher()
         var other: PassthroughSubject<String, Never>? = PassthroughSubject<String, Never>()
-        weak let weakOther: PassthroughSubject<String, Never>? = other
+        weak var weakOther: PassthroughSubject<String, Never>? = other
 
         var results = [String]()
 
@@ -198,8 +198,8 @@ class WithLatestFromTests: XCTestCase {
     func testNoResultSelectorDoesNotRetainClassBasedPublisher() {
         var subject1: PassthroughSubject<Int, Never>? = PassthroughSubject<Int, Never>()
         var subject2: PassthroughSubject<String, Never>? = PassthroughSubject<String, Never>()
-        weak let weakSubject1: PassthroughSubject<Int, Never>? = subject1
-        weak let weakSubject2: PassthroughSubject<String, Never>? = subject2
+        weak var weakSubject1: PassthroughSubject<Int, Never>? = subject1
+        weak var weakSubject2: PassthroughSubject<String, Never>? = subject2
 
         var results = [String]()
 
@@ -281,9 +281,9 @@ class WithLatestFromTests: XCTestCase {
         var subject1: PassthroughSubject<Int, Never>? = PassthroughSubject<Int, Never>()
         var subject2: PassthroughSubject<String, Never>? = PassthroughSubject<String, Never>()
         var subject3: PassthroughSubject<Bool, Never>? = PassthroughSubject<Bool, Never>()
-        weak let weakSubject1: PassthroughSubject<Int, Never>? = subject1
-        weak let weakSubject2: PassthroughSubject<String, Never>? = subject2
-        weak let weakSubject3: PassthroughSubject<Bool, Never>? = subject3
+        weak var weakSubject1: PassthroughSubject<Int, Never>? = subject1
+        weak var weakSubject2: PassthroughSubject<String, Never>? = subject2
+        weak var weakSubject3: PassthroughSubject<Bool, Never>? = subject3
 
         var results = [String]()
 
@@ -372,9 +372,9 @@ class WithLatestFromTests: XCTestCase {
         var subject1: PassthroughSubject<Int, Never>? = PassthroughSubject<Int, Never>()
         var subject2: PassthroughSubject<String, Never>? = PassthroughSubject<String, Never>()
         var subject3: PassthroughSubject<Bool, Never>? = PassthroughSubject<Bool, Never>()
-        weak let weakSubject1: PassthroughSubject<Int, Never>? = subject1
-        weak let weakSubject2: PassthroughSubject<String, Never>? = subject2
-        weak let weakSubject3: PassthroughSubject<Bool, Never>? = subject3
+        weak var weakSubject1: PassthroughSubject<Int, Never>? = subject1
+        weak var weakSubject2: PassthroughSubject<String, Never>? = subject2
+        weak var weakSubject3: PassthroughSubject<Bool, Never>? = subject3
 
         var results = [String]()
 
@@ -467,10 +467,10 @@ class WithLatestFromTests: XCTestCase {
         var subject2: PassthroughSubject<String, Never>? = PassthroughSubject<String, Never>()
         var subject3: PassthroughSubject<Bool, Never>? = PassthroughSubject<Bool, Never>()
         var subject4: PassthroughSubject<Int, Never>? = PassthroughSubject<Int, Never>()
-        weak let weakSubject1: PassthroughSubject<Int, Never>? = subject1
-        weak let weakSubject2: PassthroughSubject<String, Never>? = subject2
-        weak let weakSubject3: PassthroughSubject<Bool, Never>? = subject3
-        weak let weakSubject4: PassthroughSubject<Bool, Never>? = subject3
+        weak var weakSubject1: PassthroughSubject<Int, Never>? = subject1
+        weak var weakSubject2: PassthroughSubject<String, Never>? = subject2
+        weak var weakSubject3: PassthroughSubject<Bool, Never>? = subject3
+        weak var weakSubject4: PassthroughSubject<Bool, Never>? = subject3
 
         var results = [String]()
 
@@ -573,10 +573,10 @@ class WithLatestFromTests: XCTestCase {
         var subject2: PassthroughSubject<String, Never>? = PassthroughSubject<String, Never>()
         var subject3: PassthroughSubject<Bool, Never>? = PassthroughSubject<Bool, Never>()
         var subject4: PassthroughSubject<Int, Never>? = PassthroughSubject<Int, Never>()
-        weak let weakSubject1: PassthroughSubject<Int, Never>? = subject1
-        weak let weakSubject2: PassthroughSubject<String, Never>? = subject2
-        weak let weakSubject3: PassthroughSubject<Bool, Never>? = subject3
-        weak let weakSubject4: PassthroughSubject<Bool, Never>? = subject3
+        weak var weakSubject1: PassthroughSubject<Int, Never>? = subject1
+        weak var weakSubject2: PassthroughSubject<String, Never>? = subject2
+        weak var weakSubject3: PassthroughSubject<Bool, Never>? = subject3
+        weak var weakSubject4: PassthroughSubject<Bool, Never>? = subject3
 
         var results = [String]()
 
