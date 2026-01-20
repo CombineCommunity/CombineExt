@@ -9,9 +9,9 @@
 import Foundation
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 final class MergeManyTests: XCTestCase {
@@ -31,8 +31,10 @@ final class MergeManyTests: XCTestCase {
 
         subscription = [first, second, third]
             .merge()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
         second.send(2)
@@ -40,11 +42,11 @@ final class MergeManyTests: XCTestCase {
 
         XCTAssertEqual(results, [1, 2, 3])
         XCTAssertFalse(completed)
-        
+
         first.send(completion: .finished)
         second.send(completion: .finished)
         third.send(completion: .finished)
-        
+
         XCTAssertTrue(completed)
     }
 
@@ -58,8 +60,10 @@ final class MergeManyTests: XCTestCase {
 
         subscription = [first, second, third]
             .merge()
-            .sink(receiveCompletion: { completed = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completed = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
         first.send(1)
@@ -89,8 +93,10 @@ final class MergeManyTests: XCTestCase {
 
         subscription = [first, second, third]
             .merge()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
         second.send(2)
@@ -111,8 +117,10 @@ final class MergeManyTests: XCTestCase {
 
         subscription = [first, second, third]
             .merge()
-            .sink(receiveCompletion: { completed = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completed = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
 
@@ -139,8 +147,10 @@ final class MergeManyTests: XCTestCase {
 
         subscription = first
             .merge(with: second, third)
-            .sink(receiveCompletion: { completed = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completed = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
         first.send(1)
@@ -166,8 +176,10 @@ final class MergeManyTests: XCTestCase {
 
         subscription = [first, second, third]
             .merge()
-            .sink(receiveCompletion: { completed = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completed = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
 
@@ -178,11 +190,11 @@ final class MergeManyTests: XCTestCase {
 
         XCTAssertEqual(results, [1, 2, 2, 3])
         XCTAssertNil(completed)
-        
+
         first.send(completion: .finished)
         second.send(completion: .finished)
         third.send(completion: .finished)
-        
+
         XCTAssertEqual(completed, .finished)
     }
 
@@ -194,8 +206,10 @@ final class MergeManyTests: XCTestCase {
 
         subscription = [first]
             .merge()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
 
@@ -213,8 +227,10 @@ final class MergeManyTests: XCTestCase {
 
         subscription = [AnyPublisher<Int, Never>]()
             .merge()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         XCTAssertTrue(results.isEmpty)
         XCTAssertTrue(completed)

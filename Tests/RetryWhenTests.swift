@@ -6,9 +6,9 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class RetryWhenTests: XCTestCase {
@@ -51,8 +51,7 @@ class RetryWhenTests: XCTestCase {
             defer { times += 1 }
             if times == 0 {
                 return Fail<Int, MyError>(error: MyError.someError).eraseToAnyPublisher()
-            }
-            else {
+            } else {
                 return Just(5).setFailureType(to: MyError.self).eraseToAnyPublisher()
             }
         })

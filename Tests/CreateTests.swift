@@ -7,9 +7,9 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class CreateTests: XCTestCase {
@@ -17,24 +17,24 @@ class CreateTests: XCTestCase {
     enum MyError: Swift.Error {
         case failure
     }
-    
+
     private var completion: Subscribers.Completion<CreateTests.MyError>?
     private var values = [String]()
     private var canceled = false
     private let allValues = ["Hello", "World", "What's", "Up?"]
-    
+
     override func setUp() {
         canceled = false
         values = []
         completion = nil
     }
-    
+
     func testUnlimitedDemandFinished() {
         let subscriber = makeSubscriber(demand: .unlimited)
         let publisher = makePublisher(fail: false)
 
         publisher.subscribe(subscriber)
-        
+
         XCTAssertEqual(completion, .finished)
         XCTAssertTrue(canceled)
         XCTAssertEqual(values, allValues)
@@ -106,7 +106,7 @@ class CreateTests: XCTestCase {
     var cancelable: Cancellable?
     func testManualCancelation() {
         let publisher = AnyPublisher<String, Never>.create { _ in
-            return AnyCancellable { [weak self] in self?.canceled = true }
+            AnyCancellable { [weak self] in self?.canceled = true }
         }
 
         cancelable = publisher.sink { _ in }
@@ -117,6 +117,7 @@ class CreateTests: XCTestCase {
 }
 
 // MARK: - Private Helpers
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension CreateTests {
     func makePublisher(fail: Bool = false) -> AnyPublisher<String, MyError> {
@@ -130,9 +131,9 @@ private extension CreateTests {
         }
         .eraseToAnyPublisher()
     }
-    
+
     func makeSubscriber(demand: Subscribers.Demand) -> AnySubscriber<String, MyError> {
-        return AnySubscriber(
+        AnySubscriber(
             receiveSubscription: { subscription in
                 XCTAssertEqual("\(subscription)", "Create.Subscription<String, MyError>")
                 subscription.request(demand)
@@ -143,7 +144,8 @@ private extension CreateTests {
             },
             receiveCompletion: { finished in
                 self.completion = finished
-            })
+            }
+        )
     }
 }
 #endif

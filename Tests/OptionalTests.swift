@@ -21,8 +21,10 @@ final class OptionalTests: XCTestCase {
 
         subscription = Optional(1)
             .publisher
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         XCTAssertEqual([1], results)
         XCTAssertEqual(.finished, completion)
@@ -34,8 +36,10 @@ final class OptionalTests: XCTestCase {
 
         subscription = Optional<Int>.none
             .publisher
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         XCTAssertTrue(results.isEmpty)
         XCTAssertEqual(.finished, completion)

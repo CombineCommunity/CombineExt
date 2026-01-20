@@ -7,54 +7,54 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class FilterManyTests: XCTestCase {
     var subscription: AnyCancellable!
-    
+
     func testFilterManyWithModelAndFinishedCompletion() {
         let source = PassthroughSubject<[Int], Never>()
-        
+
         var expectedOutput = [Int]()
-        
+
         var completion: Subscribers.Completion<Never>?
-        
+
         subscription = source
             .filterMany(isPair)
             .sink(
                 receiveCompletion: { completion = $0 },
                 receiveValue: { $0.forEach { expectedOutput.append($0) } }
             )
-        
+
         source.send([10, 1, 2, 4, 3, 8])
         source.send(completion: .finished)
-        
+
         XCTAssertEqual(
             expectedOutput,
             [10, 2, 4, 8]
         )
         XCTAssertEqual(completion, .finished)
     }
-    
+
     func testFilterManyWithModelAndFailureCompletion() {
         let source = PassthroughSubject<[Int], FilterManyError>()
-        
+
         var expectedOutput = [Int]()
-        
+
         var completion: Subscribers.Completion<FilterManyError>?
-        
+
         subscription = source
             .filterMany(isPair)
             .sink(
                 receiveCompletion: { completion = $0 },
                 receiveValue: { $0.forEach { expectedOutput.append($0) } }
             )
-        
+
         source.send([10, 1, 2, 4, 3, 8])
         source.send(completion: .failure(.anErrorCase))
-        
+
         XCTAssertEqual(
             expectedOutput,
             [10, 2, 4, 8]

@@ -7,9 +7,9 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 final class IgnoreOutputSetOutputTypeTests: XCTestCase {
@@ -22,4 +22,3 @@ final class IgnoreOutputSetOutputTypeTests: XCTestCase {
     }
 }
 #endif
-

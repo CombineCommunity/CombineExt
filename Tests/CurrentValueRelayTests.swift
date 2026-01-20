@@ -7,9 +7,9 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class CurrentValueRelayTests: XCTestCase {
@@ -35,8 +35,10 @@ class CurrentValueRelayTests: XCTestCase {
         var completed = false
 
         relay?
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { _ in })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { _ in }
+            )
             .store(in: &subscriptions)
 
         XCTAssertEqual(relay?.value, "initial")
@@ -64,8 +66,10 @@ class CurrentValueRelayTests: XCTestCase {
     func testSubscribePublisher() {
         var completed = false
         relay?
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { self.values.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { self.values.append($0) }
+            )
             .store(in: &subscriptions)
 
         ["1", "2", "3"]
@@ -87,8 +91,10 @@ class CurrentValueRelayTests: XCTestCase {
             .subscribe(output)
             .store(in: &subscriptions)
         output
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { self.values.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { self.values.append($0) }
+            )
             .store(in: &subscriptions)
 
         input.accept("1")
@@ -109,8 +115,10 @@ class CurrentValueRelayTests: XCTestCase {
             .subscribe(output)
             .store(in: &subscriptions)
         output
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { self.values.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { self.values.append($0) }
+            )
             .store(in: &subscriptions)
 
         input.accept("1")
@@ -120,7 +128,7 @@ class CurrentValueRelayTests: XCTestCase {
         XCTAssertFalse(completed)
         XCTAssertEqual(values, ["initial", "1", "2", "3"])
     }
-    
+
     // There was a race condition which caused the value of a relay
     // to leak. Details of the race condition are in this PR:
     //
@@ -136,10 +144,10 @@ class CurrentValueRelayTests: XCTestCase {
     // to two objects being leaked if cancellables is initialized
     // before the relays.
     final class StoredObject {
-        static var storedObjectReleased = false
-        
+        nonisolated(unsafe) static var storedObjectReleased = false
+
         let value = 10
-        
+
         init() {
             Self.storedObjectReleased = false
         }
@@ -150,28 +158,28 @@ class CurrentValueRelayTests: XCTestCase {
     }
 
     final class StoredObject2 {
-        static var storedObjectReleased = false
-        
+        nonisolated(unsafe) static var storedObjectReleased = false
+
         let value = 20
-        
+
         init() {
             Self.storedObjectReleased = false
         }
-        
+
         deinit {
             Self.storedObjectReleased = true
         }
     }
-    
+
     func testStoredObjectIsDeallocatedWhenRelayIsDeallocatedAndDeclaredAfterCancellables() {
         final class ContainerClass {
-            static var receivedCompletion = false
-            static var receivedCancel = false
+            nonisolated(unsafe) static var receivedCompletion = false
+            nonisolated(unsafe) static var receivedCancel = false
 
             // Cancellables comes before the relay.
             var cancellables = Set<AnyCancellable>()
             let relay = CurrentValueRelay(StoredObject())
-            
+
             init() {
                 relay
                     .handleEvents(receiveCancel: {
@@ -186,15 +194,15 @@ class CurrentValueRelayTests: XCTestCase {
                     .store(in: &cancellables)
             }
         }
-        
+
         var container: ContainerClass? = ContainerClass()
-        
+
         XCTAssertFalse(ContainerClass.receivedCompletion)
         XCTAssertFalse(StoredObject.storedObjectReleased)
         container = nil
         XCTAssertTrue(StoredObject.storedObjectReleased)
         XCTAssertNil(container)
-        
+
         // In this case the cancellables is deallocated before the relay.
         // The deinit method of AnyCancellable calls cancel for all subscriptions.
         // Completion will never be called for a canceled subscription.
@@ -204,8 +212,8 @@ class CurrentValueRelayTests: XCTestCase {
 
     func testStoredObjectIsDeallocatedWhenRelayIsDeallocatedAndDeclaredBeforeCancellables() {
         final class ContainerClass {
-            static var receivedCompletion = false
-            static var receivedCancel = false
+            nonisolated(unsafe) static var receivedCompletion = false
+            nonisolated(unsafe) static var receivedCancel = false
 
             // Cancellables comes after the relay.
             let relay = CurrentValueRelay(StoredObject())
@@ -225,33 +233,33 @@ class CurrentValueRelayTests: XCTestCase {
                     .store(in: &cancellables)
             }
         }
-        
+
         var container: ContainerClass? = ContainerClass()
-        
+
         XCTAssertFalse(ContainerClass.receivedCompletion)
         XCTAssertFalse(StoredObject.storedObjectReleased)
         container = nil
         XCTAssertTrue(StoredObject.storedObjectReleased)
         XCTAssertNil(container)
-        
+
         // In this case the cancellables is deinited after the CurrentValueRelay,
         // so completion will be called. Since the relay was completed, cancel will
         // not be called.
         XCTAssertTrue(ContainerClass.receivedCompletion)
         XCTAssertFalse(ContainerClass.receivedCancel)
     }
-    
+
     func testBothStoredObjectsAreDeallocatedWhenRelayAndWithLatestFromOperatorAreDeallocatedAndDeclaredBeforeCancellables() {
         final class ContainerClass {
-            static var receivedCompletion = false
-            static var receivedCancel = false
-            
+            nonisolated(unsafe) static var receivedCompletion = false
+            nonisolated(unsafe) static var receivedCancel = false
+
             // Cancellables comes after the relay. In this case, there
             // is no leak.
             let relay = CurrentValueRelay(StoredObject())
             let relay2 = CurrentValueRelay(StoredObject2())
             var cancellables: Set<AnyCancellable>? = Set<AnyCancellable>()
-            
+
             init() {
                 relay
                     .withLatestFrom(relay2)
@@ -267,9 +275,9 @@ class CurrentValueRelayTests: XCTestCase {
                     .store(in: &cancellables!)
             }
         }
-        
+
         var container: ContainerClass? = ContainerClass()
-        
+
         XCTAssertFalse(ContainerClass.receivedCompletion)
         XCTAssertFalse(StoredObject.storedObjectReleased)
         XCTAssertFalse(StoredObject2.storedObjectReleased)
@@ -282,18 +290,18 @@ class CurrentValueRelayTests: XCTestCase {
         XCTAssertTrue(StoredObject2.storedObjectReleased)
         XCTAssertNil(container)
     }
-    
+
     func testBothStoredObjectsAreDeallocatedWhenRelayAndWithLatestFromOperatorAreDeallocatedAndDeclaredAfterCancellables() {
         final class ContainerClass {
-            static var receivedCompletion = false
-            static var receivedCancel = false
-            
+            nonisolated(unsafe) static var receivedCompletion = false
+            nonisolated(unsafe) static var receivedCancel = false
+
             // Cancellables comes before the relay. In this case, the objects
             // for both relays leak.
             var cancellables: Set<AnyCancellable>? = Set<AnyCancellable>()
             let relay = CurrentValueRelay(StoredObject())
             let relay2 = CurrentValueRelay(StoredObject2())
-            
+
             init() {
                 relay
                     .withLatestFrom(relay2)
@@ -309,9 +317,9 @@ class CurrentValueRelayTests: XCTestCase {
                     .store(in: &cancellables!)
             }
         }
-        
+
         var container: ContainerClass? = ContainerClass()
-        
+
         XCTAssertFalse(ContainerClass.receivedCompletion)
         XCTAssertFalse(StoredObject.storedObjectReleased)
         XCTAssertFalse(StoredObject2.storedObjectReleased)

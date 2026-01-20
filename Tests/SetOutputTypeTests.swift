@@ -7,9 +7,9 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 final class SetOutputTypeTests: XCTestCase {
@@ -18,7 +18,7 @@ final class SetOutputTypeTests: XCTestCase {
             .ignoreOutput()
             .setOutputType(to: Int.self)
             .eraseToAnyPublisher() // Erasing so the test remains stable
-            // across any changes to `Publisher.setOutputType(to:)`’s implementation.
+        // across any changes to `Publisher.setOutputType(to:)`’s implementation.
 
         XCTAssertTrue(type(of: publisher) == AnyPublisher<Int, Never>.self)
     }

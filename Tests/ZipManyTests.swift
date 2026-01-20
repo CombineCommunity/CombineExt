@@ -7,9 +7,9 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 final class ZipManyTests: XCTestCase {
@@ -29,8 +29,10 @@ final class ZipManyTests: XCTestCase {
 
         subscription = first
             .zip(with: second, third)
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
         second.send(2)
@@ -52,8 +54,10 @@ final class ZipManyTests: XCTestCase {
 
         subscription = first
             .zip(with: second, third)
-            .sink(receiveCompletion: { completed = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completed = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
         first.send(1)
@@ -83,8 +87,10 @@ final class ZipManyTests: XCTestCase {
 
         subscription = first
             .zip(with: second, third)
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
         second.send(2)
@@ -105,8 +111,10 @@ final class ZipManyTests: XCTestCase {
 
         subscription = first
             .zip(with: second, third)
-            .sink(receiveCompletion: { completed = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completed = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
 
@@ -132,8 +140,10 @@ final class ZipManyTests: XCTestCase {
 
         subscription = first
             .zip(with: second, third)
-            .sink(receiveCompletion: { completed = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completed = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
         first.send(1)
@@ -159,8 +169,10 @@ final class ZipManyTests: XCTestCase {
 
         subscription = [first, second, third]
             .zip()
-            .sink(receiveCompletion: { completed = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completed = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
 
@@ -184,8 +196,10 @@ final class ZipManyTests: XCTestCase {
 
         subscription = [first]
             .zip()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
 
@@ -203,8 +217,10 @@ final class ZipManyTests: XCTestCase {
 
         subscription = [AnyPublisher<Int, Never>]()
             .zip()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         XCTAssertTrue(results.isEmpty)
         XCTAssertTrue(completed)

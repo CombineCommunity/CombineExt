@@ -60,8 +60,10 @@ final class RemoveAllDuplicatesTests: XCTestCase {
 
         subscription = integers
             .removeAllDuplicates()
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         integers.send(.one)
         integers.send(.two)
@@ -81,8 +83,10 @@ final class RemoveAllDuplicatesTests: XCTestCase {
 
         subscription = integers
             .removeAllDuplicates()
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         integers.send(.one)
         integers.send(.two)
@@ -135,8 +139,10 @@ final class RemoveAllDuplicatesTests: XCTestCase {
 
         subscription = fours
             .removeAllDuplicates()
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         fours.send(.one)
         fours.send(.two)
@@ -156,8 +162,10 @@ final class RemoveAllDuplicatesTests: XCTestCase {
 
         subscription = fours
             .removeAllDuplicates()
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         fours.send(.one)
         fours.send(.two)
@@ -201,8 +209,10 @@ final class RemoveAllDuplicatesTests: XCTestCase {
 
         subscription = integers
             .removeAllDuplicates(by: isMultipleOf)
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         integers.send(2)
         integers.send(3)
@@ -221,8 +231,10 @@ final class RemoveAllDuplicatesTests: XCTestCase {
 
         subscription = integers
             .removeAllDuplicates(by: isMultipleOf)
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         integers.send(2)
         integers.send(3)

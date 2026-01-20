@@ -29,8 +29,10 @@ final class CombineLatestManyTests: XCTestCase {
 
         subscription = [first, second, third, fourth]
             .combineLatest()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
         second.send(2)
@@ -59,8 +61,8 @@ final class CombineLatestManyTests: XCTestCase {
         XCTAssertEqual(results, [[1, 2, 3, 4], [5, 2, 3, 4], [5, 2, 3, 6]])
         XCTAssertFalse(completed)
 
-        [second, third, fourth].forEach {
-            $0.send(completion: .finished)
+        for item in [second, third, fourth] {
+            item.send(completion: .finished)
         }
 
         XCTAssertTrue(completed)
@@ -75,8 +77,10 @@ final class CombineLatestManyTests: XCTestCase {
 
         subscription = [first, second]
             .combineLatest()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         XCTAssertTrue(results.isEmpty)
         XCTAssertFalse(completed)
@@ -91,8 +95,10 @@ final class CombineLatestManyTests: XCTestCase {
 
         subscription = [first, second]
             .combineLatest()
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
         second.send(2)
@@ -113,8 +119,10 @@ final class CombineLatestManyTests: XCTestCase {
 
         subscription = [first]
             .combineLatest()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
 
@@ -132,8 +140,10 @@ final class CombineLatestManyTests: XCTestCase {
 
         subscription = [AnyPublisher<Int, Never>]()
             .combineLatest()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         XCTAssertTrue(results.isEmpty)
         XCTAssertTrue(completed)
@@ -147,8 +157,10 @@ final class CombineLatestManyTests: XCTestCase {
         var results = [[Int]]()
 
         subscription = first.combineLatest(with: [second])
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         first.send(1)
         second.send(2)

@@ -9,9 +9,9 @@
 import Foundation
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 final class MapToResultTests: XCTestCase {
@@ -29,8 +29,10 @@ final class MapToResultTests: XCTestCase {
 
         subscription = subject
             .mapToResult()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { results.append($0) }
+            )
 
         subject.send(testInt)
         XCTAssertFalse(completed)
@@ -55,8 +57,10 @@ final class MapToResultTests: XCTestCase {
             .tryMap { _ -> Int in throw MapToResultError.someError }
             .mapToResult()
             .eraseToAnyPublisher()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { result = $0 })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { result = $0 }
+            )
 
         subject.send(0)
         XCTAssertNotNil(result)
@@ -94,8 +98,10 @@ final class MapToResultTests: XCTestCase {
             .decode(type: ToDecode.self, decoder: JSONDecoder())
             .mapToResult()
             .eraseToAnyPublisher()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { result = $0 })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { result = $0 }
+            )
 
         subject.send(incorrectJson.data(using: .utf8)!)
         XCTAssertNotNil(result)
@@ -117,7 +123,7 @@ final class MapToResultTests: XCTestCase {
         struct ToEncode: Encodable {
             let foo: Int
 
-            func encode(to encoder: Encoder) throws {
+            func encode(to _: Encoder) throws {
                 throw EncodingError.invalidValue((), EncodingError.Context(codingPath: [], debugDescription: String()))
             }
         }
@@ -132,8 +138,10 @@ final class MapToResultTests: XCTestCase {
             .encode(encoder: JSONEncoder())
             .mapToResult()
             .eraseToAnyPublisher()
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { result = $0 })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { result = $0 }
+            )
 
         subject.send(ToEncode(foo: 0))
         XCTAssertNotNil(result)

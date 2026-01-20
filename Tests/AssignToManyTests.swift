@@ -7,9 +7,9 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class AssignToManyTests: XCTestCase {
@@ -48,9 +48,13 @@ class AssignToManyTests: XCTestCase {
             XCTAssertEqual(dest2.ivar, 0)
 
             subscription = source
-                .assign(to: \.prop, on: dest1,
-                        and: \.ivar, on: dest2,
-                        ownership: ownership)
+                .assign(
+                    to: \.prop,
+                    on: dest1,
+                    and: \.ivar,
+                    on: dest2,
+                    ownership: ownership
+                )
 
             source.send(4)
             XCTAssertEqual(dest1.prop, 4, "\(ownership) ownership")
@@ -65,7 +69,7 @@ class AssignToManyTests: XCTestCase {
             XCTAssertEqual(dest2.ivar, -7, "\(ownership) ownership")
         }
     }
-    
+
     func testAssignToThree() {
         let source = PassthroughSubject<String, Never>()
 
@@ -79,10 +83,15 @@ class AssignToManyTests: XCTestCase {
             XCTAssertEqual(dest3.value, "")
 
             subscription = source
-                .assign(to: \.prop, on: dest1,
-                        and: \.ivar, on: dest2,
-                        and: \.value, on: dest3,
-                        ownership: ownership)
+                .assign(
+                    to: \.prop,
+                    on: dest1,
+                    and: \.ivar,
+                    on: dest2,
+                    and: \.value,
+                    on: dest3,
+                    ownership: ownership
+                )
 
             source.send("Hello")
             XCTAssertEqual(dest1.prop, "Hello", "\(ownership) ownership")
@@ -98,9 +107,10 @@ class AssignToManyTests: XCTestCase {
 }
 
 // MARK: - Private Helpers
+
 private class Fake1<T> {
     var prop: T
-    
+
     init(prop: T) {
         self.prop = prop
     }
@@ -108,7 +118,7 @@ private class Fake1<T> {
 
 private class Fake2<T> {
     var ivar: T
-    
+
     init(ivar: T) {
         self.ivar = ivar
     }
@@ -119,12 +129,12 @@ private class Fake3<T> {
         set { storage = transform(newValue) }
         get { storage }
     }
-    
+
     var storage: T
     var transform: (T) -> T
-    
+
     init(value: T, transform: @escaping (T) -> T) {
-        self.storage = transform(value)
+        storage = transform(value)
         self.transform = transform
     }
 }

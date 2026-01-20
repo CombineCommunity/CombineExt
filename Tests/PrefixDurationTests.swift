@@ -26,8 +26,10 @@ final class PrefixDurationTests: XCTestCase {
 
         cancellable = subject
             .prefix(duration: 0.5, on: scheduler)
-            .sink(receiveCompletion: { completions.append($0) },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completions.append($0) },
+                receiveValue: { results.append($0) }
+            )
 
         scheduler.schedule(after: scheduler.now.advanced(by: 0.25)) {
             subject.send(1)
@@ -52,8 +54,10 @@ final class PrefixDurationTests: XCTestCase {
 
         cancellable = subject
             .prefix(duration: 0.8, on: scheduler)
-            .sink(receiveCompletion: { completions.append($0) },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completions.append($0) },
+                receiveValue: { results.append($0) }
+            )
 
         subject.send(1)
 
@@ -86,8 +90,10 @@ final class PrefixDurationTests: XCTestCase {
 
         cancellable = subject
             .prefix(duration: 0.5, on: scheduler)
-            .sink(receiveCompletion: { completions.append($0 ) },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completions.append($0) },
+                receiveValue: { results.append($0) }
+            )
 
         scheduler.schedule(after: scheduler.now.advanced(by: 1.5)) {
             subject.send(1)
@@ -106,8 +112,10 @@ final class PrefixDurationTests: XCTestCase {
 
         cancellable = subject
             .prefix(duration: 0.5, on: scheduler)
-            .sink(receiveCompletion: { results.append($0) },
-                  receiveValue: { _ in })
+            .sink(
+                receiveCompletion: { results.append($0) },
+                receiveValue: { _ in }
+            )
 
         scheduler.schedule(after: scheduler.now.advanced(by: 0.25)) {
             subject.send(completion: .finished)
@@ -130,8 +138,10 @@ final class PrefixDurationTests: XCTestCase {
 
         cancellable = subject
             .prefix(duration: 0.5, on: scheduler)
-            .sink(receiveCompletion: { results.append($0) },
-                  receiveValue: { _ in })
+            .sink(
+                receiveCompletion: { results.append($0) },
+                receiveValue: { _ in }
+            )
 
         scheduler.schedule(after: scheduler.now.advanced(by: 0.25)) {
             subject.send(completion: .failure(.someError))
@@ -150,8 +160,10 @@ final class PrefixDurationTests: XCTestCase {
 
         cancellable = subject
             .prefix(duration: 0.5, on: scheduler)
-            .sink(receiveCompletion: { results.append($0) },
-                  receiveValue: { _ in })
+            .sink(
+                receiveCompletion: { results.append($0) },
+                receiveValue: { _ in }
+            )
 
         scheduler.schedule(after: scheduler.now.advanced(by: 0.75)) {
             subject.send(completion: .failure(.someError))

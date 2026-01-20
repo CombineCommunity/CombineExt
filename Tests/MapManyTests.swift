@@ -7,8 +7,8 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class MapManyTests: XCTestCase {
@@ -39,7 +39,7 @@ class MapManyTests: XCTestCase {
                 SomeModel(2),
                 SomeModel(4),
                 SomeModel(3),
-                SomeModel(8)
+                SomeModel(8),
             ]
         )
         XCTAssertEqual(completion, .finished)
@@ -70,7 +70,7 @@ class MapManyTests: XCTestCase {
                 SomeModel(2),
                 SomeModel(4),
                 SomeModel(3),
-                SomeModel(8)
+                SomeModel(8),
             ]
         )
         XCTAssertEqual(completion, .failure(.anErrorCase))
@@ -85,7 +85,7 @@ private extension MapManyTests {
 
     struct SomeModel: Equatable, CustomStringConvertible {
         let number: Int
-        var description: String { return "#\(number)" }
+        var description: String { "#\(number)" }
 
         init(_ number: Int) {
             self.number = number

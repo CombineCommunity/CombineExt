@@ -7,9 +7,9 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class PassthroughRelayTests: XCTestCase {
@@ -26,8 +26,10 @@ class PassthroughRelayTests: XCTestCase {
     func testFinishesOnDeinit() {
         var completed = false
         relay?
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { _ in })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { _ in }
+            )
             .store(in: &subscriptions)
 
         XCTAssertFalse(completed)
@@ -79,8 +81,10 @@ class PassthroughRelayTests: XCTestCase {
     func testSubscribePublisher() {
         var completed = false
         relay?
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { self.values.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { self.values.append($0) }
+            )
             .store(in: &subscriptions)
 
         ["1", "2", "3"]
@@ -102,8 +106,10 @@ class PassthroughRelayTests: XCTestCase {
             .subscribe(output)
             .store(in: &subscriptions)
         output
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { self.values.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { self.values.append($0) }
+            )
             .store(in: &subscriptions)
 
         input.accept("1")
@@ -124,8 +130,10 @@ class PassthroughRelayTests: XCTestCase {
             .subscribe(output)
             .store(in: &subscriptions)
         output
-            .sink(receiveCompletion: { _ in completed = true },
-                  receiveValue: { self.values.append($0) })
+            .sink(
+                receiveCompletion: { _ in completed = true },
+                receiveValue: { self.values.append($0) }
+            )
             .store(in: &subscriptions)
 
         input.accept("1")

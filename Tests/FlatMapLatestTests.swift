@@ -7,15 +7,15 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
 import CombineSchedulers
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class FlatMapLatestTests: XCTestCase {
     var subscription: AnyCancellable!
-    
+
     func testInnerOnly() {
         let trigger = PassthroughSubject<Void, Never>()
         var subscriptions = 0
@@ -23,7 +23,7 @@ class FlatMapLatestTests: XCTestCase {
         var cancellations = 0
         var completed = false
         let scheduler = DispatchQueue.test
-        
+
         func publish() -> AnyPublisher<String, Never> {
             Publishers.Timer(every: 0.5, scheduler: scheduler)
                 .autoconnect()
@@ -31,19 +31,23 @@ class FlatMapLatestTests: XCTestCase {
                 .prefix(2)
                 .eraseToAnyPublisher()
         }
-        
+
         subscription = trigger
             .flatMapLatest { _ -> AnyPublisher<String, Never> in
                 return publish()
-                    .handleEvents(receiveSubscription: { _ in subscriptions += 1 },
-                                  receiveCancel: { cancellations += 1 })
+                    .handleEvents(
+                        receiveSubscription: { _ in subscriptions += 1 },
+                        receiveCancel: { cancellations += 1 }
+                    )
                     .eraseToAnyPublisher()
             }
-            .sink(receiveCompletion: { _ in
+            .sink(
+                receiveCompletion: { _ in
                     completed = true
-                  },
-                  receiveValue: { _ in values += 1 })
-            
+                },
+                receiveValue: { _ in values += 1 }
+            )
+
         trigger.send()
         trigger.send()
         trigger.send()

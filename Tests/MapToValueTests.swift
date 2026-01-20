@@ -9,9 +9,9 @@
 import Foundation
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 final class MapToValueTests: XCTestCase {
@@ -54,7 +54,7 @@ final class MapToValueTests: XCTestCase {
         let subject = PassthroughSubject<Int, Never>()
 
         subscription = subject
-            .mapToValue(Void())
+            .mapToValue(())
             .sink { element in
                 XCTAssertTrue(type(of: element) == Void.self)
 

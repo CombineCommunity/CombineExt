@@ -7,10 +7,10 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
 import CombineSchedulers
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 final class IgnoreFailureTests: XCTestCase {
@@ -39,7 +39,8 @@ final class IgnoreFailureTests: XCTestCase {
             .ignoreFailure()
             .sink(
                 receiveCompletion: { completions.append($0) },
-                receiveValue: { values.append($0) })
+                receiveValue: { values.append($0) }
+            )
 
         subject.send(1)
         subject.send(2)
@@ -61,7 +62,8 @@ final class IgnoreFailureTests: XCTestCase {
             .ignoreFailure(completeImmediately: false)
             .sink(
                 receiveCompletion: { completions.append($0) },
-                receiveValue: { values.append($0) })
+                receiveValue: { values.append($0) }
+            )
 
         subject.send(1)
         subject.send(2)
@@ -92,7 +94,8 @@ final class IgnoreFailureTests: XCTestCase {
         cancellable = newPublisher
             .sink(
                 receiveCompletion: { completions.append($0) },
-                receiveValue: { values.append($0) })
+                receiveValue: { values.append($0) }
+            )
 
         subject.send(1)
         subject.send(2)
@@ -116,7 +119,8 @@ final class IgnoreFailureTests: XCTestCase {
         cancellable = newPublisher
             .sink(
                 receiveCompletion: { completions.append($0) },
-                receiveValue: { values.append($0) })
+                receiveValue: { values.append($0) }
+            )
 
         subject.send(1)
         subject.send(2)

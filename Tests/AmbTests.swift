@@ -7,9 +7,9 @@
 //
 
 #if !os(watchOS)
-import XCTest
 import Combine
 import CombineExt
+import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 class AmbTests: XCTestCase {
@@ -27,8 +27,10 @@ class AmbTests: XCTestCase {
 
         subject1
             .amb(subject2)
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { values.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { values.append($0) }
+            )
             .store(in: &subscriptions)
 
         subject2.send(1)
@@ -69,7 +71,8 @@ class AmbTests: XCTestCase {
                 values.append(value)
                 return .none
             },
-            receiveCompletion: { _ in })
+            receiveCompletion: { _ in }
+        )
 
         subject1
             .amb(subject2)
@@ -89,8 +92,10 @@ class AmbTests: XCTestCase {
 
         subject1
             .amb(subject2)
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { values.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { values.append($0) }
+            )
             .store(in: &subscriptions)
 
         XCTAssertEqual(values, [1])
@@ -105,8 +110,10 @@ class AmbTests: XCTestCase {
 
         Publishers
             .Amb(first: subject1, second: subject2)
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { values.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { values.append($0) }
+            )
             .store(in: &subscriptions)
 
         XCTAssertEqual(completion, .finished)
@@ -120,8 +127,10 @@ class AmbTests: XCTestCase {
 
         Publishers
             .Amb(first: subject1, second: subject2)
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { values.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { values.append($0) }
+            )
             .store(in: &subscriptions)
 
         XCTAssertNil(completion)
@@ -143,20 +152,26 @@ class AmbTests: XCTestCase {
 
         subject4
             .amb(with: subject2, subject3, subject1)
-            .sink(receiveCompletion: { completionFour = $0 },
-                  receiveValue: { valuesFour.append($0) })
+            .sink(
+                receiveCompletion: { completionFour = $0 },
+                receiveValue: { valuesFour.append($0) }
+            )
             .store(in: &subscriptions)
 
         subject1
             .amb(with: subject2, subject3)
-            .sink(receiveCompletion: { completionThree = $0 },
-                  receiveValue: { valuesThree.append($0) })
+            .sink(
+                receiveCompletion: { completionThree = $0 },
+                receiveValue: { valuesThree.append($0) }
+            )
             .store(in: &subscriptions)
 
         subject1
             .amb(with: subject2)
-            .sink(receiveCompletion: { completionPair = $0 },
-                  receiveValue: { valuesPair.append($0) })
+            .sink(
+                receiveCompletion: { completionPair = $0 },
+                receiveValue: { valuesPair.append($0) }
+            )
             .store(in: &subscriptions)
 
         subject4.send(3)
@@ -194,8 +209,10 @@ class AmbTests: XCTestCase {
 
         [AnyPublisher<Int, Never>]()
             .amb()
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { results.append($0) }
+            )
             .store(in: &subscriptions)
 
         XCTAssertTrue(results.isEmpty)
@@ -210,8 +227,10 @@ class AmbTests: XCTestCase {
 
         [subject1]
             .amb()
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { results.append($0) }
+            )
             .store(in: &subscriptions)
 
         subject1.send(1)
@@ -231,8 +250,10 @@ class AmbTests: XCTestCase {
 
         [subject1, subject2, subject3]
             .amb()
-            .sink(receiveCompletion: { completion = $0 },
-                  receiveValue: { results.append($0) })
+            .sink(
+                receiveCompletion: { completion = $0 },
+                receiveValue: { results.append($0) }
+            )
             .store(in: &subscriptions)
 
         subject1.send(1)
