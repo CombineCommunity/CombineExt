@@ -183,6 +183,7 @@ private extension Publishers.WithLatestFrom {
 
         // Secondary (other) publisher
         private var latestValue: Other.Output?
+        private let lock = Lock()
         private var otherSubscription: Cancellable?
         private var preInitialDemand = Subscribers.Demand.none
 
@@ -205,7 +206,11 @@ private extension Publishers.WithLatestFrom {
         }
 
         func request(_ demand: Subscribers.Demand) {
-            guard latestValue != nil else {
+            lock.lock()
+            let hasLatestValue = latestValue != nil
+            lock.unlock()
+
+            guard hasLatestValue else {
                 preInitialDemand += demand
                 return
             }
@@ -225,7 +230,9 @@ private extension Publishers.WithLatestFrom {
                 },
                 receiveValue: { [weak self] value in
                     guard let self else { return .none }
+                    lock.lock()
                     latestValue = value
+                    lock.unlock()
 
                     if !gotInitialValue {
                         // When getting initial value, start pulling values
@@ -234,8 +241,13 @@ private extension Publishers.WithLatestFrom {
                             upstream: upstream,
                             downstream: downstream,
                             transformOutput: { [weak self] value in
-                                guard let self,
-                                      let other = latestValue else { return nil }
+                                guard let self else { return nil }
+
+                                lock.lock()
+                                let other = latestValue
+                                lock.unlock()
+
+                                guard let other else { return nil }
 
                                 return resultSelector(value, other)
                             },
@@ -265,7 +277,10 @@ private extension Publishers.WithLatestFrom {
             otherSubscription?.cancel()
         }
 
-        deinit { cancel() }
+        deinit {
+            cancel()
+            lock.cleanupLock()
+        }
     }
 }
 #endif
