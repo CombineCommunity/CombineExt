@@ -2,7 +2,5 @@ Packages
 .build/
 xcuserdata
 DerivedData/
-Carthage
-CombineExt.framework.zip
 .DS_Store
 .claude

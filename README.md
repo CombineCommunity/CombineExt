@@ -8,9 +8,7 @@
 <br />
 <img src="https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS 10.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-333333.svg" />
 <br />
-<a href="https://cocoapods.org/pods/CombineExt" target="_blank"><img src="https://img.shields.io/cocoapods/v/CombineExt.svg?1" alt="CombineExt supports CocoaPods"></a>
 <a href="https://github.com/apple/swift-package-manager" target="_blank"><img src="https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg" alt="CombineExt supports Swift Package Manager (SPM)"></a>
-<a href="https://github.com/Carthage/Carthage" target="_blank"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="CombineExt supports Carthage"></a>
 </p>
 
 CombineExt provides a collection of operators, publishers and utilities for Combine, that are not provided by Apple themselves, but are common in other Reactive Frameworks and standards.
@@ -58,30 +56,12 @@ All operators, utilities and helpers respect Combine's publisher contract, inclu
 
 ## Installation
 
-### CocoaPods
-
-Add the following line to your **Podfile**:
-
-```rb
-pod 'CombineExt'
-```
-
 ### Swift Package Manager
 
 Add the following dependency to your **Package.swift** file:
 
 ```swift
 .package(url: "https://github.com/CombineCommunity/CombineExt.git", from: "1.0.0")
-```
-
-### Carthage
-
-Carthage support is offered as a prebuilt binary.
-
-Add the following to your **Cartfile**:
-
-```
-github "CombineCommunity/CombineExt"
 ```
 
 ## Operators
