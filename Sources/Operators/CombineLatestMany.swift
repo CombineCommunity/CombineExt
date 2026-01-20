@@ -13,15 +13,16 @@ import Combine
 public extension Publisher {
     /// Projects `self` and a `Collection` of `Publisher`s onto a type-erased publisher that chains `combineLatest` calls on
     /// the inner publishers. This is a variadic overload on Combine’s variants that top out at arity three.
-	///
+    ///
     /// - parameter others: A `Collection`-worth of other publishers with matching output and failure types to combine with.
     ///
     /// - returns: A type-erased publisher with value events from `self` and each of the inner publishers `combineLatest`’d
     /// together in an array.
     func combineLatest<Others: Collection>(with others: Others)
         -> AnyPublisher<[Output], Failure>
-        where Others.Element: Publisher, Others.Element.Output == Output, Others.Element.Failure == Failure {
-        ([self.eraseToAnyPublisher()] + others.map { $0.eraseToAnyPublisher() }).combineLatest()
+        where Others.Element: Publisher, Others.Element.Output == Output, Others.Element.Failure == Failure
+    {
+        ([eraseToAnyPublisher()] + others.map { $0.eraseToAnyPublisher() }).combineLatest()
     }
 
     /// Projects `self` and a `Collection` of `Publisher`s onto a type-erased publisher that chains `combineLatest` calls on
@@ -33,7 +34,8 @@ public extension Publisher {
     /// together in an array.
     func combineLatest<Other: Publisher>(with others: Other...)
         -> AnyPublisher<[Output], Failure>
-        where Other.Output == Output, Other.Failure == Failure {
+        where Other.Output == Output, Other.Failure == Failure
+    {
         combineLatest(with: others)
     }
 }
@@ -55,10 +57,11 @@ public extension Collection where Element: Publisher {
 }
 
 // MARK: - Private helpers
-@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+
 /// CombineLatest an array of input publishers in four-somes.
 ///
 /// - parameter input: An array of publishers
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private func makeCombinedQuads<Output, Failure: Swift.Error>(
     input: [AnyPublisher<[Output], Failure>]
 ) -> [AnyPublisher<[Output], Failure>] {

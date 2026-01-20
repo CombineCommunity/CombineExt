@@ -15,7 +15,8 @@ public extension Publisher {
     /// - Parameter notificationHandler: A handler that is passed a publisher of errors raised by the source publisher and returns a publisher that either continues, completes or errors. This behavior is then applied to the source publisher.
     /// - Returns: A publisher producing the elements of the given sequence repeatedly until it terminates successfully or is notified to error or complete.
     func retryWhen<RetryTrigger>(_ errorTrigger: @escaping (AnyPublisher<Self.Failure, Never>) -> RetryTrigger)
-    -> Publishers.RetryWhen<Self, RetryTrigger, Output, Failure> where RetryTrigger: Publisher {
+        -> Publishers.RetryWhen<Self, RetryTrigger, Output, Failure> where RetryTrigger: Publisher
+    {
         .init(upstream: self, errorTrigger: errorTrigger)
     }
 }
@@ -55,7 +56,7 @@ extension Publishers.RetryWhen {
         ) {
             self.upstream = upstream
             self.downstream = downstream
-            self.sink = Sink(
+            sink = Sink(
                 upstream: upstream,
                 downstream: downstream,
                 transformOutput: { $0 },
@@ -64,20 +65,20 @@ extension Publishers.RetryWhen {
                     return nil
                 }
             )
-            self.cancellable = errorTrigger(errorSubject.eraseToAnyPublisher())
+            cancellable = errorTrigger(errorSubject.eraseToAnyPublisher())
                 .sink(
                     receiveCompletion: { [sink] completion in
                         switch completion {
                         case .finished:
                             sink?.buffer.complete(completion: .finished)
-                        case .failure(let error):
+                        case let .failure(error):
                             if let error = error as? Downstream.Failure {
                                 sink?.buffer.complete(completion: .failure(error))
                             }
                         }
                     },
                     receiveValue: { [upstream, sink] _ in
-                        guard let sink = sink else { return }
+                        guard let sink else { return }
                         upstream.subscribe(sink)
                     }
                 )
@@ -97,7 +98,7 @@ extension Publishers.RetryWhen {
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Publishers.RetryWhen.Subscription: CustomStringConvertible {
     var description: String {
-        return "RetryWhen.Subscription<\(Output.self), \(Failure.self)>"
+        "RetryWhen.Subscription<\(Output.self), \(Failure.self)>"
     }
 }
 #endif

@@ -16,7 +16,7 @@ public extension Publisher {
     /// - parameter setOutputType: The new output type for downstream.
     ///
     /// - returns: A publisher that ignores upstream value events and sets its output generic to `NewOutput`.
-    func ignoreOutput<NewOutput>(setOutputType newOutputType: NewOutput.Type) -> Publishers.Map<Publishers.IgnoreOutput<Self>, NewOutput> {
+    func ignoreOutput<NewOutput>(setOutputType _: NewOutput.Type) -> Publishers.Map<Publishers.IgnoreOutput<Self>, NewOutput> {
         ignoreOutput().map { _ -> NewOutput in }
     }
 }

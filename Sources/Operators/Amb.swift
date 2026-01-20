@@ -17,7 +17,8 @@ public extension Publisher {
     ///
     /// - returns: A publisher which mirrors either `self` or `other`.
     func amb<Other: Publisher>(_ other: Other)
-        -> Publishers.Amb<Self, Other> where Other.Output == Output, Other.Failure == Failure {
+        -> Publishers.Amb<Self, Other> where Other.Output == Output, Other.Failure == Failure
+    {
         Publishers.Amb(first: self, second: other)
     }
 
@@ -27,7 +28,8 @@ public extension Publisher {
     ///
     /// - returns: A publisher which mirrors the first publisher to emit an event.
     func amb<Other: Publisher>(with others: Other...)
-        -> AnyPublisher<Self.Output, Self.Failure> where Other.Output == Output, Other.Failure == Failure {
+        -> AnyPublisher<Self.Output, Self.Failure> where Other.Output == Output, Other.Failure == Failure
+    {
         amb(with: others)
     }
 
@@ -38,10 +40,11 @@ public extension Publisher {
     /// - returns: A publisher which mirrors the first publisher to emit an event.
     func amb<Others: Collection>(with others: Others)
         -> AnyPublisher<Self.Output, Self.Failure>
-        where Others.Element: Publisher, Others.Element.Output == Output, Others.Element.Failure == Failure {
-            others.reduce(self.eraseToAnyPublisher()) { result, current in
-                result.amb(current).eraseToAnyPublisher()
-            }
+        where Others.Element: Publisher, Others.Element.Output == Output, Others.Element.Failure == Failure
+    {
+        others.reduce(eraseToAnyPublisher()) { result, current in
+            result.amb(current).eraseToAnyPublisher()
+        }
     }
 }
 
@@ -68,13 +71,16 @@ public extension Collection where Element: Publisher {
 }
 
 // MARK: - Publisher
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publishers {
     struct Amb<First: Publisher, Second: Publisher>: Publisher where First.Output == Second.Output, First.Failure == Second.Failure {
         public func receive<S: Subscriber>(subscriber: S) where Failure == S.Failure, Output == S.Input {
-            subscriber.receive(subscription: Subscription(first: first,
-                                                          second: second,
-                                                          downstream: subscriber))
+            subscriber.receive(subscription: Subscription(
+                first: first,
+                second: second,
+                downstream: subscriber
+            ))
         }
 
         public typealias Output = First.Output
@@ -83,8 +89,10 @@ public extension Publishers {
         private let first: First
         private let second: Second
 
-        public init(first: First,
-                    second: Second) {
+        public init(
+            first: First,
+            second: Second
+        ) {
             self.first = first
             self.second = second
         }
@@ -92,6 +100,7 @@ public extension Publishers {
 }
 
 // MARK: - Subscription
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.Amb {
     class Subscription<Downstream: Subscriber>: Combine.Subscription where Output == Downstream.Input, Failure == Downstream.Failure {
@@ -100,7 +109,7 @@ private extension Publishers.Amb {
         private var preDecisionDemand = Subscribers.Demand.none
         private var decision: Decision? {
             didSet {
-                guard let decision = decision else { return }
+                guard let decision else { return }
                 switch decision {
                 case .first:
                     secondSink = nil
@@ -113,24 +122,30 @@ private extension Publishers.Amb {
             }
         }
 
-        init(first: First,
-             second: Second,
-             downstream: Downstream) {
-            self.firstSink = Sink(upstream: first,
-                                  downstream: downstream) { [weak self] in
-                                guard let self = self,
-                                      self.decision == nil else { return }
+        init(
+            first: First,
+            second: Second,
+            downstream: Downstream
+        ) {
+            firstSink = Sink(
+                upstream: first,
+                downstream: downstream
+            ) { [weak self] in
+                guard let self,
+                      decision == nil else { return }
 
-                                self.decision = .first
-                             }
+                decision = .first
+            }
 
-            self.secondSink = Sink(upstream: second,
-                                   downstream: downstream) { [weak self] in
-                                guard let self = self,
-                                      self.decision == nil else { return }
+            secondSink = Sink(
+                upstream: second,
+                downstream: downstream
+            ) { [weak self] in
+                guard let self,
+                      decision == nil else { return }
 
-                                self.decision = .second
-                              }
+                decision = .second
+            }
         }
 
         func request(_ demand: Subscribers.Demand) {
@@ -157,19 +172,24 @@ private enum Decision {
 }
 
 // MARK: - Sink
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.Amb {
     class Sink<Upstream: Publisher, Downstream: Subscriber>: CombineExt.Sink<Upstream, Downstream> where Upstream.Output == Downstream.Input, Upstream.Failure == Downstream.Failure {
         private let emitted: () -> Void
 
-        init(upstream: Upstream,
-             downstream: Downstream,
-             emitted: @escaping () -> Void) {
+        init(
+            upstream: Upstream,
+            downstream: Downstream,
+            emitted: @escaping () -> Void
+        ) {
             self.emitted = emitted
-            super.init(upstream: upstream,
-                       downstream: downstream,
-                       transformOutput: { $0 },
-                       transformFailure: { $0 })
+            super.init(
+                upstream: upstream,
+                downstream: downstream,
+                transformOutput: { $0 },
+                transformFailure: { $0 }
+            )
         }
 
         override func receive(subscription: Combine.Subscription) {

@@ -18,11 +18,12 @@ public extension Publisher {
     ///
     /// - returns: A publisher that wraps events in an `Event<Output, Failure>`.
     func materialize() -> Publishers.Materialize<Self> {
-        return Publishers.Materialize(upstream: self)
+        Publishers.Materialize(upstream: self)
     }
 }
 
 // MARK: - Materialized Operators
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publisher where Output: EventConvertible, Failure == Never {
     /// Given a materialized publisher, publish only the emitted
@@ -31,7 +32,7 @@ public extension Publisher where Output: EventConvertible, Failure == Never {
     /// - returns: A publisher emitting the `Output` of the wrapped event
     func values() -> AnyPublisher<Output.Output, Never> {
         compactMap {
-            guard case .value(let value) = $0.event else { return nil }
+            guard case let .value(value) = $0.event else { return nil }
             return value
         }
         .eraseToAnyPublisher()
@@ -43,7 +44,7 @@ public extension Publisher where Output: EventConvertible, Failure == Never {
     /// - returns: A publisher emitting the `Failure` of the wrapped event
     func failures() -> AnyPublisher<Output.Failure, Never> {
         compactMap {
-            guard case .failure(let error) = $0.event else { return nil }
+            guard case let .failure(error) = $0.event else { return nil }
             return error
         }
         .eraseToAnyPublisher()
@@ -51,6 +52,7 @@ public extension Publisher where Output: EventConvertible, Failure == Never {
 }
 
 // MARK: - Publisher
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publishers {
     /// A publisher which takes an upstream publisher and emits its events,
@@ -75,16 +77,21 @@ public extension Publishers {
 }
 
 // MARK: - Subscription
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.Materialize {
     class Subscription<Downstream: Subscriber>: Combine.Subscription where Downstream.Input == Event<Upstream.Output, Upstream.Failure>, Downstream.Failure == Never {
         private var sink: Sink<Downstream>?
 
-        init(upstream: Upstream,
-             downstream: Downstream) {
-            self.sink = Sink(upstream: upstream,
-                             downstream: downstream,
-                             transformOutput: { .value($0) })
+        init(
+            upstream: Upstream,
+            downstream: Downstream
+        ) {
+            sink = Sink(
+                upstream: upstream,
+                downstream: downstream,
+                transformOutput: { .value($0) }
+            )
         }
 
         func request(_ demand: Subscribers.Demand) {
@@ -99,10 +106,12 @@ private extension Publishers.Materialize {
 }
 
 // MARK: - Sink
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.Materialize {
     class Sink<Downstream: Subscriber>: CombineExt.Sink<Upstream, Downstream>
-    where Downstream.Input == Event<Upstream.Output, Upstream.Failure>, Downstream.Failure == Never {
+        where Downstream.Input == Event<Upstream.Output, Upstream.Failure>, Downstream.Failure == Never
+    {
         override func receive(completion: Subscribers.Completion<Upstream.Failure>) {
             // We're overriding the standard completion buffering mechanism
             // to buffer these events as regular materialized values, and send
@@ -110,7 +119,7 @@ private extension Publishers.Materialize {
             switch completion {
             case .finished:
                 _ = buffer.buffer(value: .finished)
-            case .failure(let error):
+            case let .failure(error):
                 _ = buffer.buffer(value: .failure(error))
             }
 
@@ -123,7 +132,7 @@ private extension Publishers.Materialize {
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Publishers.Materialize.Subscription: CustomStringConvertible {
     var description: String {
-        return "Materialize.Subscription<\(Downstream.Input.Output.self), \(Downstream.Input.Failure.self)>"
+        "Materialize.Subscription<\(Downstream.Input.Output.self), \(Downstream.Input.Failure.self)>"
     }
 }
 #endif

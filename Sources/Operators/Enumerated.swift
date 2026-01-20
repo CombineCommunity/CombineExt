@@ -35,7 +35,8 @@ public extension Publishers {
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.Enumerated {
     final class Inner<Downstream: Subscriber>: Subscriber
-    where Downstream.Input == Output, Downstream.Failure == Upstream.Failure {
+        where Downstream.Input == Output, Downstream.Failure == Upstream.Failure
+    {
         private var currentIndex: Int
         private let downstream: Downstream
 
@@ -43,7 +44,7 @@ private extension Publishers.Enumerated {
             publisher: Publishers.Enumerated<Upstream>,
             downstream: Downstream
         ) {
-            self.currentIndex = publisher.initial
+            currentIndex = publisher.initial
             self.downstream = downstream
         }
 

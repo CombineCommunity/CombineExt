@@ -21,7 +21,8 @@ public extension Publisher {
     func flatMapFirst<P: Publisher>(
         _ transform: @escaping (Output) -> P
     ) -> Publishers.FlatMap<Publishers.HandleEvents<P>, Publishers.Filter<Self>>
-    where Self.Failure == P.Failure {
+        where Self.Failure == P.Failure
+    {
         var isRunning = false
         let lock = NSRecursiveLock()
 

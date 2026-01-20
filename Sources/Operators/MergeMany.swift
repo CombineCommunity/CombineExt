@@ -10,6 +10,7 @@
 import Combine
 
 // MARK: - Collection Helpers
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Collection where Element: Publisher {
     /// Merge a collection of publishers with the same output and failure types into a single publisher.
@@ -18,7 +19,7 @@ public extension Collection where Element: Publisher {
     ///
     /// - Returns: A type-erased publisher that emits all events from the publishers in the collection.
     func merge() -> AnyPublisher<Element.Output, Element.Failure> {
-		Publishers.MergeMany(self).eraseToAnyPublisher()
+        Publishers.MergeMany(self).eraseToAnyPublisher()
     }
 }
 #endif

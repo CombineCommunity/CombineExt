@@ -20,18 +20,21 @@ public extension Publisher {
     /// - returns: A type-erased publisher with value events from each of the inner publishers zipped together in an array.
     func zip<Others: Collection>(with others: Others)
         -> AnyPublisher<[Output], Failure>
-        where Others.Element: Publisher, Others.Element.Output == Output, Others.Element.Failure == Failure {
-        ([self.eraseToAnyPublisher()] + others.map { $0.eraseToAnyPublisher() }).zip()
+        where Others.Element: Publisher, Others.Element.Output == Output, Others.Element.Failure == Failure
+    {
+        ([eraseToAnyPublisher()] + others.map { $0.eraseToAnyPublisher() }).zip()
     }
 
     /// A variadic overload on `Publisher.zip(with:)`.
     func zip<Other: Publisher>(with others: Other...)
-        -> AnyPublisher<[Output], Failure> where Other.Output == Output, Other.Failure == Failure {
+        -> AnyPublisher<[Output], Failure> where Other.Output == Output, Other.Failure == Failure
+    {
         zip(with: others)
     }
 }
 
 // MARK: - Collection Helpers
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Collection where Element: Publisher {
     /// Zip an array of publishers with the same output and failure types.
@@ -49,10 +52,11 @@ public extension Collection where Element: Publisher {
 }
 
 // MARK: - Private helper
-@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+
 /// Zip an array of input publishers in four-somes.
 ///
 /// - parameter input: An array of publishers
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private func makeZippedQuads<Output, Failure: Swift.Error>(
     input: [AnyPublisher<[Output], Failure>]
 ) -> [AnyPublisher<[Output], Failure>] {

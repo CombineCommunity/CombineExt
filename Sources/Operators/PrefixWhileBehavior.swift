@@ -35,10 +35,10 @@ public extension Publisher {
     ) -> AnyPublisher<Output, Failure> {
         switch behavior {
         case .exclusive:
-            return prefix(while: predicate)
+            prefix(while: predicate)
                 .eraseToAnyPublisher()
         case .inclusive:
-            return flatMap { next in
+            flatMap { next in
                 Just(PrefixInclusiveEvent.whileValueOrIncluded(next))
                     .append(!predicate(next) ? [.end] : [])
                     .setFailureType(to: Failure.self)
@@ -60,18 +60,18 @@ private enum PrefixInclusiveEvent<Output> {
     var isWhileValueOrIncluded: Bool {
         switch self {
         case .end:
-            return false
+            false
         case .whileValueOrIncluded:
-            return true
+            true
         }
     }
 
     var value: Output? {
         switch self {
         case .end:
-            return nil
+            nil
         case let .whileValueOrIncluded(inner):
-            return inner
+            inner
         }
     }
 }

@@ -41,17 +41,17 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
         let subscriptions: [Subscription<AnySubscriber<Output, Failure>>]
 
         do {
-          lock.lock()
-          defer { lock.unlock() }
+            lock.lock()
+            defer { lock.unlock() }
 
-          guard isActive else { return }
+            guard isActive else { return }
 
-          buffer.append(value)
-          if buffer.count > bufferSize {
-            buffer.removeFirst()
-          }
+            buffer.append(value)
+            if buffer.count > bufferSize {
+                buffer.removeFirst()
+            }
 
-          subscriptions = self.subscriptions
+            subscriptions = self.subscriptions
         }
 
         subscriptions.forEach { $0.forwardValueToBuffer(value) }
@@ -104,7 +104,7 @@ public final class ReplaySubject<Output, Failure: Error>: Subject {
         lock.lock()
         defer { self.lock.unlock() }
 
-        self.subscriptions.removeAll { $0.innerSubscriberIdentifier == subscriberIdentifier }
+        subscriptions.removeAll { $0.innerSubscriberIdentifier == subscriberIdentifier }
     }
 }
 
@@ -117,15 +117,15 @@ extension ReplaySubject {
         fileprivate let innerSubscriberIdentifier: CombineIdentifier
 
         init(downstream: Downstream, cancellationHandler: (() -> Void)?) {
-            self.demandBuffer = DemandBuffer(subscriber: downstream)
-            self.innerSubscriberIdentifier = downstream.combineIdentifier
+            demandBuffer = DemandBuffer(subscriber: downstream)
+            innerSubscriberIdentifier = downstream.combineIdentifier
             self.cancellationHandler = cancellationHandler
         }
 
         func replay(_ buffer: [Output], completion: Subscribers.Completion<Failure>?) {
             buffer.forEach(forwardValueToBuffer)
 
-            if let completion = completion {
+            if let completion {
                 forwardCompletionToBuffer(completion)
             }
         }

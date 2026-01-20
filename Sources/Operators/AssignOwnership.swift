@@ -22,18 +22,20 @@ public extension Publisher where Self.Failure == Never {
     /// - returns: An AnyCancellable instance. Call cancel() on this instance when you no longer want
     ///            the publisher to automatically assign the property. Deinitializing this instance
     ///            will also cancel automatic assignment.
-    func assign<Root: AnyObject>(to keyPath: ReferenceWritableKeyPath<Root, Self.Output>,
-                                 on object: Root,
-                                 ownership: ObjectOwnership = .strong) -> AnyCancellable {
+    func assign<Root: AnyObject>(
+        to keyPath: ReferenceWritableKeyPath<Root, Self.Output>,
+        on object: Root,
+        ownership: ObjectOwnership = .strong
+    ) -> AnyCancellable {
         switch ownership {
         case .strong:
-            return assign(to: keyPath, on: object)
+            assign(to: keyPath, on: object)
         case .weak:
-            return sink { [weak object] value in
+            sink { [weak object] value in
                 object?[keyPath: keyPath] = value
             }
         case .unowned:
-            return sink { [unowned object] value in
+            sink { [unowned object] value in
                 object[keyPath: keyPath] = value
             }
         }
@@ -57,14 +59,14 @@ public extension Publisher where Self.Failure == Never {
     ) -> AnyCancellable {
         switch ownership {
         case .strong:
-            return assign(to: keyPath1, on: object1, and: keyPath2, on: object2)
+            assign(to: keyPath1, on: object1, and: keyPath2, on: object2)
         case .weak:
-            return sink { [weak object1, weak object2] value in
+            sink { [weak object1, weak object2] value in
                 object1?[keyPath: keyPath1] = value
                 object2?[keyPath: keyPath2] = value
             }
         case .unowned:
-            return sink { [unowned object1, unowned object2] value in
+            sink { [unowned object1, unowned object2] value in
                 object1[keyPath: keyPath1] = value
                 object2[keyPath: keyPath2] = value
             }
@@ -92,17 +94,22 @@ public extension Publisher where Self.Failure == Never {
     ) -> AnyCancellable {
         switch ownership {
         case .strong:
-            return assign(to: keyPath1, on: object1,
-                          and: keyPath2, on: object2,
-                          and: keyPath3, on: object3)
+            assign(
+                to: keyPath1,
+                on: object1,
+                and: keyPath2,
+                on: object2,
+                and: keyPath3,
+                on: object3
+            )
         case .weak:
-            return sink { [weak object1, weak object2, weak object3] value in
+            sink { [weak object1, weak object2, weak object3] value in
                 object1?[keyPath: keyPath1] = value
                 object2?[keyPath: keyPath2] = value
                 object3?[keyPath: keyPath3] = value
             }
         case .unowned:
-            return sink { [unowned object1, unowned object2, unowned object3] value in
+            sink { [unowned object1, unowned object2, unowned object3] value in
                 object1[keyPath: keyPath1] = value
                 object2[keyPath: keyPath2] = value
                 object3[keyPath: keyPath3] = value

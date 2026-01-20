@@ -35,14 +35,16 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
     /// - note: You **must** provide the two transformation functions above if you're using
     ///         the default `Sink` implementation. Otherwise, you must subclass `Sink` with your own
     ///         publisher's sink and manage the buffer accordingly.
-    init(upstream: Upstream,
-         downstream: Downstream,
-         transformOutput: TransformOutput? = nil,
-         transformFailure: TransformFailure? = nil) {
-        self.buffer = DemandBuffer(subscriber: downstream)
+    init(
+        upstream: Upstream,
+        downstream: Downstream,
+        transformOutput: TransformOutput? = nil,
+        transformFailure: TransformFailure? = nil
+    ) {
+        buffer = DemandBuffer(subscriber: downstream)
         self.transformOutput = transformOutput
         self.transformFailure = transformFailure
-        
+
         // A subscription can only be cancelled once. The `upstreamIsCancelled` value
         // is used to suppress a second call to cancel when the Sink is deallocated,
         // when a sink receives completion, and when a custom operator like `withLatestFrom`
@@ -85,7 +87,7 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
         switch completion {
         case .finished:
             buffer.complete(completion: .finished)
-        case .failure(let error):
+        case let .failure(error):
             guard let transform = transformFailure else {
                 fatalError("""
                     ❌ Missing failure transformation
@@ -106,7 +108,7 @@ class Sink<Upstream: Publisher, Downstream: Subscriber>: Subscriber {
 
     func cancelUpstream() {
         guard upstreamIsCancelled == false else { return }
-        
+
         upstreamSubscription.kill()
     }
 

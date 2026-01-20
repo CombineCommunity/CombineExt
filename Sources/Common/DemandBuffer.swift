@@ -41,8 +41,10 @@ class DemandBuffer<S: Subscriber> {
     ///
     /// - returns: The demand fulfilled by the bufferr
     func buffer(value: S.Input) -> Subscribers.Demand {
-        precondition(self.completion == nil,
-                     "How could a completed publisher sent values?! Beats me 🤷‍♂️")
+        precondition(
+            completion == nil,
+            "How could a completed publisher sent values?! Beats me 🤷‍♂️"
+        )
         lock.lock()
         defer { lock.unlock() }
 
@@ -63,8 +65,10 @@ class DemandBuffer<S: Subscriber> {
     ///
     /// - parameter completion: Completion event
     func complete(completion: Subscribers.Completion<S.Failure>) {
-        precondition(self.completion == nil,
-                     "Completion have already occured, which is quite awkward 🥺")
+        precondition(
+            self.completion == nil,
+            "Completion have already occured, which is quite awkward 🥺"
+        )
 
         self.completion = completion
         _ = flush()
@@ -91,19 +95,19 @@ class DemandBuffer<S: Subscriber> {
         lock.lock()
         defer { lock.unlock() }
 
-        if let newDemand = newDemand {
+        if let newDemand {
             demandState.requested += newDemand
         }
 
         // If buffer isn't ready for flushing, return immediately
         guard demandState.requested > 0 || newDemand == Subscribers.Demand.none else { return .none }
 
-        while !buffer.isEmpty && demandState.processed < demandState.requested {
+        while !buffer.isEmpty, demandState.processed < demandState.requested {
             demandState.requested += subscriber.receive(buffer.remove(at: 0))
             demandState.processed += 1
         }
 
-        if let completion = completion {
+        if let completion {
             // Completion event was already sent
             buffer = []
             demandState = .init()
@@ -119,6 +123,7 @@ class DemandBuffer<S: Subscriber> {
 }
 
 // MARK: - Private Helpers
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension DemandBuffer {
     /// A model that tracks the downstream's
@@ -131,6 +136,7 @@ private extension DemandBuffer {
 }
 
 // MARK: - Internally-scoped helpers
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Subscription {
     /// Reqeust demand if it's not empty
@@ -143,7 +149,7 @@ extension Subscription {
 }
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-extension Optional where Wrapped == Subscription {
+extension Subscription? {
     /// Cancel the Optional subscription and nullify it
     mutating func kill() {
         self?.cancel()

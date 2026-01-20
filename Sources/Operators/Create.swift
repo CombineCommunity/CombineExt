@@ -79,12 +79,14 @@ public extension AnyPublisher {
     ///    }
     ///
     static func create(_ factory: @escaping Publishers.Create<Output, Failure>.SubscriberHandler)
-        -> AnyPublisher<Output, Failure> {
+        -> AnyPublisher<Output, Failure>
+    {
         AnyPublisher(factory)
     }
 }
 
 // MARK: - Publisher
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publishers {
     /// A publisher which accepts a closure with a subscriber argument,
@@ -112,28 +114,33 @@ public extension Publishers {
 }
 
 // MARK: - Subscription
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private extension Publishers.Create {
     class Subscription<Downstream: Combine.Subscriber>: Combine.Subscription where Output == Downstream.Input, Failure == Downstream.Failure {
         private let buffer: DemandBuffer<Downstream>
         private var cancelable: Cancellable?
 
-        init(factory: @escaping SubscriberHandler,
-             downstream: Downstream) {
-            self.buffer = DemandBuffer(subscriber: downstream)
+        init(
+            factory: @escaping SubscriberHandler,
+            downstream: Downstream
+        ) {
+            buffer = DemandBuffer(subscriber: downstream)
 
-            let subscriber = Subscriber(onValue: { [weak self] in _ = self?.buffer.buffer(value: $0) },
-                                        onCompletion: { [weak self] in self?.buffer.complete(completion: $0) })
+            let subscriber = Subscriber(
+                onValue: { [weak self] in _ = self?.buffer.buffer(value: $0) },
+                onCompletion: { [weak self] in self?.buffer.complete(completion: $0) }
+            )
 
-            self.cancelable = factory(subscriber)
+            cancelable = factory(subscriber)
         }
 
         func request(_ demand: Subscribers.Demand) {
-            _ = self.buffer.demand(demand)
+            _ = buffer.demand(demand)
         }
 
         func cancel() {
-            self.cancelable?.cancel()
+            cancelable?.cancel()
         }
     }
 }
@@ -141,7 +148,7 @@ private extension Publishers.Create {
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Publishers.Create.Subscription: CustomStringConvertible {
     var description: String {
-        return "Create.Subscription<\(Output.self), \(Failure.self)>"
+        "Create.Subscription<\(Output.self), \(Failure.self)>"
     }
 }
 
@@ -151,8 +158,10 @@ public extension Publishers.Create {
         private let onValue: (Output) -> Void
         private let onCompletion: (Subscribers.Completion<Failure>) -> Void
 
-        fileprivate init(onValue: @escaping (Output) -> Void,
-                         onCompletion: @escaping (Subscribers.Completion<Failure>) -> Void) {
+        fileprivate init(
+            onValue: @escaping (Output) -> Void,
+            onCompletion: @escaping (Subscribers.Completion<Failure>) -> Void
+        ) {
             self.onValue = onValue
             self.onCompletion = onCompletion
         }

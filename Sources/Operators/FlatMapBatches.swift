@@ -30,14 +30,14 @@ public extension Collection where Element: Publisher {
                 $0 == endIndex ?
                     nil :
                     index($0, offsetBy: size, limitedBy: endIndex)
-                        ?? endIndex
+                    ?? endIndex
             }
         )
 
         return Swift.zip(indexBreaks, indexBreaks.dropFirst())
             .publisher
             .setFailureType(to: Element.Failure.self)
-            .flatMap(maxPublishers: .max(1)) { self[$0..<$1].zip() }
+            .flatMap(maxPublishers: .max(1)) { self[$0 ..< $1].zip() }
             .eraseToAnyPublisher()
     }
 }

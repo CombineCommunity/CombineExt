@@ -16,33 +16,35 @@ public enum Event<Output, Failure: Swift.Error> {
 }
 
 // MARK: - Equatable Conformance
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Event: Equatable where Output: Equatable, Failure: Equatable {
-    static public func == (lhs: Self, rhs: Self) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.finished, .finished):
-            return true
+            true
         case let (.failure(err1), .failure(err2)):
-            return err1 == err2
+            err1 == err2
         case let (.value(val1), .value(val2)):
-            return val1 == val2
+            val1 == val2
         default:
-            return false
+            false
         }
     }
 }
 
 // MARK: - Friendly Output
+
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Event: CustomStringConvertible {
     public var description: String {
         switch self {
-        case .value(let val):
-            return "value(\(val))"
-        case .failure(let err):
-            return "failure(\(err))"
+        case let .value(val):
+            "value(\(val))"
+        case let .failure(err):
+            "failure(\(err))"
         case .finished:
-            return "finished"
+            "finished"
         }
     }
 }

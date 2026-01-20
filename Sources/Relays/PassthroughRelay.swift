@@ -18,14 +18,16 @@ import Combine
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public class PassthroughRelay<Output>: Relay {
     private let storage: PassthroughSubject<Output, Never>
-    private var subscriptions = [Subscription<PassthroughSubject<Output, Never>,
-                                              AnySubscriber<Output, Never>>]()
+    private var subscriptions = [Subscription<
+        PassthroughSubject<Output, Never>,
+        AnySubscriber<Output, Never>
+    >]()
 
     /// Create a new relay
     ///
     /// - parameter value: Initial value for the relay
     public init() {
-        self.storage = .init()
+        storage = .init()
     }
 
     /// Relay a value to downstream subscribers
@@ -37,7 +39,7 @@ public class PassthroughRelay<Output>: Relay {
 
     public func receive<S: Subscriber>(subscriber: S) where Output == S.Input, Failure == S.Failure {
         let subscription = Subscription(upstream: storage, downstream: AnySubscriber(subscriber))
-        self.subscriptions.append(subscription)
+        subscriptions.append(subscription)
         subscriber.receive(subscription: subscription)
     }
 
@@ -64,16 +66,20 @@ private extension PassthroughRelay {
             set { sink?.shouldForwardCompletion = newValue }
         }
 
-        init(upstream: Upstream,
-             downstream: Downstream) {
-            self.sink = Sink(upstream: upstream,
-                             downstream: downstream,
-                             transformOutput: { $0 })
+        init(
+            upstream: Upstream,
+            downstream: Downstream
+        ) {
+            sink = Sink(
+                upstream: upstream,
+                downstream: downstream,
+                transformOutput: { $0 }
+            )
         }
 
         func forceFinish() {
-            self.sink?.shouldForwardCompletion = true
-            self.sink?.receive(completion: .finished)
+            sink?.shouldForwardCompletion = true
+            sink?.receive(completion: .finished)
         }
 
         func request(_ demand: Subscribers.Demand) {

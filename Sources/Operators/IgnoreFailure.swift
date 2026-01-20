@@ -29,7 +29,8 @@ public extension Publisher {
     /// - returns: A publisher that ignores upstream error events and has its `Failure` generic pinned to the specified failure type.
     func ignoreFailure<NewFailure: Error>(
         setFailureType newFailureType: NewFailure.Type,
-        completeImmediately: Bool = true) -> AnyPublisher<Output, NewFailure> {
+        completeImmediately: Bool = true
+    ) -> AnyPublisher<Output, NewFailure> {
         ignoreFailure(completeImmediately: completeImmediately)
             .setFailureType(to: newFailureType)
             .eraseToAnyPublisher()

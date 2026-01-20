@@ -11,8 +11,8 @@ import Combine
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension Publisher {
-    /// Groups the elements of the source publisher into arrays of N consecutive elements.   
-    /// The resulting publisher:    
+    /// Groups the elements of the source publisher into arrays of N consecutive elements.
+    /// The resulting publisher:
     ///    - does not emit anything until the source publisher emits at least N elements;
     ///    - emits an array for every element after that;
     ///    - forwards any errors or completed events.

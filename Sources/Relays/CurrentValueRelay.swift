@@ -13,14 +13,16 @@ import Combine
 ///
 /// Unlike its subject-counterpart, it may only accept values, and only sends a finishing event on deallocation.
 /// It cannot send a failure event.
-/// 
+///
 /// - note: Unlike PassthroughRelay, CurrentValueRelay maintains a buffer of the most recently published value.
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public class CurrentValueRelay<Output>: Relay {
     public var value: Output { storage.value }
     private let storage: CurrentValueSubject<Output, Never>
-    private var subscriptions = [Subscription<CurrentValueSubject<Output, Never>,
-                                              AnySubscriber<Output, Never>>]()
+    private var subscriptions = [Subscription<
+        CurrentValueSubject<Output, Never>,
+        AnySubscriber<Output, Never>
+    >]()
 
     /// Create a new relay
     ///
@@ -38,7 +40,7 @@ public class CurrentValueRelay<Output>: Relay {
 
     public func receive<S: Subscriber>(subscriber: S) where Output == S.Input, Failure == S.Failure {
         let subscription = Subscription(upstream: storage, downstream: AnySubscriber(subscriber))
-        self.subscriptions.append(subscription)
+        subscriptions.append(subscription)
         subscriber.receive(subscription: subscription)
     }
 
@@ -65,17 +67,21 @@ private extension CurrentValueRelay {
             set { sink?.shouldForwardCompletion = newValue }
         }
 
-        init(upstream: Upstream,
-             downstream: Downstream) {
-            self.sink = Sink(upstream: upstream,
-                             downstream: downstream,
-                             transformOutput: { $0 })
+        init(
+            upstream: Upstream,
+            downstream: Downstream
+        ) {
+            sink = Sink(
+                upstream: upstream,
+                downstream: downstream,
+                transformOutput: { $0 }
+            )
         }
 
         func forceFinish() {
-            self.sink?.shouldForwardCompletion = true
-            self.sink?.receive(completion: .finished)
-            self.sink = nil
+            sink?.shouldForwardCompletion = true
+            sink?.receive(completion: .finished)
+            sink = nil
         }
 
         func request(_ demand: Subscribers.Demand) {
