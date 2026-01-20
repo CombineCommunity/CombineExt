@@ -3,46 +3,63 @@ name: CombineExt
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  xcode-tests:
-    name: "Test"
-    runs-on: macOS-latest
-    
+  spm-tests:
+    name: "Swift ${{ matrix.swift }} on ${{ matrix.os }}"
+    runs-on: ${{ matrix.os }}
+
     strategy:
       matrix:
-        platform: [macOS, iOS, tvOS]
-        include:
-          - platform: macOS
-            sdk: macosx
-            destination: "arch=x86_64"
-
-          - platform: iOS
-            sdk: iphonesimulator
-            destination: "name=iPhone 11"
-
-          - platform: tvOS
-            sdk: appletvsimulator
-            destination: "name=Apple TV"
+        os: [macos-13, macos-14, macos-latest]
+        swift: ["5.9", "6.0"]
+        exclude:
+          - os: macos-13
+            swift: "6.0"
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Generate project
-        run: make project
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode version
+        if: matrix.swift == '5.9'
+        run: sudo xcode-select -s /Applications/Xcode_15.2.app
+
       - name: Run tests
-        run: set -o pipefail && xcodebuild -project CombineExt.xcodeproj -scheme CombineExt-Package -enableCodeCoverage YES -sdk ${{ matrix.sdk }} -destination "${{ matrix.destination }}" test | xcpretty -c -r html --output logs/${{ matrix.platform }}.html
-      - uses: codecov/codecov-action@v1.0.13
-        with:
-          token: 1519d58c-6fb9-483f-af6c-7f6f0b384345
-          name: CombineExt
-      - uses: actions/upload-artifact@v1
-        with:
-          name: build-logs-${{ github.run_id }}
-          path: logs
+        run: swift test --enable-code-coverage
 
-  SPM:
-    name: "Test (SPM)"
-    runs-on: macOS-latest
+      - name: Generate coverage report
+        if: matrix.os == 'macos-latest' && matrix.swift == '6.0'
+        run: xcrun llvm-cov export -format="lcov" .build/debug/CombineExtPackageTests.xctest/Contents/MacOS/CombineExtPackageTests -instr-profile .build/debug/codecov/default.profdata > coverage.lcov
+
+      - name: Upload coverage to Codecov
+        if: matrix.os == 'macos-latest' && matrix.swift == '6.0'
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.lcov
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+  platform-tests:
+    name: "Test ${{ matrix.platform }}"
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        platform: [iOS, tvOS, watchOS]
+        include:
+          - platform: iOS
+            destination: "platform=iOS Simulator,name=iPhone 15"
+          - platform: tvOS
+            destination: "platform=tvOS Simulator,name=Apple TV"
+          - platform: watchOS
+            destination: "platform=watchOS Simulator,name=Apple Watch Series 9 (45mm)"
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Run tests
-      run: set -o pipefail && swift test
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -scheme CombineExt \
+            -destination "${{ matrix.destination }}" \
+            -enableCodeCoverage NO \
+            | xcbeautify --renderer github-actions || true
