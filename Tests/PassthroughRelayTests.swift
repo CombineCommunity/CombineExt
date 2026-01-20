@@ -143,5 +143,207 @@ class PassthroughRelayTests: XCTestCase {
         XCTAssertFalse(completed)
         XCTAssertEqual(values, ["initial", "1", "2", "3"])
     }
+
+    // MARK: - Memory Leak Tests (Issue #167, PR #168)
+
+    // There was a race condition which caused subscriptions in PassthroughRelay
+    // to leak. Details of the race condition are in this PR:
+    //
+    // https://github.com/CombineCommunity/CombineExt/pull/168
+    //
+    // The issue is similar to CurrentValueRelay (PR #137). The easiest way to
+    // reproduce the race condition is to initialize `cancellables` before `relay`.
+    // These tests confirm subscriptions are properly released regardless of
+    // initialization order.
+
+    final class StoredObject {
+        nonisolated(unsafe) static var storedObjectReleased = false
+
+        let value = 10
+
+        init() {
+            Self.storedObjectReleased = false
+        }
+
+        deinit {
+            Self.storedObjectReleased = true
+        }
+    }
+
+    final class StoredObject2 {
+        nonisolated(unsafe) static var storedObjectReleased = false
+
+        let value = 20
+
+        init() {
+            Self.storedObjectReleased = false
+        }
+
+        deinit {
+            Self.storedObjectReleased = true
+        }
+    }
+
+    func testSubscriptionIsReleasedWhenRelayIsDeallocatedAndDeclaredAfterCancellables() {
+        final class ContainerClass {
+            nonisolated(unsafe) static var receivedCompletion = false
+            nonisolated(unsafe) static var receivedCancel = false
+
+            // Cancellables comes before the relay
+            var cancellables = Set<AnyCancellable>()
+            let relay = PassthroughRelay<StoredObject>()
+
+            init() {
+                relay
+                    .handleEvents(receiveCancel: {
+                        Self.receivedCancel = true
+                    })
+                    .sink(
+                        receiveCompletion: { _ in
+                            Self.receivedCompletion = true
+                        },
+                        receiveValue: { _ in }
+                    )
+                    .store(in: &cancellables)
+            }
+        }
+
+        var container: ContainerClass? = ContainerClass()
+
+        XCTAssertFalse(ContainerClass.receivedCompletion)
+        XCTAssertFalse(ContainerClass.receivedCancel)
+        container = nil
+        XCTAssertNil(container)
+
+        // Cancellables is deallocated before the relay, so cancel is called
+        XCTAssertFalse(ContainerClass.receivedCompletion)
+        XCTAssertTrue(ContainerClass.receivedCancel)
+    }
+
+    func testSubscriptionIsReleasedWhenRelayIsDeallocatedAndDeclaredBeforeCancellables() {
+        final class ContainerClass {
+            nonisolated(unsafe) static var receivedCompletion = false
+            nonisolated(unsafe) static var receivedCancel = false
+
+            // Relay comes before cancellables
+            let relay = PassthroughRelay<StoredObject>()
+            var cancellables = Set<AnyCancellable>()
+
+            init() {
+                relay
+                    .handleEvents(receiveCancel: {
+                        Self.receivedCancel = true
+                    })
+                    .sink(
+                        receiveCompletion: { _ in
+                            Self.receivedCompletion = true
+                        },
+                        receiveValue: { _ in }
+                    )
+                    .store(in: &cancellables)
+            }
+        }
+
+        var container: ContainerClass? = ContainerClass()
+
+        XCTAssertFalse(ContainerClass.receivedCompletion)
+        XCTAssertFalse(ContainerClass.receivedCancel)
+        container = nil
+        XCTAssertNil(container)
+
+        // Relay is deallocated first, so completion is sent
+        XCTAssertTrue(ContainerClass.receivedCompletion)
+        XCTAssertFalse(ContainerClass.receivedCancel)
+    }
+
+    func testStoredObjectsAreReleasedWithWithLatestFromAndDeclaredBeforeCancellables() {
+        final class ContainerClass {
+            nonisolated(unsafe) static var receivedCompletion = false
+            nonisolated(unsafe) static var receivedCancel = false
+
+            // Relays come before cancellables
+            let relay = PassthroughRelay<StoredObject>()
+            let relay2 = PassthroughRelay<StoredObject2>()
+            var cancellables: Set<AnyCancellable>? = Set<AnyCancellable>()
+
+            init() {
+                relay
+                    .withLatestFrom(relay2)
+                    .handleEvents(receiveCancel: {
+                        Self.receivedCancel = true
+                    })
+                    .sink(
+                        receiveCompletion: { _ in
+                            Self.receivedCompletion = true
+                        },
+                        receiveValue: { _ in }
+                    )
+                    .store(in: &cancellables!)
+
+                // Send initial values so withLatestFrom has something to work with.
+                relay2.accept(StoredObject2())
+            }
+        }
+
+        var container: ContainerClass? = ContainerClass()
+
+        XCTAssertFalse(ContainerClass.receivedCompletion)
+        XCTAssertFalse(StoredObject.storedObjectReleased)
+        XCTAssertFalse(StoredObject2.storedObjectReleased)
+
+        container = nil
+        XCTAssertTrue(StoredObject2.storedObjectReleased)
+        XCTAssertNil(container)
+
+        // withLatestFrom keeps the relay subscription alive until cancellables are released.
+        XCTAssertFalse(ContainerClass.receivedCompletion)
+        XCTAssertTrue(ContainerClass.receivedCancel)
+    }
+
+    func testStoredObjectsAreReleasedWithWithLatestFromAndDeclaredAfterCancellables() {
+        final class ContainerClass {
+            nonisolated(unsafe) static var receivedCompletion = false
+            nonisolated(unsafe) static var receivedCancel = false
+
+            // Cancellables comes before the relays - this is the problematic case
+            var cancellables: Set<AnyCancellable>? = Set<AnyCancellable>()
+            let relay = PassthroughRelay<StoredObject>()
+            let relay2 = PassthroughRelay<StoredObject2>()
+
+            init() {
+                relay
+                    .withLatestFrom(relay2)
+                    .handleEvents(receiveCancel: {
+                        Self.receivedCancel = true
+                    })
+                    .sink(
+                        receiveCompletion: { _ in
+                            Self.receivedCompletion = true
+                        },
+                        receiveValue: { _ in }
+                    )
+                    .store(in: &cancellables!)
+
+                // Send initial values so withLatestFrom has something to work with.
+                relay2.accept(StoredObject2())
+            }
+        }
+
+        var container: ContainerClass? = ContainerClass()
+
+        XCTAssertFalse(ContainerClass.receivedCompletion)
+        XCTAssertFalse(StoredObject.storedObjectReleased)
+        XCTAssertFalse(StoredObject2.storedObjectReleased)
+
+        // Setting container to nil deallocates cancellables first
+        // This should not crash and should properly release objects
+        container = nil
+        XCTAssertTrue(StoredObject2.storedObjectReleased)
+        XCTAssertNil(container)
+
+        // Cancellables deallocated first, so cancel is called
+        XCTAssertFalse(ContainerClass.receivedCompletion)
+        XCTAssertTrue(ContainerClass.receivedCancel)
+    }
 }
 #endif
