@@ -192,7 +192,6 @@ final class ReplaySubjectTests: XCTestCase {
         var results3 = [Int]()
         var completions3 = [Subscribers.Completion<AnError>]()
 
-
         subject
             .sink(
                 receiveCompletion: { completions1.append($0) },
@@ -374,7 +373,7 @@ final class ReplaySubjectTests: XCTestCase {
                 .map(\.combineIdentifier),
             [
                 subscription1?.combineIdentifier,
-                subscription2?.combineIdentifier
+                subscription2?.combineIdentifier,
             ]
         )
 
@@ -395,7 +394,7 @@ final class ReplaySubjectTests: XCTestCase {
     func testReplayOrderThreadSafety() async {
         continueAfterFailure = false
         // Loop to ensure any race condition is caught.
-        for _ in 0..<5000 {
+        for _ in 0 ..< 5000 {
             let replaySubject = ReplaySubject<Int, Never>(bufferSize: 3)
             replaySubject.send(1)
             replaySubject.send(2)
@@ -403,11 +402,18 @@ final class ReplaySubjectTests: XCTestCase {
             // Use tasks to create a new subscription on one thread
             // while sending the third value on another thread.
             // The new subscription should always receive [1, 2, 3]
+
+            // Wrap in @unchecked Sendable to explicitly acknowledge intentional concurrent access for testing
+            struct UnsafeSendableBox<T>: @unchecked Sendable {
+                let value: T
+            }
+            let subject = UnsafeSendableBox(value: replaySubject)
+
             await withTaskGroup(of: Void.self) { taskGroup in
                 taskGroup.addTask {
                     let output: [Int] = await withCheckedContinuation { continuation in
                         var cancellable: AnyCancellable?
-                        cancellable = replaySubject.collect(3).first().sink(receiveValue: { value in
+                        cancellable = subject.value.collect(3).first().sink(receiveValue: { value in
                             continuation.resume(returning: value)
                             withExtendedLifetime(cancellable) { cancellable = nil }
                         })
@@ -419,7 +425,7 @@ final class ReplaySubjectTests: XCTestCase {
                 }
 
                 taskGroup.addTask {
-                    replaySubject.send(3)
+                    subject.value.send(3)
                 }
             }
         }
