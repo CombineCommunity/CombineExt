@@ -1,25 +1,33 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "combine-schedulers",
-        "repositoryURL": "https://github.com/pointfreeco/combine-schedulers",
-        "state": {
-          "branch": null,
-          "revision": "4cf088c29a20f52be0f2ca54992b492c54e0076b",
-          "version": "0.5.3"
-        }
-      },
-      {
-        "package": "xctest-dynamic-overlay",
-        "repositoryURL": "https://github.com/pointfreeco/xctest-dynamic-overlay",
-        "state": {
-          "branch": null,
-          "revision": "50a70a9d3583fe228ce672e8923010c8df2deddd",
-          "version": "0.2.1"
-        }
+  "originHash" : "1b9096f7508641f254425b7afed37e183d80329c781368ab9d810eea6051aa8a",
+  "pins" : [
+    {
+      "identity" : "combine-schedulers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/combine-schedulers",
+      "state" : {
+        "revision" : "fd16d76fd8b9a976d88bfb6cacc05ca8d19c91b6",
+        "version" : "1.1.0"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "swift-concurrency-extras",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-concurrency-extras",
+      "state" : {
+        "revision" : "5a3825302b1a0d744183200915a47b508c828e6f",
+        "version" : "1.3.2"
+      }
+    },
+    {
+      "identity" : "xctest-dynamic-overlay",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
+      "state" : {
+        "revision" : "34e463e98ab8541c604af706c99bed7160f5ec70",
+        "version" : "1.8.1"
+      }
+    }
+  ],
+  "version" : 3
 }
