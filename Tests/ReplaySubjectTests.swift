@@ -404,9 +404,6 @@ final class ReplaySubjectTests: XCTestCase {
             // The new subscription should always receive [1, 2, 3]
 
             // Wrap in @unchecked Sendable to explicitly acknowledge intentional concurrent access for testing
-            struct UnsafeSendableBox<T>: @unchecked Sendable {
-                let value: T
-            }
             let subject = UnsafeSendableBox(value: replaySubject)
 
             await withTaskGroup(of: Void.self) { taskGroup in

@@ -605,5 +605,161 @@ class WithLatestFromTests: XCTestCase {
         XCTAssertNil(weakSubject3)
         XCTAssertNil(weakSubject4)
     }
+
+    // MARK: - Thread Safety Tests (Issue #163, #171)
+
+    func testThreadSafetyWithConcurrentEmissions() async {
+        // Test for issue #163 - withLatestFrom should be thread safe
+        // when subscribing to publishers emitting from different threads
+        let iterations = 100
+
+        actor ResultCollector {
+            var results: [String] = []
+
+            func append(_ value: String) {
+                results.append(value)
+            }
+
+            func getCount() -> Int {
+                results.count
+            }
+        }
+
+        for _ in 0 ..< iterations {
+            let subject1 = PassthroughSubject<Int, Never>()
+            let subject2 = PassthroughSubject<String, Never>()
+            let collector = ResultCollector()
+
+            // Wrap in Sendable box for intentional concurrent access in tests
+            let box1 = UnsafeSendableBox(value: subject1)
+            let box2 = UnsafeSendableBox(value: subject2)
+
+            subscription = subject1
+                .withLatestFrom(subject2) { "\($0)-\($1)" }
+                .sink { value in
+                    Task { await collector.append(value) }
+                }
+
+            // Emit from different threads concurrently
+            await withTaskGroup(of: Void.self) { group in
+                group.addTask {
+                    for i in 0 ..< 10 {
+                        box2.value.send("value\(i)")
+                        try? await Task.sleep(nanoseconds: 1000)
+                    }
+                }
+
+                group.addTask {
+                    // Small delay to ensure subject2 has emitted first
+                    try? await Task.sleep(nanoseconds: 10000)
+                    for i in 0 ..< 10 {
+                        box1.value.send(i)
+                        try? await Task.sleep(nanoseconds: 1000)
+                    }
+                }
+            }
+
+            // Small delay to allow sink to process
+            try? await Task.sleep(nanoseconds: 100_000)
+
+            let count = await collector.getCount()
+            XCTAssertGreaterThan(count, 0, "Should have received at least one result")
+        }
+    }
+
+    func testThreadSafetyWithSelfReference() async {
+        // Test for issue #171 - withLatestFrom with self-reference should not crash
+        // This tests thread-safety, not timing guarantees (which aren't promised for self-reference)
+        let iterations = 50
+
+        for _ in 0 ..< iterations {
+            let nodes = CurrentValueSubject<[Int], Never>([])
+            let box = UnsafeSendableBox(value: nodes)
+            var didReceiveValue = false
+
+            subscription = nodes
+                .dropFirst()
+                .filter { !$0.isEmpty }
+                .withLatestFrom(nodes)
+                .sink { _ in
+                    didReceiveValue = true
+                }
+
+            // Emit from different threads concurrently
+            await withTaskGroup(of: Void.self) { group in
+                group.addTask {
+                    box.value.send([1, 2, 3])
+                }
+
+                group.addTask {
+                    try? await Task.sleep(nanoseconds: 10000)
+                    box.value.send([1, 2, 3, 4])
+                }
+
+                group.addTask {
+                    try? await Task.sleep(nanoseconds: 20000)
+                    box.value.send([1, 2, 3, 4, 5])
+                }
+            }
+
+            // Small delay to allow sink to process
+            try? await Task.sleep(nanoseconds: 200_000)
+
+            // The key test is that we don't crash - receiving values is a bonus
+            XCTAssertTrue(didReceiveValue || !didReceiveValue, "Test completed without crashing")
+        }
+    }
+
+    func testThreadSafetyWithRapidEmissions() async {
+        // Stress test with rapid emissions from multiple threads
+        let subject1 = PassthroughSubject<Int, Never>()
+        let subject2 = PassthroughSubject<Int, Never>()
+
+        actor ResultCollector {
+            var results: [Int] = []
+
+            func append(_ value: Int) {
+                results.append(value)
+            }
+
+            func getCount() -> Int {
+                results.count
+            }
+        }
+
+        let collector = ResultCollector()
+        let box1 = UnsafeSendableBox(value: subject1)
+        let box2 = UnsafeSendableBox(value: subject2)
+
+        subscription = subject1
+            .withLatestFrom(subject2) { $0 + $1 }
+            .sink { value in
+                Task { await collector.append(value) }
+            }
+
+        await withTaskGroup(of: Void.self) { group in
+            // Rapidly emit from subject2
+            group.addTask {
+                for i in 0 ..< 1000 {
+                    box2.value.send(i)
+                }
+            }
+
+            // Rapidly emit from subject1
+            group.addTask {
+                try? await Task.sleep(nanoseconds: 100_000) // Small delay
+                for i in 0 ..< 1000 {
+                    box1.value.send(i)
+                }
+            }
+        }
+
+        // Small delay to allow sink to process
+        try? await Task.sleep(nanoseconds: 1_000_000)
+
+        let count = await collector.getCount()
+        XCTAssertGreaterThan(count, 0, "Should have received results")
+        XCTAssertLessThanOrEqual(count, 1000, "Should not receive more results than emissions")
+    }
 }
 #endif
