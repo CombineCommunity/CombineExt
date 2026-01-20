@@ -4,33 +4,28 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   spm-tests:
-    name: "Swift ${{ matrix.swift }} on ${{ matrix.os }}"
-    runs-on: ${{ matrix.os }}
+    name: "Swift 6.0 on ${{ matrix.xcode }}"
+    runs-on: macos-15
 
     strategy:
       matrix:
-        os: [macos-13, macos-14, macos-latest]
-        swift: ["5.9", "6.0"]
-        exclude:
-          - os: macos-13
-            swift: "6.0"
+        xcode: ["16.4", "26.0"]
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Select Xcode version
-        if: matrix.swift == '5.9'
-        run: sudo xcode-select -s /Applications/Xcode_15.2.app
+        run: sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
 
       - name: Run tests
         run: swift test --enable-code-coverage
 
       - name: Generate coverage report
-        if: matrix.os == 'macos-latest' && matrix.swift == '6.0'
+        if: matrix.xcode == '26.0'
         run: xcrun llvm-cov export -format="lcov" .build/debug/CombineExtPackageTests.xctest/Contents/MacOS/CombineExtPackageTests -instr-profile .build/debug/codecov/default.profdata > coverage.lcov
 
       - name: Upload coverage to Codecov
-        if: matrix.os == 'macos-latest' && matrix.swift == '6.0'
+        if: matrix.xcode == '26.0'
         uses: codecov/codecov-action@v4
         with:
           files: coverage.lcov
